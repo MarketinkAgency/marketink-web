@@ -4,8 +4,7 @@ export const isLang = (v: string): v is Lang => LOCALES.includes(v as Lang);
 
 /** Enlaces comerciales. Un solo lugar. */
 export const site = {
-  /** ⚠️ Reemplazar por el link real de Calendly. */
-  call: "https://calendly.com/marketink/growth-call",
+  call: "https://calendly.com/rocadigital/30min",
   instagram: "https://instagram.com/marketinkagency",
   whatsapp: "https://wa.me/13854909918",
   email: "hello@marketinkagency.com",

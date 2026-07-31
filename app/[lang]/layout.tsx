@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import { notFound } from "next/navigation";
 import { copy, isLang, LOCALES } from "@/lib/copy";
 import "../globals.css";
 
-const inter = Inter({
+/** Montserrat en todas sus disposiciones. La fuente de la marca. */
+const montserrat = Montserrat({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-  variable: "--font-inter",
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
+  variable: "--font-montserrat",
   display: "swap",
 });
 
@@ -41,7 +42,7 @@ export default async function RootLayout({
   if (!isLang(lang)) notFound();
 
   return (
-    <html lang={lang} className={inter.variable}>
+    <html lang={lang} className={montserrat.variable}>
       <body className="font-sans antialiased">{children}</body>
     </html>
   );

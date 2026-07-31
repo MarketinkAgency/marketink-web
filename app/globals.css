@@ -2,14 +2,14 @@
 
 @theme {
   --color-void: #070708;
-  --color-panel: #121216;
-  --color-bone: #f4f1ec;
-  --color-muted: #9d998f;
-  --color-faint: #5f5c58;
+  --color-panel: #101012;
+  --color-bone: #ede6dc;
+  --color-muted: #9c968c;
+  --color-faint: #5f5a55;
   --color-blood: #e10600;
 
-  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", var(--font-inter),
-    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  /* Montserrat en todas sus disposiciones. */
+  --font-sans: var(--font-montserrat), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 :root {
@@ -18,54 +18,93 @@
 }
 
 html {
-  scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+}
+/* Lenis maneja el scroll; sin esto pelea con scroll-behavior nativo */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
 }
 
 body {
   background: #070708;
-  color: #f4f1ec;
+  color: var(--color-bone);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
   letter-spacing: -0.012em;
 }
 
-/* ── tinta viva detrás de todo ─────────────────────────────── */
+/* ══════════════════════════════════════════════════════════
+   TIPOGRAFÍA DE CARTEL
+   Montserrat 900, versalitas, tracking negativo y interlínea
+   comprimida. Así deja de parecer Montserrat y empieza a
+   parecer un rótulo de estudio.
+   ══════════════════════════════════════════════════════════ */
+.flash-type {
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.045em;
+  line-height: 0.86;
+}
+.flash-sub {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+/* ══════════════════════════════════════════════════════════
+   TINTA — recorre toda la pantalla, no se queda en una esquina
+   ══════════════════════════════════════════════════════════ */
 .ink-a,
 .ink-b,
 .ink-c {
   position: absolute;
   border-radius: 50%;
-  filter: blur(80px);
+  filter: blur(90px);
   will-change: transform;
 }
 .ink-a {
-  background: radial-gradient(circle, rgba(225, 6, 0, 0.55) 0%, transparent 66%);
-  animation: bleedA 24s ease-in-out infinite;
+  background: radial-gradient(circle, rgba(225, 6, 0, 0.62) 0%, transparent 66%);
+  animation: roamA 34s ease-in-out infinite;
 }
 .ink-b {
-  background: radial-gradient(circle, rgba(180, 10, 30, 0.4) 0%, transparent 68%);
-  animation: bleedB 31s ease-in-out infinite;
+  background: radial-gradient(circle, rgba(190, 8, 24, 0.5) 0%, transparent 68%);
+  animation: roamB 44s ease-in-out infinite;
 }
 .ink-c {
-  background: radial-gradient(circle, rgba(255, 60, 20, 0.22) 0%, transparent 70%);
-  animation: bleedA 38s ease-in-out infinite reverse;
+  background: radial-gradient(circle, rgba(255, 70, 25, 0.3) 0%, transparent 70%);
+  animation: roamC 54s ease-in-out infinite;
 }
-@keyframes bleedA {
-  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-  50% { transform: translate3d(6vw, 4vw, 0) scale(1.18); }
+@keyframes roamA {
+  0%   { transform: translate3d(-10vw, -10vh, 0) scale(1); }
+  25%  { transform: translate3d(58vw, 18vh, 0) scale(1.35); }
+  50%  { transform: translate3d(72vw, 62vh, 0) scale(0.9); }
+  75%  { transform: translate3d(12vw, 48vh, 0) scale(1.2); }
+  100% { transform: translate3d(-10vw, -10vh, 0) scale(1); }
 }
-@keyframes bleedB {
-  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-  50% { transform: translate3d(-5vw, 6vw, 0) scale(1.22); }
+@keyframes roamB {
+  0%   { transform: translate3d(70vw, 70vh, 0) scale(1); }
+  33%  { transform: translate3d(6vw, 40vh, 0) scale(1.3); }
+  66%  { transform: translate3d(46vw, -6vh, 0) scale(0.85); }
+  100% { transform: translate3d(70vw, 70vh, 0) scale(1); }
+}
+@keyframes roamC {
+  0%   { transform: translate3d(30vw, 30vh, 0) scale(1.1); }
+  40%  { transform: translate3d(78vw, 10vh, 0) scale(0.8); }
+  70%  { transform: translate3d(-8vw, 66vh, 0) scale(1.3); }
+  100% { transform: translate3d(30vw, 30vh, 0) scale(1.1); }
 }
 
+/* grano: tinta sobre papel, no píxeles sobre pantalla */
 .grain {
   position: fixed;
   inset: 0;
   z-index: 2;
   pointer-events: none;
-  opacity: 0.06;
+  opacity: 0.07;
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
@@ -74,28 +113,49 @@ body {
   inset: 0;
   z-index: 2;
   pointer-events: none;
-  background: radial-gradient(130% 100% at 50% 32%, transparent 38%, rgba(0, 0, 0, 0.8) 100%);
+  background: radial-gradient(135% 105% at 50% 32%, transparent 42%, rgba(0, 0, 0, 0.78) 100%);
 }
 
-/* ── cristal ahumado ───────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════
+   HOJA DE FLASH — reglas finas y marcos, como el papel del muro
+   ══════════════════════════════════════════════════════════ */
+.rule-h {
+  height: 1px;
+  background: rgba(237, 230, 220, 0.14);
+}
+.flash-cell {
+  position: relative;
+  border: 1px solid rgba(237, 230, 220, 0.12);
+  background: linear-gradient(168deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.008));
+  transition: border-color 0.6s var(--ease), background 0.6s var(--ease);
+}
+.flash-cell::before,
+.flash-cell::after {
+  content: "";
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border: 1px solid rgba(225, 6, 0, 0.55);
+  opacity: 0;
+  transition: opacity 0.5s var(--ease);
+}
+.flash-cell::before { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
+.flash-cell::after { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
+.flash-cell:hover { border-color: rgba(225, 6, 0, 0.35); background: rgba(225, 6, 0, 0.035); }
+.flash-cell:hover::before,
+.flash-cell:hover::after { opacity: 1; }
+
 .glass {
-  background: linear-gradient(
-    168deg,
-    rgba(255, 255, 255, 0.075) 0%,
-    rgba(255, 255, 255, 0.018) 62%,
-    rgba(255, 255, 255, 0.04) 100%
-  );
+  background: linear-gradient(168deg, rgba(255, 255, 255, 0.075) 0%, rgba(255, 255, 255, 0.018) 62%, rgba(255, 255, 255, 0.04) 100%);
   backdrop-filter: blur(26px) saturate(160%);
   -webkit-backdrop-filter: blur(26px) saturate(160%);
-  border: 1px solid rgba(244, 241, 236, 0.09);
+  border: 1px solid rgba(237, 230, 220, 0.09);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.2),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.04),
-    0 32px 64px -26px rgba(0, 0, 0, 0.9),
-    0 2px 8px rgba(0, 0, 0, 0.4);
+    0 32px 64px -26px rgba(0, 0, 0, 0.9);
 }
 
-/* línea de tinta que recorre la página */
+/* línea de avance */
 .spine {
   position: fixed;
   left: 0;
@@ -108,16 +168,78 @@ body {
   will-change: transform;
 }
 
-/* ── revelado ──────────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════
+   CURSOR — punto rojo que crece. Solo ratón real.
+   ══════════════════════════════════════════════════════════ */
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 90;
+  pointer-events: none;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 50%;
+  background: #e10600;
+  box-shadow: 0 0 22px 6px rgba(225, 6, 0, 0.55);
+  will-change: transform;
+  transition: width 0.35s var(--ease), height 0.35s var(--ease), margin 0.35s var(--ease),
+    background 0.35s var(--ease), opacity 0.3s linear;
+}
+.cursor-dot.big {
+  width: 64px;
+  height: 64px;
+  margin: -32px 0 0 -32px;
+  background: rgba(225, 6, 0, 0.22);
+  box-shadow: 0 0 40px 10px rgba(225, 6, 0, 0.28), inset 0 0 0 1px rgba(225, 6, 0, 0.7);
+}
+@media (hover: hover) and (pointer: fine) {
+  body.has-cursor,
+  body.has-cursor a,
+  body.has-cursor button,
+  body.has-cursor summary {
+    cursor: none;
+  }
+  /* nunca sobre campos de texto ni el calendario */
+  body.has-cursor input,
+  body.has-cursor textarea,
+  body.has-cursor iframe {
+    cursor: auto;
+  }
+}
+@media not all and (hover: hover) {
+  .cursor-dot { display: none; }
+}
+
+/* marquesina */
+.ticker {
+  display: flex;
+  width: max-content;
+  animation: slide 42s linear infinite;
+}
+@keyframes slide {
+  to { transform: translateX(-50%); }
+}
+
+/* ══════════════════════════════════════════════════════════
+   MOVIMIENTO
+   ══════════════════════════════════════════════════════════ */
 .reveal {
   opacity: 0;
   transform: translateY(28px);
   transition: opacity 1s var(--ease), transform 1s var(--ease);
 }
-.reveal.in {
-  opacity: 1;
-  transform: none;
+.reveal.in { opacity: 1; transform: none; }
+
+/* revelado por máscara: la línea sube desde debajo del corte */
+.mask-line { overflow: hidden; display: block; }
+.mask-line > span {
+  display: block;
+  transform: translateY(105%);
+  transition: transform 1.15s var(--ease);
 }
+.mask-line.in > span { transform: none; }
 
 @keyframes riseIn {
   from { opacity: 0; transform: translateY(26px); }
@@ -133,15 +255,17 @@ body {
 
 @keyframes pulseDot {
   0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.45; transform: scale(0.74); }
+  50% { opacity: 0.45; transform: scale(0.7); }
 }
 .dot-live { animation: pulseDot 2.6s ease-in-out infinite; }
 
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
   *, *::before, *::after {
     animation: none !important;
     transition-duration: 0.01ms !important;
   }
   .reveal { opacity: 1; transform: none; }
+  .mask-line > span { transform: none; }
+  .cursor-dot { display: none; }
+  body.has-cursor, body.has-cursor a, body.has-cursor button { cursor: auto; }
 }
