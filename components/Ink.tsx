@@ -21,29 +21,66 @@ export default function Ink() {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
-    // ── scroll con inercia ────────────────────────────────────
+    const root = document.documentElement;
     let lenis: Lenis | null = null;
     let rafId = 0;
-    if (!reduced) {
+
+    const startLenis = () => {
       lenis = new Lenis({ duration: 1.15, smoothWheel: true });
       const raf = (time: number) => {
         lenis?.raf(time);
         rafId = requestAnimationFrame(raf);
       };
       rafId = requestAnimationFrame(raf);
+    };
 
-      // los anclas del nav deben seguir funcionando con Lenis
-      document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((a) => {
-        a.addEventListener("click", (e) => {
-          const id = a.getAttribute("href");
-          if (!id || id === "#") return;
-          const target = document.querySelector(id);
-          if (!target) return;
-          e.preventDefault();
-          lenis?.scrollTo(target as HTMLElement, { offset: -90 });
-        });
-      });
-    }
+    // los anclas del nav funcionan con o sin Lenis
+    const onAnchor = (e: MouseEvent) => {
+      const a = (e.target as HTMLElement | null)?.closest<HTMLAnchorElement>('a[href^="#"]');
+      const id = a?.getAttribute("href");
+      if (!id || id === "#") return;
+      const target = document.querySelector(id);
+      if (!target || !lenis) return;
+      e.preventDefault();
+      lenis.scrollTo(target as HTMLElement, { offset: -90 });
+    };
+    document.addEventListener("click", onAnchor);
+
+    /* ── SONDA DE RENDIMIENTO ───────────────────────────────────
+       El adorno no manda: manda la máquina. Encendemos la deriva de
+       tinta, medimos 700 ms reales y, si no sostiene 45 fps, la
+       apagamos junto con el cristal esmerilado y el scroll con
+       inercia. En un PC capaz no se nota; en uno justo, el sitio
+       pasa de arrastrarse a ir fluido.                            */
+    let probe = 0;
+    const capabilityCheck = () => {
+      if ((navigator.hardwareConcurrency ?? 8) <= 4) {
+        root.classList.add("low-power");
+        return;
+      }
+      root.classList.add("ink-live");
+      let frames = 0;
+      const t0 = performance.now();
+      const tick = () => {
+        frames++;
+        const dt = performance.now() - t0;
+        if (dt < 700) {
+          probe = requestAnimationFrame(tick);
+          return;
+        }
+        probe = 0;
+        const fps = frames / (dt / 1000);
+        if (fps < 45) {
+          root.classList.remove("ink-live");
+          root.classList.add("low-power");
+        } else {
+          startLenis();
+        }
+      };
+      probe = requestAnimationFrame(tick);
+    };
+
+    if (!reduced) capabilityCheck();
 
     // ── revelado ──────────────────────────────────────────────
     const io = new IntersectionObserver(
@@ -86,11 +123,20 @@ export default function Ink() {
       const interactive = !!el?.closest("a, button, summary, .flash-cell");
       dot.current?.classList.toggle("big", interactive);
       if (dot.current) dot.current.style.opacity = "1";
+      if (!cRaf) cRaf = requestAnimationFrame(loop);
     };
+    // El bucle se apaga cuando el punto alcanza al ratón. Un rAF eterno
+    // mantiene despierto al compositor y quema batería sin pintar nada.
     const loop = () => {
-      cx += (tx - cx) * 0.22;
-      cy += (ty - cy) * 0.22;
+      const dx = tx - cx;
+      const dy = ty - cy;
+      cx += dx * 0.22;
+      cy += dy * 0.22;
       if (dot.current) dot.current.style.transform = `translate3d(${cx}px, ${cy}px, 0)`;
+      if (Math.abs(dx) < 0.4 && Math.abs(dy) < 0.4) {
+        cRaf = 0;
+        return;
+      }
       cRaf = requestAnimationFrame(loop);
     };
     // al usar teclado, devolvemos el cursor del sistema
@@ -108,11 +154,13 @@ export default function Ink() {
       window.addEventListener("pointermove", onMove, { passive: true });
       window.addEventListener("keydown", onKey);
       document.addEventListener("mouseleave", onLeave);
-      cRaf = requestAnimationFrame(loop);
     }
 
     return () => {
       io.disconnect();
+      document.removeEventListener("click", onAnchor);
+      if (probe) cancelAnimationFrame(probe);
+      root.classList.remove("ink-live", "low-power");
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("keydown", onKey);
@@ -130,9 +178,9 @@ export default function Ink() {
       <div ref={spine} className="spine w-full scale-x-0" aria-hidden />
       <div ref={dot} className="cursor-dot opacity-0" aria-hidden />
       <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden>
-        <div className="ink-a absolute size-[52vw]" />
-        <div className="ink-b absolute size-[44vw]" />
-        <div className="ink-c absolute size-[38vw]" />
+        <div className="ink-a absolute size-[64vw]" />
+        <div className="ink-b absolute size-[56vw]" />
+        <div className="ink-c absolute size-[48vw]" />
       </div>
       <div className="grain" aria-hidden />
       <div className="vignette" aria-hidden />
