@@ -22,7 +22,8 @@ export const copy = {
     nav: { system: "El sistema", results: "Resultados", process: "90 días", faq: "Preguntas", cta: "Auditoría gratis" },
 
     hero: {
-      eyebrow: "Sistemas de reservas creados exclusivamente para tatuadores y estudios",
+      eyebrow: "Reservas para tatuadores y estudios",
+      dmStatus: "Respondido en 2 minutos",
       h1a: "Tu trabajo ya genera interés.",
       h1b: "Nosotros lo convertimos en consultas agendadas y depósitos",
       sub: "MarketINK combina campañas pagadas, calificación de consultas por Instagram, seguimientos rápidos y flujos de reserva para ayudar a tatuadores serios a construir una agenda más predecible.",
@@ -198,7 +199,8 @@ export const copy = {
     nav: { system: "The system", results: "Results", process: "90 days", faq: "FAQ", cta: "Free audit" },
 
     hero: {
-      eyebrow: "Booking systems built exclusively for tattoo artists and studios",
+      eyebrow: "Booking systems for tattoo artists and studios",
+      dmStatus: "Answered in 2 minutes",
       h1a: "Your tattoo work already creates demand.",
       h1b: "We turn it into booked consultations and deposits",
       sub: "MarketINK combines paid campaigns, Instagram inquiry qualification, fast follow-up and tattoo booking workflows to help serious artists build a more predictable calendar.",

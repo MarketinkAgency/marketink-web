@@ -6,6 +6,8 @@ import Ink from "@/components/Ink";
 import DmCard from "@/components/DmCard";
 import Calculator from "@/components/Calculator";
 import StickyCta from "@/components/StickyCta";
+import Split from "@/components/Split";
+import Count from "@/components/Count";
 
 /** marketINK• — el punto es la gota de tinta y el punto final de la frase. */
 function Wordmark({ className = "", live = true }: { className?: string; live?: boolean }) {
@@ -107,9 +109,9 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                 {t.hero.eyebrow}
               </span>
 
-              <h1 className="rise mx-auto max-w-[16ch] flash-type text-[clamp(2.2rem,4.7vw,4rem)] lg:mx-0">
-                <span className="text-faint">{t.hero.h1a}</span> {t.hero.h1b}
-                <Period />
+              <h1 className="mx-auto max-w-[19ch] flash-type text-[clamp(2.05rem,3.9vw,3.25rem)] lg:mx-0">
+                <Split as="span" text={t.hero.h1a} className="text-faint" stagger={34} />
+                <Split as="span" text={t.hero.h1b} delay={300} stagger={34} tail={<Period />} />
               </h1>
 
               <p className="rise mx-auto mt-7 max-w-[52ch] text-[clamp(0.97rem,1.6vw,1.13rem)] leading-relaxed text-muted lg:mx-0">
@@ -133,7 +135,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             </div>
 
             <div className="rise flex justify-center lg:justify-end" style={{ animationDelay: "0.25s" }}>
-              <DmCard lang={lang} label={t.hero.eyebrow} />
+              <DmCard lang={lang} label={t.hero.dmStatus} />
             </div>
           </div>
         </header>
@@ -145,7 +147,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-6">
               {t.metrics.items.map((m) => (
                 <div key={m.t} className="reveal">
-                  <p className="flash-type text-[clamp(1.8rem,3.4vw,2.7rem)] tabular-nums text-signal">{m.n}</p>
+                  <p className="flash-type text-[clamp(1.8rem,3.4vw,2.7rem)] tabular-nums text-signal"><Count value={m.n} /></p>
                   <p className="mt-2.5 text-[13px] leading-snug text-muted">{m.t}</p>
                 </div>
               ))}
@@ -158,7 +160,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         <section className="px-6 py-24 sm:py-32">
           <div className="mx-auto max-w-4xl text-center">
             <Eyebrow>{t.video.eyebrow}</Eyebrow>
-            <h2 className="reveal mx-auto max-w-[20ch] flash-type text-[clamp(1.8rem,4vw,3rem)]">{t.video.title}</h2>
+            <Split as="h2" text={t.video.title} className="mx-auto max-w-[20ch] flash-type text-[clamp(1.8rem,4vw,3rem)]" />
             <p className="reveal mx-auto mt-6 max-w-[54ch] text-[15.5px] leading-relaxed text-muted">{t.video.sub}</p>
 
             <div className="reveal mt-11 overflow-hidden border border-white/[0.1]">
@@ -187,8 +189,9 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           <div className="mx-auto grid max-w-6xl gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
             <div className="lg:sticky lg:top-32 lg:self-start">
               <Eyebrow>{t.problem.eyebrow}</Eyebrow>
-              <h2 className="reveal flash-type text-[clamp(2rem,4.4vw,3.4rem)]">
-                {t.problem.title} <span className="text-faint">{t.problem.titleEm}</span>
+              <h2 className="flash-type text-[clamp(2rem,4.4vw,3.4rem)]">
+                <Split as="span" text={t.problem.title} />
+                <Split as="span" text={t.problem.titleEm} delay={220} className="text-faint" />
               </h2>
               <p className="reveal mt-9 max-w-[40ch] text-[clamp(1.05rem,1.9vw,1.35rem)] font-semibold leading-snug tracking-[-0.02em]">
                 {t.problem.close} <span className="text-blood">{t.problem.closeEm}</span>
@@ -218,7 +221,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             <div className="reveal mb-11 flex flex-wrap items-end justify-between gap-6">
               <div>
                 <p className="mb-5 flash-sub text-[11.5px] tracking-[0.22em] text-blood">{t.work.eyebrow}</p>
-                <h2 className="flash-type text-[clamp(1.8rem,4vw,3rem)]">{t.work.title}</h2>
+                <Split as="h2" text={t.work.title} className="flash-type text-[clamp(1.8rem,4vw,3rem)]" />
               </div>
               <p className="max-w-[34ch] text-[13.5px] leading-relaxed text-faint">{t.work.sub}</p>
             </div>
@@ -243,8 +246,9 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           <div className="mx-auto grid max-w-6xl gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
             <div className="lg:sticky lg:top-32 lg:self-start">
               <Eyebrow>{t.system.eyebrow}</Eyebrow>
-              <h2 className="reveal flash-type text-[clamp(2rem,4.4vw,3.4rem)]">
-                {t.system.title} <span className="text-blood">{t.system.titleEm}</span>
+              <h2 className="flash-type text-[clamp(2rem,4.4vw,3.4rem)]">
+                <Split as="span" text={t.system.title} />
+                <Split as="span" text={t.system.titleEm} delay={220} className="text-blood" />
               </h2>
               <p className="reveal mt-8 max-w-[46ch] text-[clamp(0.98rem,1.6vw,1.12rem)] leading-relaxed text-muted">
                 {t.system.sub}
@@ -279,7 +283,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         <section className="px-6 py-24 sm:py-36">
           <div className="mx-auto max-w-6xl">
             <Eyebrow>{t.includes.eyebrow}</Eyebrow>
-            <h2 className="reveal max-w-[22ch] flash-type text-[clamp(1.9rem,4.2vw,3.2rem)]">{t.includes.title}</h2>
+            <Split as="h2" text={t.includes.title} className="max-w-[22ch] flash-type text-[clamp(1.9rem,4.2vw,3.2rem)]" />
 
             <div className="mt-14 grid gap-px bg-white/[0.08] md:grid-cols-3">
               {t.includes.groups.map((g, i) => (
@@ -313,7 +317,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
 
           <div className="mx-auto max-w-6xl">
             <Eyebrow>{t.caseStudy.eyebrow}</Eyebrow>
-            <h2 className="reveal max-w-[20ch] flash-type text-[clamp(2rem,4.6vw,3.6rem)]">{t.caseStudy.title}</h2>
+            <Split as="h2" text={t.caseStudy.title} className="max-w-[20ch] flash-type text-[clamp(2rem,4.6vw,3.6rem)]" />
             <p className="reveal mt-6 max-w-[52ch] text-[15.5px] text-muted">{t.caseStudy.sub}</p>
 
             <div className="mt-12 grid gap-px bg-white/[0.08] sm:grid-cols-3">
@@ -358,7 +362,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         <section className="px-6 py-24 sm:py-36">
           <div className="mx-auto max-w-6xl">
             <Eyebrow>{t.calc.eyebrow}</Eyebrow>
-            <h2 className="reveal max-w-[20ch] flash-type text-[clamp(1.9rem,4.4vw,3.4rem)]">{t.calc.title}</h2>
+            <Split as="h2" text={t.calc.title} className="max-w-[20ch] flash-type text-[clamp(1.9rem,4.4vw,3.4rem)]" />
             <p className="reveal mt-6 max-w-[46ch] text-[15.5px] text-muted">{t.calc.sub}</p>
 
             <div className="reveal mt-14">
@@ -375,7 +379,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         <section id="fit" className="scroll-mt-24 px-6 py-24 sm:py-36">
           <div className="mx-auto max-w-6xl">
             <Eyebrow>{t.fit.eyebrow}</Eyebrow>
-            <h2 className="reveal max-w-[20ch] flash-type text-[clamp(1.9rem,4.4vw,3.4rem)]">{t.fit.title}</h2>
+            <Split as="h2" text={t.fit.title} className="max-w-[20ch] flash-type text-[clamp(1.9rem,4.4vw,3.4rem)]" />
 
             <div className="mt-14 grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
               <div className="flash-cell reveal border-l-2 border-l-blood p-9 sm:p-11">
@@ -408,7 +412,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         <section id="process" className="scroll-mt-24 px-6 py-24 sm:py-36">
           <div className="mx-auto max-w-6xl">
             <Eyebrow>{t.process.eyebrow}</Eyebrow>
-            <h2 className="reveal max-w-[22ch] flash-type text-[clamp(1.9rem,4.4vw,3.4rem)]">{t.process.title}</h2>
+            <Split as="h2" text={t.process.title} className="max-w-[22ch] flash-type text-[clamp(1.9rem,4.4vw,3.4rem)]" />
             <p className="reveal mt-6 max-w-[54ch] text-[15.5px] leading-relaxed text-muted">{t.process.sub}</p>
 
             <div className="mt-16 grid gap-px bg-white/[0.08] md:grid-cols-4">
@@ -460,7 +464,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         <section id="faq" className="scroll-mt-24 px-6 py-24 sm:py-36">
           <div className="mx-auto max-w-3xl">
             <Eyebrow>{t.faq.eyebrow}</Eyebrow>
-            <h2 className="reveal mb-12 max-w-[20ch] flash-type text-[clamp(1.9rem,4.2vw,3.2rem)]">{t.faq.title}</h2>
+            <Split as="h2" text={t.faq.title} className="mb-12 max-w-[20ch] flash-type text-[clamp(1.9rem,4.2vw,3.2rem)]" />
             <div className="divide-y divide-white/[0.07]">
               {t.faq.items.map((f, i) => (
                 <details key={f.q} className="reveal group" open={i === 0}>
@@ -485,8 +489,8 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             <div className="absolute inset-0 bg-gradient-to-b from-void via-void/72 to-void" />
           </div>
           <div className="mx-auto max-w-4xl">
-            <h2 className="reveal mx-auto max-w-[18ch] flash-type text-[clamp(2.1rem,5.4vw,4.4rem)]">
-              {t.final.title}
+            <h2 className="mx-auto max-w-[18ch] flash-type text-[clamp(2.1rem,5.4vw,4.4rem)]">
+              <Split as="span" text={t.final.title} />
               <Period />
             </h2>
             <p className="reveal mx-auto mt-8 max-w-[52ch] text-[clamp(1rem,1.8vw,1.2rem)] leading-relaxed text-muted">
