@@ -139,6 +139,23 @@ body {
   100% { transform: translate3d(28vw, 28vh, 0); }
 }
 
+/* ══════════════════════════════════════════════════════════
+   SANGRADO — sin costuras entre secciones
+
+   Una sección con fondo propio (foto + degradado opaco) sobre la
+   capa fija de tinta produce una línea recta donde el resplandor
+   se corta de golpe. La máscara difumina el borde del fondo, no
+   del contenido: la tinta sigue de largo y la sección se funde.
+   ══════════════════════════════════════════════════════════ */
+.bleed {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 15%, #000 85%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 15%, #000 85%, transparent 100%);
+}
+.bleed-b {
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 78%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 78%, transparent 100%);
+}
+
 /* grano: tinta sobre papel, no píxeles sobre pantalla */
 .grain {
   position: fixed;

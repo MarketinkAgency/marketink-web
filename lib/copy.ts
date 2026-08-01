@@ -178,6 +178,16 @@ export const copy = {
       ],
     },
 
+    book: {
+      eyebrow: "Agenda ahora",
+      title: "Elige tu hora. Sin salir de aquí.",
+      sub: "15 minutos, por videollamada. Revisamos tu Instagram, tu ciudad y tu proceso actual de consultas. Si no vemos una oportunidad clara, te lo decimos en la misma llamada.",
+      loading: "Cargando el calendario…",
+      fallback: "Abrir el calendario",
+      spots: "{n} de {total} cupos de {mes} disponibles",
+      days: "Quedan {d} días de {mes}.",
+      full: "Cupos de {mes} completos. Escríbenos y entras a la lista del mes siguiente.",
+    },
     final: {
       title: "Tu próximo cliente podría estar ahora mismo dentro de tus mensajes.",
       sub: "La pregunta es si tienes el sistema para calificarlo, hacer seguimiento y recibir el depósito antes de que lo haga otro tatuador.",
@@ -187,7 +197,7 @@ export const copy = {
     },
 
     sticky: "Auditoría gratis",
-    footer: { tagline: "Sistemas de reservas para tatuadores y estudios.", follow: "Síguenos", rights: "Todos los derechos reservados." },
+    footer: { tagline: "Sistemas de reservas para tatuadores y estudios.", follow: "Síguenos", rights: "Todos los derechos reservados.", legal: "Legal", built: "Roca Digital LLC · Cheyenne, Wyoming, EE. UU." },
   },
 
   // ══════════════════════════════════════════════════════════════
@@ -355,6 +365,16 @@ export const copy = {
       ],
     },
 
+    book: {
+      eyebrow: "Book now",
+      title: "Pick your time. Without leaving this page.",
+      sub: "15 minutes, over video. We review your Instagram, your city and your current inquiry process. If we don't see a clear opportunity, we'll tell you on the call.",
+      loading: "Loading the calendar…",
+      fallback: "Open the calendar",
+      spots: "{n} of {total} {month} spots available",
+      days: "{d} days left in {month}.",
+      full: "{month} is full. Message us and we'll add you to next month's list.",
+    },
     final: {
       title: "Your next tattoo client may already be inside your DMs.",
       sub: "The question is whether you have the system to qualify, follow up and collect the deposit before another artist does.",
@@ -364,7 +384,7 @@ export const copy = {
     },
 
     sticky: "Free audit",
-    footer: { tagline: "Booking systems for tattoo artists and studios.", follow: "Follow us", rights: "All rights reserved." },
+    footer: { tagline: "Booking systems for tattoo artists and studios.", follow: "Follow us", rights: "All rights reserved.", legal: "Legal", built: "Roca Digital LLC · Cheyenne, Wyoming, USA" },
   },
 };
 

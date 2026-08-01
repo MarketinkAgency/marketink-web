@@ -8,6 +8,9 @@ import Calculator from "@/components/Calculator";
 import StickyCta from "@/components/StickyCta";
 import Split from "@/components/Split";
 import Count from "@/components/Count";
+import BookCall from "@/components/BookCall";
+import Spots from "@/components/Spots";
+import { legalNav } from "@/lib/legal";
 
 /** marketINK• — el punto es la gota de tinta y el punto final de la frase. */
 function Wordmark({ className = "", live = true }: { className?: string; live?: boolean }) {
@@ -59,7 +62,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
   return (
     <>
       <Ink />
-      <StickyCta href={site.call} label={t.sticky} />
+      <StickyCta href="#book" label={t.sticky} />
 
       <div className="relative z-10">
         {/* ───────── NAV ───────── */}
@@ -85,7 +88,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                 {other}
               </Link>
               <a
-                href={site.call}
+                href="#book"
                 className="rounded-full bg-blood px-5 py-2.5 text-[13.5px] font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.3),0_8px_24px_-8px_rgba(225,6,0,0.8)] transition duration-500 hover:-translate-y-0.5"
               >
                 {t.nav.cta}
@@ -96,7 +99,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
 
         {/* ───────── HERO ───────── */}
         <header className="relative overflow-hidden">
-          <div className="absolute inset-0 -z-10" aria-hidden>
+          <div className="bleed-b absolute inset-0 -z-10" aria-hidden>
             <Image src="/img/hero.webp" alt="" fill priority sizes="100vw" className="object-cover opacity-[0.4]" />
             <div className="absolute inset-0 bg-gradient-to-r from-void via-void/72 to-void/25" />
             <div className="absolute inset-0 bg-gradient-to-t from-void via-transparent to-void/60" />
@@ -123,7 +126,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
               </p>
 
               <div className="mt-8 flex flex-wrap items-center justify-center gap-3.5 lg:justify-start">
-                <Cta href={site.call} big>{t.hero.cta1}</Cta>
+                <Cta href="#book" big>{t.hero.cta1}</Cta>
                 <a
                   href="#system"
                   className="glass rounded-full px-8 py-4 text-[16px] font-semibold text-bone transition duration-500 hover:-translate-y-0.5"
@@ -179,7 +182,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             </div>
 
             <div className="reveal mt-9">
-              <Cta href={site.call}>{t.video.cta}</Cta>
+              <Cta href="#book">{t.video.cta}</Cta>
             </div>
           </div>
         </section>
@@ -257,7 +260,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                 {t.system.note}
               </p>
               <div className="reveal mt-9">
-                <Cta href={site.call}>{t.nav.cta}</Cta>
+                <Cta href="#book">{t.nav.cta}</Cta>
               </div>
             </div>
 
@@ -310,7 +313,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
 
         {/* ───────── CASO REAL ───────── */}
         <section className="relative overflow-hidden px-6 py-24 sm:py-36">
-          <div className="absolute inset-0 -z-10" aria-hidden>
+          <div className="bleed absolute inset-0 -z-10" aria-hidden>
             <Image src="/img/estudio.webp" alt="" fill sizes="100vw" className="object-cover opacity-[0.18]" />
             <div className="absolute inset-0 bg-gradient-to-b from-void via-void/80 to-void" />
           </div>
@@ -370,7 +373,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             </div>
 
             <div className="reveal mt-12">
-              <Cta href={site.call} big>{t.calc.cta}</Cta>
+              <Cta href="#book" big>{t.calc.cta}</Cta>
             </div>
           </div>
         </section>
@@ -436,7 +439,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
               {t.process.close} <span className="text-signal">{t.process.closeEm}</span>
             </p>
             <div className="reveal mt-9">
-              <Cta href={site.call}>{t.nav.cta}</Cta>
+              <Cta href="#book">{t.nav.cta}</Cta>
             </div>
           </div>
         </section>
@@ -477,14 +480,14 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
               ))}
             </div>
             <div className="reveal mt-12">
-              <Cta href={site.call}>{t.nav.cta}</Cta>
+              <Cta href="#book">{t.nav.cta}</Cta>
             </div>
           </div>
         </section>
 
         {/* ───────── CTA FINAL ───────── */}
         <section className="relative overflow-hidden px-6 py-32 text-center sm:py-48">
-          <div className="absolute inset-0 -z-10" aria-hidden>
+          <div className="bleed absolute inset-0 -z-10" aria-hidden>
             <Image src="/img/textura.webp" alt="" fill sizes="100vw" className="object-cover opacity-[0.3]" />
             <div className="absolute inset-0 bg-gradient-to-b from-void via-void/72 to-void" />
           </div>
@@ -497,10 +500,31 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
               {t.final.sub}
             </p>
             <div className="reveal mt-11">
-              <Cta href={site.call} big>{t.final.cta}</Cta>
+              <Cta href="#book" big>{t.final.cta}</Cta>
             </div>
-            <p className="reveal mx-auto mt-8 max-w-[56ch] text-[13.5px] leading-relaxed text-faint">{t.final.support}</p>
-            <p className="reveal mt-6 text-[13.5px] font-semibold text-blood">{t.final.urgency}</p>
+            <div className="reveal mt-10 flex justify-center">
+              <Spots lang={lang} labels={t.book} />
+            </div>
+            <p className="reveal mx-auto mt-9 max-w-[56ch] text-[13.5px] leading-relaxed text-faint">{t.final.support}</p>
+          </div>
+        </section>
+
+
+        {/* ───────── AGENDAR — CALENDARIO INCRUSTADO ───────── */}
+        <section id="book" className="scroll-mt-24 border-t border-white/[0.07] px-6 py-24 sm:py-32">
+          <div className="mx-auto max-w-5xl">
+            <div className="mb-12 grid gap-8 lg:grid-cols-[1.1fr_auto] lg:items-end">
+              <div>
+                <Eyebrow>{t.book.eyebrow}</Eyebrow>
+                <Split as="h2" text={t.book.title} className="max-w-[18ch] flash-type text-[clamp(1.9rem,4.4vw,3.4rem)]" />
+                <p className="reveal mt-6 max-w-[54ch] text-[15.5px] leading-relaxed text-muted">{t.book.sub}</p>
+              </div>
+              <div className="reveal lg:pb-2">
+                <Spots lang={lang} labels={t.book} />
+              </div>
+            </div>
+
+            <BookCall url={site.call} lang={lang} labels={{ loading: t.book.loading, fallback: t.book.fallback }} />
           </div>
         </section>
 
@@ -519,9 +543,21 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
               </div>
             </div>
           </div>
-          <p className="mx-auto mt-12 max-w-6xl text-[12px] text-faint">
-            © {new Date().getFullYear()} Roca Digital LLC. {t.footer.rights}
-          </p>
+          <div className="mx-auto mt-12 max-w-6xl border-t border-white/[0.06] pt-8">
+            <p className="mb-4 flash-sub text-[10.5px] tracking-[0.16em] text-faint">{t.footer.legal}</p>
+            <ul className="flex flex-wrap gap-x-7 gap-y-3">
+              {legalNav[lang].map((n) => (
+                <li key={n.slug}>
+                  <Link href={`/${lang}/legal/${n.slug}`} className="text-[13.5px] text-muted transition hover:text-bone">
+                    {n.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-8 text-[12px] leading-relaxed text-faint">
+              © {new Date().getFullYear()} {t.footer.built} · {t.footer.rights}
+            </p>
+          </div>
         </footer>
       </div>
     </>
