@@ -10,7 +10,9 @@ import Split from "@/components/Split";
 import Count from "@/components/Count";
 import BookCall from "@/components/BookCall";
 import Spots from "@/components/Spots";
-import { legalNav } from "@/lib/legal";
+import { legalNav, entity } from "@/lib/legal";
+import Nav from "@/components/Nav";
+import Glow from "@/components/Glow";
 
 /** marketINK• — el punto es la gota de tinta y el punto final de la frase. */
 function Wordmark({ className = "", live = true }: { className?: string; live?: boolean }) {
@@ -62,40 +64,24 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
   return (
     <>
       <Ink />
+      <Glow />
       <StickyCta href="#book" label={t.sticky} />
 
       <div className="relative z-10">
         {/* ───────── NAV ───────── */}
-        <div className="fixed inset-x-0 top-4 z-50 flex justify-center px-4">
-          <nav className="glass flex items-center gap-7 rounded-full py-2.5 pl-6 pr-2.5">
-            <Link href={`/${lang}`} aria-label="MarketINK">
-              <Wordmark className="text-[16px]" />
-            </Link>
-            <div className="hidden items-center gap-6 lg:flex">
-              {([["#system", t.nav.system], ["#results", t.nav.results], ["#process", t.nav.process], ["#faq", t.nav.faq]] as const).map(
-                ([href, label]) => (
-                  <a key={href} href={href} className="text-[13.5px] text-muted transition-colors duration-300 hover:text-bone">
-                    {label}
-                  </a>
-                )
-              )}
-            </div>
-            <div className="flex items-center gap-2">
-              <Link
-                href={`/${other}`}
-                className="rounded-full px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted ring-1 ring-white/12 transition hover:text-bone hover:ring-white/30"
-              >
-                {other}
-              </Link>
-              <a
-                href="#book"
-                className="rounded-full bg-blood px-5 py-2.5 text-[13.5px] font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.3),0_8px_24px_-8px_rgba(225,6,0,0.8)] transition duration-500 hover:-translate-y-0.5"
-              >
-                {t.nav.cta}
-              </a>
-            </div>
-          </nav>
-        </div>
+        <Nav
+          lang={lang}
+          other={other}
+          cta={t.nav.cta}
+          ctaHref="#book"
+          items={[
+            { href: "#system", label: t.nav.system },
+            { href: "#results", label: t.nav.results },
+            { href: "#process", label: t.nav.process },
+            { href: "#book", label: t.book.eyebrow },
+            { href: "#faq", label: t.nav.faq },
+          ]}
+        />
 
         {/* ───────── HERO ───────── */}
         <header className="relative overflow-hidden">
@@ -160,7 +146,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         </section>
 
         {/* ───────── VIDEO ───────── */}
-        <section className="px-6 py-24 sm:py-32">
+        <section className="px-6 py-16 sm:py-32">
           <div className="mx-auto max-w-4xl text-center">
             <Eyebrow>{t.video.eyebrow}</Eyebrow>
             <Split as="h2" text={t.video.title} className="mx-auto max-w-[20ch] flash-type text-[clamp(1.8rem,4vw,3rem)]" />
@@ -188,7 +174,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         </section>
 
         {/* ───────── PROBLEMA ───────── */}
-        <section id="problem" className="scroll-mt-24 px-6 py-24 sm:py-36">
+        <section id="problem" className="scroll-mt-24 px-6 py-16 sm:py-36">
           <div className="mx-auto grid max-w-6xl gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
             <div className="lg:sticky lg:top-32 lg:self-start">
               <Eyebrow>{t.problem.eyebrow}</Eyebrow>
@@ -201,12 +187,15 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
               </p>
             </div>
 
-            <ul>
+            <ul className="rail">
               {t.problem.items.map((it) => (
-                <li key={it.n} className="reveal relative border-b border-white/[0.07] py-9 first:pt-0 last:border-0 last:pb-0">
+                <li
+                  key={it.n}
+                  className="spot reveal relative rounded-[18px] border border-white/[0.09] p-7 lg:rounded-none lg:border-x-0 lg:border-t-0 lg:p-0 lg:py-9 lg:first:pt-0 lg:last:border-0 lg:last:pb-0"
+                >
                   <span
                     aria-hidden
-                    className="pointer-events-none absolute -top-1 right-0 select-none text-[80px] font-black leading-none tracking-tighter text-white/[0.035]"
+                    className="pointer-events-none absolute -top-2 right-3 select-none text-[80px] font-black leading-none tracking-tighter text-white/[0.05] lg:-top-1 lg:right-0"
                   >
                     {it.n}
                   </span>
@@ -215,11 +204,12 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                 </li>
               ))}
             </ul>
+            <p className="mt-5 text-[12px] text-faint lg:hidden">{t.problem.swipe}</p>
           </div>
         </section>
 
         {/* ───────── EL TRABAJO ───────── */}
-        <section className="px-6 py-20 sm:py-28">
+        <section className="px-6 py-14 sm:py-28">
           <div className="mx-auto max-w-6xl">
             <div className="reveal mb-11 flex flex-wrap items-end justify-between gap-6">
               <div>
@@ -245,7 +235,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         </section>
 
         {/* ───────── EL SISTEMA ───────── */}
-        <section id="system" className="scroll-mt-24 px-6 py-24 sm:py-36">
+        <section id="system" className="scroll-mt-24 px-6 py-16 sm:py-36">
           <div className="mx-auto grid max-w-6xl gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
             <div className="lg:sticky lg:top-32 lg:self-start">
               <Eyebrow>{t.system.eyebrow}</Eyebrow>
@@ -283,14 +273,17 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         </section>
 
         {/* ───────── QUÉ INCLUYE ───────── */}
-        <section className="px-6 py-24 sm:py-36">
+        <section className="px-6 py-16 sm:py-36">
           <div className="mx-auto max-w-6xl">
             <Eyebrow>{t.includes.eyebrow}</Eyebrow>
             <Split as="h2" text={t.includes.title} className="max-w-[22ch] flash-type text-[clamp(1.9rem,4.2vw,3.2rem)]" />
 
-            <div className="mt-14 grid gap-px bg-white/[0.08] md:grid-cols-3">
+            <div className="rail mt-14 md:grid md:gap-px md:bg-white/[0.08] lg:grid-cols-3">
               {t.includes.groups.map((g, i) => (
-                <div key={g.k} className="reveal bg-void p-9 sm:p-10">
+                <div
+                  key={g.k}
+                  className="spot reveal rounded-[18px] border border-white/[0.09] bg-void p-8 sm:p-10 md:rounded-none md:border-0"
+                >
                   <div className="mb-8 flex items-baseline gap-3">
                     <span className="flash-sub text-[10.5px] tracking-[0.2em] text-blood">
                       {String(i + 1).padStart(2, "0")}
@@ -308,11 +301,12 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                 </div>
               ))}
             </div>
+            <p className="mt-5 text-[12px] text-faint lg:hidden">{t.problem.swipe}</p>
           </div>
         </section>
 
         {/* ───────── CASO REAL ───────── */}
-        <section className="relative overflow-hidden px-6 py-24 sm:py-36">
+        <section className="relative overflow-hidden px-6 py-16 sm:py-36">
           <div className="bleed absolute inset-0 -z-10" aria-hidden>
             <Image src="/img/estudio.webp" alt="" fill sizes="100vw" className="object-cover opacity-[0.18]" />
             <div className="absolute inset-0 bg-gradient-to-b from-void via-void/80 to-void" />
@@ -325,7 +319,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
 
             <div className="mt-12 grid gap-px bg-white/[0.08] sm:grid-cols-3">
               {t.caseStudy.figures.map((f) => (
-                <div key={f.k} className="reveal bg-void px-8 py-9">
+                <div key={f.k} className="spot reveal bg-void px-8 py-9">
                   <p className="flash-type text-[clamp(1.9rem,3.6vw,2.9rem)] tabular-nums text-signal">{f.v}</p>
                   <p className="mt-3 text-[13px] text-muted">{f.k}</p>
                 </div>
@@ -362,7 +356,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         </section>
 
         {/* ───────── CALCULADORA ───────── */}
-        <section className="px-6 py-24 sm:py-36">
+        <section className="px-6 py-16 sm:py-36">
           <div className="mx-auto max-w-6xl">
             <Eyebrow>{t.calc.eyebrow}</Eyebrow>
             <Split as="h2" text={t.calc.title} className="max-w-[20ch] flash-type text-[clamp(1.9rem,4.4vw,3.4rem)]" />
@@ -379,7 +373,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         </section>
 
         {/* ───────── PARA QUIÉN ───────── */}
-        <section id="fit" className="scroll-mt-24 px-6 py-24 sm:py-36">
+        <section id="fit" className="scroll-mt-24 px-6 py-16 sm:py-36">
           <div className="mx-auto max-w-6xl">
             <Eyebrow>{t.fit.eyebrow}</Eyebrow>
             <Split as="h2" text={t.fit.title} className="max-w-[20ch] flash-type text-[clamp(1.9rem,4.4vw,3.4rem)]" />
@@ -412,7 +406,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         </section>
 
         {/* ───────── 90 DÍAS ───────── */}
-        <section id="process" className="scroll-mt-24 px-6 py-24 sm:py-36">
+        <section id="process" className="scroll-mt-24 px-6 py-16 sm:py-36">
           <div className="mx-auto max-w-6xl">
             <Eyebrow>{t.process.eyebrow}</Eyebrow>
             <Split as="h2" text={t.process.title} className="max-w-[22ch] flash-type text-[clamp(1.9rem,4.4vw,3.4rem)]" />
@@ -420,7 +414,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
 
             <div className="mt-16 grid gap-px bg-white/[0.08] md:grid-cols-4">
               {t.process.phases.map((p) => (
-                <div key={p.d} className="reveal bg-void p-8">
+                <div key={p.d} className="spot reveal bg-void p-8">
                   <p className="flash-sub text-[10.5px] tracking-[0.18em] text-blood">{p.d}</p>
                   <h3 className="mt-4 flash-type text-[clamp(1.3rem,2.2vw,1.7rem)]">{p.t}</h3>
                   <ul className="mt-6 space-y-3">
@@ -445,7 +439,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         </section>
 
         {/* ───────── TESTIMONIO ───────── */}
-        <section className="px-6 py-24 sm:py-36">
+        <section className="px-6 py-16 sm:py-36">
           <div className="mx-auto max-w-4xl text-center">
             <Eyebrow>{t.proof.eyebrow}</Eyebrow>
             <blockquote className="reveal text-[clamp(1.25rem,2.9vw,2.1rem)] font-medium leading-[1.34] tracking-[-0.03em]">
@@ -464,7 +458,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         </section>
 
         {/* ───────── FAQ ───────── */}
-        <section id="faq" className="scroll-mt-24 px-6 py-24 sm:py-36">
+        <section id="faq" className="scroll-mt-24 px-6 py-16 sm:py-36">
           <div className="mx-auto max-w-3xl">
             <Eyebrow>{t.faq.eyebrow}</Eyebrow>
             <Split as="h2" text={t.faq.title} className="mb-12 max-w-[20ch] flash-type text-[clamp(1.9rem,4.2vw,3.2rem)]" />
@@ -486,7 +480,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         </section>
 
         {/* ───────── CTA FINAL ───────── */}
-        <section className="relative overflow-hidden px-6 py-32 text-center sm:py-48">
+        <section className="relative overflow-hidden px-6 py-20 text-center sm:py-48">
           <div className="bleed absolute inset-0 -z-10" aria-hidden>
             <Image src="/img/textura.webp" alt="" fill sizes="100vw" className="object-cover opacity-[0.3]" />
             <div className="absolute inset-0 bg-gradient-to-b from-void via-void/72 to-void" />
@@ -511,7 +505,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
 
 
         {/* ───────── AGENDAR — CALENDARIO INCRUSTADO ───────── */}
-        <section id="book" className="scroll-mt-24 border-t border-white/[0.07] px-6 py-24 sm:py-32">
+        <section id="book" className="scroll-mt-24 border-t border-white/[0.07] px-6 py-16 sm:py-32">
           <div className="mx-auto max-w-5xl">
             <div className="mb-12 grid gap-8 lg:grid-cols-[1.1fr_auto] lg:items-end">
               <div>
@@ -530,17 +524,40 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
 
         {/* ───────── FOOTER ───────── */}
         <footer className="border-t border-white/[0.06] px-6 pb-28 pt-14 lg:pb-14">
-          <div className="mx-auto flex max-w-6xl flex-col gap-9 sm:flex-row sm:items-start sm:justify-between">
-            <div>
+          <div className="mx-auto grid max-w-6xl gap-10 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="lg:col-span-1">
               <Wordmark className="text-[18px]" live={false} />
-              <p className="mt-3 max-w-xs text-[14px] text-muted">{t.footer.tagline}</p>
+              <p className="mt-3 max-w-xs text-[14px] leading-relaxed text-muted">{t.footer.tagline}</p>
             </div>
+
+            <div>
+              <p className="mb-3 flash-sub text-[10.5px] tracking-[0.16em] text-faint">{t.footer.write}</p>
+              <a href={`mailto:${entity.email}`} className="block text-[14px] text-muted transition hover:text-bone">
+                {entity.email}
+              </a>
+              <a href={site.whatsapp} className="mt-2 block text-[14px] text-muted transition hover:text-bone">
+                WhatsApp
+              </a>
+            </div>
+
+            <div>
+              <p className="mb-3 flash-sub text-[10.5px] tracking-[0.16em] text-faint">{t.footer.where}</p>
+              <address className="not-italic text-[14px] leading-relaxed text-muted">
+                {entity.legal}
+                <br />
+                1021 E Lincolnway, Suite #9463
+                <br />
+                Cheyenne, Wyoming 82001
+                <br />
+                {lang === "es" ? "Estados Unidos" : "United States"}
+              </address>
+            </div>
+
             <div>
               <p className="mb-3 flash-sub text-[10.5px] tracking-[0.16em] text-faint">{t.footer.follow}</p>
-              <div className="flex gap-5 text-[14px] text-muted">
-                <a href={site.instagram} className="transition hover:text-bone">Instagram</a>
-                <a href={site.whatsapp} className="transition hover:text-bone">WhatsApp</a>
-              </div>
+              <a href={site.instagram} className="block text-[14px] text-muted transition hover:text-bone">
+                Instagram
+              </a>
             </div>
           </div>
           <div className="mx-auto mt-12 max-w-6xl border-t border-white/[0.06] pt-8">

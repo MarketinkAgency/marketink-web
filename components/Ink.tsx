@@ -53,8 +53,9 @@ export default function Ink() {
        inercia. En un PC capaz no se nota; en uno justo, el sitio
        pasa de arrastrarse a ir fluido.                            */
     let probe = 0;
+    let probeTimer = 0;
     const capabilityCheck = () => {
-      if ((navigator.hardwareConcurrency ?? 8) <= 4) {
+      if ((navigator.hardwareConcurrency ?? 8) <= 2) {
         root.classList.add("low-power");
         return;
       }
@@ -80,7 +81,10 @@ export default function Ink() {
       probe = requestAnimationFrame(tick);
     };
 
-    if (!reduced) capabilityCheck();
+    /* La sonda espera a que la página se asiente. Medir durante la
+       hidratación y la carga de fuentes daba falsos negativos: un PC
+       capaz quedaba marcado como lento por unos frames de arranque. */
+    if (!reduced) probeTimer = window.setTimeout(capabilityCheck, 1100);
 
     // ── revelado ──────────────────────────────────────────────
     const io = new IntersectionObserver(
@@ -160,6 +164,7 @@ export default function Ink() {
       io.disconnect();
       document.removeEventListener("click", onAnchor);
       if (probe) cancelAnimationFrame(probe);
+      if (probeTimer) clearTimeout(probeTimer);
       root.classList.remove("ink-live", "low-power");
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("pointermove", onMove);

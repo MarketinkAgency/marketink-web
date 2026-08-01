@@ -27,7 +27,7 @@ export const copy = {
       h1a: "Tu trabajo ya genera interés.",
       h1b: "Nosotros lo convertimos en consultas agendadas y depósitos",
       sub: "MarketINK combina campañas pagadas, calificación de consultas por Instagram, seguimientos rápidos y flujos de reserva para ayudar a tatuadores serios a construir una agenda más predecible.",
-      support: "Algunos artistas han pasado de recibir consultas inconsistentes a tener su agenda reservada hasta con 90 días de anticipación.",
+      support: "Nuestros artistas pasan de recibir consultas inconsistentes a tener su agenda reservada hasta con 90 días de anticipación.",
       cta1: "Solicita tu auditoría de 15 minutos",
       cta2: "Conoce el sistema",
       note: "Para tatuadores y estudios consolidados que quieren convertir más conversaciones en reservas reales.",
@@ -64,6 +64,7 @@ export const copy = {
         { n: "03", t: "Cero seguimiento", d: "Hasta la mitad de las reservas que pierdes hoy podrían estar dentro de conversaciones que simplemente se enfriaron. Preguntaron. Respondiste. Nadie hizo seguimiento. Otro tatuador recibió el depósito." },
         { n: "04", t: "Demanda inconsistente", d: "Las recomendaciones y el alcance orgánico pueden traer buenos clientes. Pero no te dan control. No puedes construir una agenda predecible dependiendo de la suerte." },
       ],
+      swipe: "Desliza →",
       close: "Tu arte no es el problema.",
       closeEm: "El problema es la infraestructura que falta entre el interés y el depósito.",
     },
@@ -197,7 +198,7 @@ export const copy = {
     },
 
     sticky: "Auditoría gratis",
-    footer: { tagline: "Sistemas de reservas para tatuadores y estudios.", follow: "Síguenos", rights: "Todos los derechos reservados.", legal: "Legal", built: "Roca Digital LLC · Cheyenne, Wyoming, EE. UU." },
+    footer: { tagline: "Sistemas de reservas para tatuadores y estudios. Trabajamos con artistas en todo el mundo.", follow: "Síguenos", write: "Escríbenos", where: "Dónde estamos", rights: "Todos los derechos reservados.", legal: "Legal", built: "Roca Digital LLC" },
   },
 
   // ══════════════════════════════════════════════════════════════
@@ -214,7 +215,7 @@ export const copy = {
       h1a: "Your tattoo work already creates demand.",
       h1b: "We turn it into booked consultations and deposits",
       sub: "MarketINK combines paid campaigns, Instagram inquiry qualification, fast follow-up and tattoo booking workflows to help serious artists build a more predictable calendar.",
-      support: "Some artists have gone from inconsistent inquiries to calendars booked up to 90 days in advance.",
+      support: "Our artists go from inconsistent inquiries to calendars booked up to 90 days in advance.",
       cta1: "Request your 15-minute audit",
       cta2: "See the system",
       note: "For established tattoo artists and studios ready to turn more conversations into real bookings.",
@@ -251,6 +252,7 @@ export const copy = {
         { n: "03", t: "No follow-up", d: "Up to half of the bookings you are losing today may already exist inside conversations that went cold. They asked. You answered. Nobody followed up. Another artist collected the deposit." },
         { n: "04", t: "Inconsistent demand", d: "Referrals and organic reach can bring great clients. But they do not give you control. You cannot build a predictable tattoo calendar around luck." },
       ],
+      swipe: "Swipe →",
       close: "Your art is not the problem.",
       closeEm: "The missing infrastructure between interest and deposit is the problem.",
     },
@@ -384,7 +386,7 @@ export const copy = {
     },
 
     sticky: "Free audit",
-    footer: { tagline: "Booking systems for tattoo artists and studios.", follow: "Follow us", rights: "All rights reserved.", legal: "Legal", built: "Roca Digital LLC · Cheyenne, Wyoming, USA" },
+    footer: { tagline: "Booking systems for tattoo artists and studios. We work with artists worldwide.", follow: "Follow us", write: "Write to us", where: "Where we are", rights: "All rights reserved.", legal: "Legal", built: "Roca Digital LLC" },
   },
 };
 

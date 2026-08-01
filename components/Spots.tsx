@@ -32,11 +32,9 @@ export default function Spots({
 
   useEffect(() => {
     const now = new Date();
-    const y = now.getFullYear();
-    const m = now.getMonth();
-    const lastDay = new Date(y, m + 1, 0).getDate();
+    const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
     setData({
-      free: freeSpots(y, m),
+      free: freeSpots(),
       days: lastDay - now.getDate() + 1,
       month: now.toLocaleDateString(lang === "es" ? "es-ES" : "en-US", { month: "long" }),
     });

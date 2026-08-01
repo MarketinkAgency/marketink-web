@@ -5,7 +5,7 @@
   --color-panel: #101012;
   --color-bone: #ede6dc;
   --color-muted: #9c968c;
-  --color-faint: #5f5a55;
+  --color-faint: #8b847b;
   --color-blood: #e10600;
 
   /* Montserrat en todas sus disposiciones. */
@@ -108,12 +108,27 @@ body {
     transparent 78%
   );
 }
-/* La deriva solo se enciende si el navegador demuestra que puede
-   sostenerla (ver la sonda en components/Ink.tsx). En una maquina
-   justa, la tinta se queda quieta y el sitio va a 60 fps. */
-.ink-live .ink-a { animation: roamA 38s ease-in-out infinite; }
-.ink-live .ink-b { animation: roamB 48s ease-in-out infinite; }
-.ink-live .ink-c { animation: roamC 58s ease-in-out infinite; }
+/* Dos niveles de vida, según lo que la máquina demuestre que aguanta
+   (la sonda está en components/Ink.tsx).
+
+   ink-live  → la tinta recorre la pantalla y respira.
+   low-power → la tinta no se desplaza pero SIGUE respirando: animar
+               `opacity` lo resuelve el compositor y no cuesta nada,
+               ni en un móvil modesto. Nunca se queda estática. */
+.ink-live .ink-a { animation: roamA 38s ease-in-out infinite, breathe 11s ease-in-out infinite; }
+.ink-live .ink-b { animation: roamB 48s ease-in-out infinite, breathe 14s ease-in-out infinite -4s; }
+.ink-live .ink-c { animation: roamC 58s ease-in-out infinite, breathe  9s ease-in-out infinite -2s; }
+
+.low-power .ink-a { animation: breathe 11s ease-in-out infinite; }
+.low-power .ink-b { animation: breathe 14s ease-in-out infinite -4s; }
+.low-power .ink-c { animation: breathe  9s ease-in-out infinite -2s; }
+
+/* Solo `opacity`. Nada de transform aquí: `roam` ya usa esa propiedad
+   y la segunda animación pisaría a la primera. */
+@keyframes breathe {
+  0%, 100% { opacity: 0.58; }
+  50%      { opacity: 1; }
+}
 
 /* Modo ahorro: sin cristal esmerilado ni grano. */
 .low-power .glass { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(20, 20, 22, 0.86); }
@@ -423,3 +438,140 @@ body {
   .split-w > span { transform: none !important; opacity: 1 !important; }
   .underline-ink::after { transform: none !important; }
 }
+
+/* ══════════════════════════════════════════════════════════
+   NAVEGACIÓN MÓVIL
+   ══════════════════════════════════════════════════════════ */
+.burger-l {
+  position: absolute;
+  width: 17px;
+  height: 1.5px;
+  background: var(--color-bone);
+  border-radius: 2px;
+  transition: transform 0.42s var(--ease), opacity 0.25s linear;
+}
+.burger-l:nth-child(1) { transform: translateY(-3.5px); }
+.burger-l:nth-child(2) { transform: translateY(3.5px); }
+.burger-l.a { transform: rotate(45deg); }
+.burger-l.b { transform: rotate(-45deg); }
+
+.sheet-in { animation: sheetIn 0.4s var(--ease) both; }
+@keyframes sheetIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.sheet-row { animation: sheetRow 0.6s var(--ease) both; }
+@keyframes sheetRow {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ══════════════════════════════════════════════════════════
+   CARRUSEL EN MÓVIL
+   Una lista vertical de seis puntos en un móvil es una pared.
+   Aquí se convierte en tarjetas que se deslizan y se enganchan.
+   ══════════════════════════════════════════════════════════ */
+/* Solo en móvil. En escritorio no declaramos `display` aquí: si lo
+   hiciéramos, pisaríamos el `grid` de las utilidades y las columnas
+   se apilarían. Que la rejilla la controle quien la define. */
+@media (max-width: 1023px) {
+  .rail {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 6px;
+    /* sangra hasta el borde de la pantalla y respeta el margen del texto */
+    margin-inline: -24px;
+    padding-inline: 24px;
+  }
+  .rail::-webkit-scrollbar { display: none; }
+  .rail > * {
+    scroll-snap-align: start;
+    flex: 0 0 82%;
+    max-width: 340px;
+  }
+  .rail > .spot { display: flex; flex-direction: column; }
+  .rail > .spot p { font-size: 14px; line-height: 1.55; }
+  .rail > .spot h3 { font-size: 19px; }
+}
+
+/* ══════════════════════════════════════════════════════════
+   FOCO — la celda se ilumina bajo el cursor
+   El resplandor sigue al ratón mediante dos variables que
+   escribe components/Glow.tsx. Sin JS por celda, sin repintado:
+   solo cambia un gradiente ya compuesto.
+   ══════════════════════════════════════════════════════════ */
+.spot {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  transition: border-color 0.5s var(--ease), transform 0.5s var(--ease);
+}
+.spot::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* z-index 0, no -1: la celda tiene fondo opaco propio (`bg-void`) y
+     un pseudo-elemento por detrás quedaría tapado. Aquí va por encima
+     del fondo y por debajo del texto, que sube con la regla siguiente. */
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.45s var(--ease);
+  background:
+    radial-gradient(
+      420px circle at var(--mx, 50%) var(--my, 0%),
+      rgba(225, 6, 0, 0.34),
+      rgba(225, 6, 0, 0.11) 38%,
+      transparent 68%
+    ),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 55%);
+}
+/* Una línea roja crece desde la izquierda en el borde superior:
+   marca cuál está activa incluso cuando la celda no tiene borde. */
+.spot::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto auto 0;
+  height: 2px;
+  width: 100%;
+  z-index: 2;
+  background: linear-gradient(90deg, #e10600, rgba(225, 6, 0, 0));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.6s var(--ease);
+}
+@media (hover: hover) and (pointer: fine) {
+  .spot:hover::before { opacity: 1; }
+  .spot:hover::after { transform: scaleX(1); }
+  .spot:hover { border-color: rgba(225, 6, 0, 0.4); }
+}
+/* En táctil no hay cursor: la tarjeta visible manda. */
+.spot.lit::before { opacity: 1; }
+.spot.lit::after { transform: scaleX(1); }
+.spot.lit { border-color: rgba(225, 6, 0, 0.4); }
+/* El contenido se apoya encima del resplandor. */
+.spot > * { position: relative; z-index: 1; }
+
+
+/* La barra flota sobre titulares enormes: si es solo cristal, el texto
+   de debajo se lee a través y ensucia el logo. Una base oscura propia
+   la mantiene legible sin perder el efecto. */
+.nav-pill {
+  background:
+    linear-gradient(168deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.02) 100%),
+    rgba(9, 9, 11, 0.99);
+}
+.low-power .nav-pill { background: rgba(11, 11, 13, 1); }
+/* En escritorio la barra es estrecha y el cristal luce; en móvil ocupa
+   todo el ancho por encima de titulares gigantes, así que ahí es opaca. */
+@media (min-width: 1024px) {
+  .nav-pill { background:
+    linear-gradient(168deg, rgba(255, 255, 255, 0.075) 0%, rgba(255, 255, 255, 0.02) 100%),
+    rgba(10, 10, 12, 0.72); }
+  .low-power .nav-pill { background: rgba(16, 16, 18, 0.92); }
+}
+

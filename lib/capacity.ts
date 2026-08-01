@@ -1,37 +1,35 @@
 /**
- * CUPOS DEL MES — lo único que tienes que mantener a mano.
+ * CUPOS DEL MES — se cambian desde Vercel, sin tocar código.
  *
- * La urgencia solo funciona si es verdad. Un contador que se inventa
- * los cupos y se reinicia solo es una mentira que un tatuador detecta
- * en dos visitas, y encima te expone: si publicas «quedan 2 cupos» y
- * aceptas al décimo cliente, eso es publicidad engañosa.
+ * Panel de Vercel → tu proyecto → Settings → Environment Variables:
  *
- * Por eso el número sale de aquí, y lo pones tú:
+ *   NEXT_PUBLIC_SPOTS_TOTAL = 6    ← cuántos clientes nuevos aceptas al mes
+ *   NEXT_PUBLIC_SPOTS_TAKEN = 2    ← cuántos ya cerraste este mes
  *
- *   1. `perMonth` es cuántos clientes nuevos puedes atender bien al mes.
- *      No lo subas por vender más de la cuenta.
- *   2. `taken` es cuántos ya cerraste este mes. Lo actualizas cuando
- *      firmas a alguien. Es literalmente cambiar un número y desplegar.
+ * Cambias el valor, le das a «Redeploy» y en 40 segundos está en línea.
  *
- * Si un mes no aparece en `taken`, se asume 0 cupos ocupados: el mes
- * arranca lleno de disponibilidad, que es lo cierto.
+ * Por qué el número lo pones tú y no se inventa solo: si publicas
+ * «quedan 2 cupos» y aceptas al décimo, eso es publicidad engañosa, y
+ * vendes desde una LLC estadounidense a clientes en la UE. Además, un
+ * tatuador que vuelve dos veces y ve siempre el mismo número sabe que
+ * es decorado, y ahí pierdes justo la credibilidad que construye el
+ * resto de la página.
  *
- * La cuenta atrás de días del mes, en cambio, siempre es verdad y no
- * necesita mantenimiento. Esa es la urgencia que trabaja gratis.
+ * La cuenta atrás de días del mes sí es automática y siempre cierta.
+ * Esa es la urgencia que trabaja gratis.
  */
-export const capacity = {
-  /** Clientes nuevos que aceptas al mes. */
-  perMonth: 6,
 
-  /** Clientes ya cerrados por mes, en formato AAAA-MM. */
-  taken: {
-    "2026-08": 2,
-  } as Record<string, number>,
+function num(v: string | undefined, fallback: number) {
+  const n = Number(v);
+  return Number.isFinite(n) && n >= 0 ? n : fallback;
+}
+
+export const capacity = {
+  perMonth: num(process.env.NEXT_PUBLIC_SPOTS_TOTAL, 6),
+  taken: num(process.env.NEXT_PUBLIC_SPOTS_TAKEN, 0),
 };
 
-/** Cupos libres del mes indicado, nunca por debajo de 0. */
-export function freeSpots(year: number, month: number) {
-  const key = `${year}-${String(month + 1).padStart(2, "0")}`;
-  const used = capacity.taken[key] ?? 0;
-  return Math.max(0, capacity.perMonth - used);
+/** Cupos libres, nunca por debajo de 0 ni por encima del total. */
+export function freeSpots() {
+  return Math.min(capacity.perMonth, Math.max(0, capacity.perMonth - capacity.taken));
 }
