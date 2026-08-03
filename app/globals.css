@@ -733,3 +733,144 @@ body {
   .slot:not(.taken)::after { animation: none; opacity: 0.6; }
 }
 
+
+/* ══════════════════════════════════════════════════════════
+   SISTEMA EDITORIAL
+
+   Lo que hacía que esto pareciera un SaaS más: botones en cápsula,
+   tarjetas con esquinas redondeadas y todas las secciones con el
+   mismo ritmo. Aquí se corta eso. Bordes rectos, números de sección
+   gigantes sangrando por detrás del contenido, y una ruptura roja a
+   pantalla completa que parte la página en dos.
+   ══════════════════════════════════════════════════════════ */
+
+/* — botones: bloque, no cápsula ————————————————— */
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7em;
+  padding: 1.05em 1.9em;
+  font-weight: 700;
+  font-size: 14.5px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--color-blood);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.26);
+  transition: transform 0.4s var(--ease), background 0.4s var(--ease);
+  overflow: hidden;
+}
+.btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent 20%, rgba(255, 255, 255, 0.22), transparent 80%);
+  transform: translateX(-110%);
+  transition: transform 0.75s var(--ease);
+}
+.btn:hover::after { transform: translateX(110%); }
+.btn:hover { transform: translateY(-2px); }
+.btn-lg { padding: 1.2em 2.2em; font-size: 15.5px; }
+.btn-ghost {
+  color: var(--color-bone);
+  background: transparent;
+  box-shadow: inset 0 0 0 1px rgba(237, 230, 220, 0.28);
+}
+.btn-ghost:hover { background: rgba(237, 230, 220, 0.06); box-shadow: inset 0 0 0 1px rgba(237, 230, 220, 0.5); }
+
+/* — número de sección: enorme, cortado, por detrás ——————— */
+.sec { position: relative; }
+.sec-n {
+  position: absolute;
+  top: -0.28em;
+  right: -0.04em;
+  z-index: -1;
+  font-family: var(--f-anton), sans-serif;
+  font-size: clamp(9rem, 26vw, 24rem);
+  line-height: 0.7;
+  letter-spacing: -0.05em;
+  color: rgba(237, 230, 220, 0.032);
+  pointer-events: none;
+  user-select: none;
+}
+@media (max-width: 640px) { .sec-n { font-size: 42vw; top: -0.2em; right: -0.06em; } }
+
+/* etiqueta de sección: 01 / EL DIAGNÓSTICO */
+.sec-tag {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+.sec-tag b { color: var(--color-blood); font-weight: 700; }
+.sec-tag i { display: block; width: 34px; height: 1px; background: rgba(225, 6, 0, 0.55); }
+.sec-tag span { color: var(--color-muted); }
+
+/* — texto vertical del lateral ————————————————— */
+.vlabel {
+  position: absolute;
+  writing-mode: vertical-rl;
+  font-weight: 700;
+  font-size: 10.5px;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--color-faint);
+  user-select: none;
+}
+
+/* — ruptura roja a pantalla completa ————————————— */
+.rupture {
+  position: relative;
+  background: var(--color-blood);
+  color: #fff;
+  overflow: hidden;
+}
+.rupture::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.16;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+.rupture .flash-type { color: #fff; }
+
+/* — índice lateral con el número activo ————————————— */
+.rail-nav {
+  position: fixed;
+  left: 22px;
+  top: 50%;
+  z-index: 40;
+  transform: translateY(-50%);
+  display: none;
+  flex-direction: column;
+  gap: 13px;
+}
+@media (min-width: 1280px) { .rail-nav { display: flex; } }
+.rail-nav a {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-weight: 700;
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  color: rgba(237, 230, 220, 0.28);
+  transition: color 0.4s var(--ease);
+}
+.rail-nav a::before {
+  content: "";
+  width: 14px;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.45s var(--ease);
+}
+.rail-nav a:hover { color: var(--color-muted); }
+.rail-nav a.on { color: var(--color-blood); }
+.rail-nav a.on::before { width: 30px; }
+.rail-nav a em { font-style: normal; opacity: 0; transition: opacity 0.4s var(--ease); white-space: nowrap; }
+.rail-nav a.on em, .rail-nav a:hover em { opacity: 1; }

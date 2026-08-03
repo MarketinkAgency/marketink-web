@@ -58,7 +58,7 @@ export default function Nav({
   return (
     <>
       <div className="fixed inset-x-0 top-4 z-50 flex justify-center px-4">
-        <nav className="glass nav-pill flex w-full max-w-[980px] items-center justify-between gap-4 rounded-full py-2.5 pl-5 pr-2.5 lg:w-auto lg:justify-start lg:gap-7 lg:pl-6">
+        <nav className="glass nav-pill flex w-full max-w-[980px] items-center justify-between gap-4 rounded-none py-2.5 pl-5 pr-2.5 lg:w-auto lg:justify-start lg:gap-7 lg:pl-6">
           <Link href={`/${lang}`} aria-label="MarketINK" onClick={() => setOpen(false)}>
             <Wordmark className="text-[16px]" />
           </Link>
@@ -82,7 +82,7 @@ export default function Nav({
             <a
               href={ctaHref}
               onClick={() => setOpen(false)}
-              className="hidden rounded-full bg-blood px-5 py-2.5 text-[13.5px] font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.3),0_8px_24px_-8px_rgba(225,6,0,0.8)] transition duration-500 hover:-translate-y-0.5 sm:block"
+              className="btn hidden !px-5 !py-2.5 !text-[12.5px] sm:inline-flex"
             >
               {cta}
             </a>
@@ -129,7 +129,7 @@ export default function Nav({
         <a
           href={ctaHref}
           onClick={() => setOpen(false)}
-          className="sheet-row mt-10 block rounded-full bg-blood py-4 text-center text-[16px] font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.3),0_14px_38px_-10px_rgba(225,6,0,0.85)]"
+          className="btn sheet-row mt-10 w-full justify-center"
           style={{ animationDelay: "340ms" }}
         >
           {cta}
