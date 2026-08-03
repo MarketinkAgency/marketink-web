@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat, Anton } from "next/font/google";
 import { notFound } from "next/navigation";
 import { copy, isLang, LOCALES } from "@/lib/copy";
+import { SITE_URL } from "@/lib/site";
 import "../globals.css";
 
 /** Montserrat en todas sus disposiciones. La fuente de la marca. */
@@ -29,11 +30,27 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { lang } = await params;
   const t = copy[isLang(lang) ? lang : "en"];
+  const url = `${SITE_URL}/${lang}`;
   return {
+    metadataBase: new URL(SITE_URL),
     title: t.meta.title,
     description: t.meta.desc,
-    openGraph: { title: t.meta.title, description: t.meta.desc, type: "website" },
-    alternates: { languages: { es: "/es", en: "/en" } },
+    /* canonical + hreflang: le dicen a Google que /es y /en son la
+       misma página en dos idiomas, no dos páginas compitiendo. */
+    alternates: {
+      canonical: url,
+      languages: { es: `${SITE_URL}/es`, en: `${SITE_URL}/en`, "x-default": `${SITE_URL}/en` },
+    },
+    openGraph: {
+      title: t.meta.title,
+      description: t.meta.desc,
+      url,
+      siteName: "MarketINK",
+      locale: lang === "es" ? "es_ES" : "en_US",
+      type: "website",
+    },
+    twitter: { card: "summary_large_image", title: t.meta.title, description: t.meta.desc },
+    robots: { index: true, follow: true },
   };
 }
 

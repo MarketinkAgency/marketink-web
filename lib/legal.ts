@@ -31,7 +31,7 @@ export const entity = {
   address: "1021 E Lincolnway, Suite #9463, Cheyenne, Wyoming 82001, United States",
   email: "hello@marketinkagency.com",
   law: { es: "Estado de Wyoming, Estados Unidos", en: "State of Wyoming, United States" },
-  updated: { es: "1 de agosto de 2026", en: "August 1, 2026" },
+  updated: { es: "3 de agosto de 2026", en: "August 3, 2026" },
 };
 
 const ES: Record<LegalSlug, Doc> = {
@@ -183,8 +183,21 @@ const ES: Record<LegalSlug, Doc> = {
       {
         h: "5. Cookies y medición",
         p: [
-          "Usamos Meta Pixel, Google Analytics (GA4) y Google Tag Manager para medir el rendimiento de las campañas y atribuir conversiones.",
-          "Puedes bloquear las cookies desde tu navegador. Si lo haces, algunas funciones de medición dejarán de estar disponibles.",
+          "Este sitio puede usar herramientas de medición para entender qué campañas generan consultas reales. En concreto: Meta Pixel, Google Analytics 4 y Google Tag Manager.",
+          "Ninguna de estas herramientas se carga hasta que aceptas expresamente. Al entrar por primera vez verás un aviso con dos opciones: aceptar la medición o quedarte solo con lo estrictamente necesario para que la web funcione. Si eliges lo segundo, no se carga ningún script de terceros ni se escribe ninguna cookie de seguimiento.",
+          "Puedes cambiar de opinión en cualquier momento borrando los datos del sitio desde tu navegador: volverá a preguntarte.",
+        ],
+        ul: [
+          "Meta Pixel — mide qué anuncios de Instagram y Facebook terminan en una consulta, y permite mostrar anuncios a quien ya visitó la web.",
+          "Google Analytics 4 — mide páginas vistas, procedencia del tráfico y comportamiento agregado. Con anonimización de IP activada.",
+          "Google Tag Manager — solo gestiona los dos anteriores; por sí mismo no recoge nada.",
+        ],
+      },
+      {
+        h: "5 bis. Publicidad personalizada",
+        p: [
+          "Si aceptas la medición, Meta puede usar tu visita para mostrarte anuncios de MarketINK más adelante. Puedes desactivarlo desde la configuración de anuncios de tu cuenta de Meta, y desde los ajustes de tu dispositivo.",
+          "MarketINK no cruza estos datos con tu nombre ni con tu correo salvo que tú nos los facilites en un formulario o al agendar una llamada.",
         ],
       },
       {
@@ -513,8 +526,21 @@ const EN: Record<LegalSlug, Doc> = {
       {
         h: "5. Cookies and measurement",
         p: [
-          "We use Meta Pixel, Google Analytics (GA4) and Google Tag Manager to measure campaign performance and attribute conversions.",
-          "You can block cookies in your browser. Some measurement features will stop working if you do.",
+          "This site may use measurement tools to understand which campaigns generate real inquiries. Specifically: Meta Pixel, Google Analytics 4 and Google Tag Manager.",
+          "None of these tools load until you expressly accept. On your first visit you'll see a notice with two options: accept measurement, or keep only what is strictly necessary for the site to work. If you choose the latter, no third-party script is loaded and no tracking cookie is written.",
+          "You can change your mind at any time by clearing this site's data in your browser: it will ask you again.",
+        ],
+        ul: [
+          "Meta Pixel — measures which Instagram and Facebook ads end in an inquiry, and allows showing ads to people who already visited the site.",
+          "Google Analytics 4 — measures page views, traffic sources and aggregate behaviour. With IP anonymization enabled.",
+          "Google Tag Manager — only manages the two above; on its own it collects nothing.",
+        ],
+      },
+      {
+        h: "5b. Personalized advertising",
+        p: [
+          "If you accept measurement, Meta may use your visit to show you MarketINK ads later. You can turn this off from your Meta account's ad settings, and from your device settings.",
+          "MarketINK does not link this data to your name or email unless you provide them in a form or when booking a call.",
         ],
       },
       {

@@ -97,7 +97,7 @@ export default function Ink() {
         }),
       { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }
     );
-    document.querySelectorAll<HTMLElement>(".reveal, .mask-line").forEach((el, i) => {
+    document.querySelectorAll<HTMLElement>(".reveal, .mask-line, .funnel-step").forEach((el, i) => {
       el.style.transitionDelay = `${(i % 5) * 65}ms`;
       io.observe(el);
     });
@@ -123,9 +123,16 @@ export default function Ink() {
       if (e.pointerType !== "mouse") return;
       tx = e.clientX;
       ty = e.clientY;
+      /* El cursor dice qué hace lo que hay debajo: BOOK, VIEW, RESULTS.
+         La etiqueta sale del atributo data-cursor del elemento más
+         cercano que la declare; si no hay ninguna, solo crece. */
       const el = e.target as HTMLElement | null;
-      const interactive = !!el?.closest("a, button, summary, .flash-cell");
-      dot.current?.classList.toggle("big", interactive);
+      const hit = el?.closest<HTMLElement>("[data-cursor], a, button, summary, .flash-cell, .spot");
+      const label = hit?.closest<HTMLElement>("[data-cursor]")?.dataset.cursor ?? "";
+      if (dot.current) {
+        dot.current.classList.toggle("big", !!hit);
+        dot.current.dataset.label = hit ? label : "";
+      }
       if (dot.current) dot.current.style.opacity = "1";
       if (!cRaf) cRaf = requestAnimationFrame(loop);
     };

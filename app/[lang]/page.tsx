@@ -14,6 +14,9 @@ import { legalNav, entity } from "@/lib/legal";
 import Nav from "@/components/Nav";
 import Glow from "@/components/Glow";
 import RailNav from "@/components/RailNav";
+import Consent from "@/components/Consent";
+import Funnel from "@/components/Funnel";
+import Analytics from "@/components/Analytics";
 
 /** marketINK• — el punto es la gota de tinta y el punto final de la frase. */
 function Wordmark({ className = "", live = true }: { className?: string; live?: boolean }) {
@@ -84,21 +87,24 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
     <>
       <Ink />
       <Glow />
+      <Analytics />
+      <Consent lang={lang} t={t.consent} />
       <RailNav
         items={[
           { id: "problem", label: t.problem.eyebrow },
           { id: "cost", label: t.calc.eyebrow },
-          { id: "system", label: t.system.eyebrow },
+          { id: "system", label: t.funnel.tag },
           { id: "assets", label: t.assets.tag },
           { id: "cases", label: t.cases.eyebrow },
           { id: "fit", label: t.fit.eyebrow },
           { id: "process", label: t.process.eyebrow },
           { id: "team", label: t.team.eyebrow },
           { id: "guarantee", label: t.guarantee.tag },
+          { id: "faq", label: t.faq.eyebrow },
           { id: "book", label: t.audit.tag },
         ]}
       />
-      <StickyCta href="#book" label={t.sticky} />
+      <StickyCta href="#book" label={t.sticky} lang={lang} spotsLabels={t.book} />
 
       <div className="relative z-10">
         {/* ───────── NAV ───────── */}
@@ -145,7 +151,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
               </p>
 
               <div className="mt-8 flex flex-wrap items-center justify-center gap-3.5 lg:justify-start">
-                <Cta href="#book" big>{t.hero.cta1}</Cta>
+                <span data-cursor="BOOK"><Cta href="#book" big>{t.hero.cta1}</Cta></span>
                 <a href="#system" className="btn btn-ghost btn-lg">
                   {t.hero.cta2}
                 </a>
@@ -257,42 +263,39 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           </div>
         </section>
 
-        {/* ───────── EL SISTEMA ───────── */}
-        <section id="system" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-36">
-          <div className="relative mx-auto grid max-w-6xl gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
-            <div className="lg:sticky lg:top-32 lg:self-start">
-              <Ghost n="03" />
-            <Tag n="03">{t.system.eyebrow}</Tag>
-              <h2 className="flash-type text-[clamp(2rem,4.4vw,3.4rem)]">
-                <Split as="span" text={t.system.title} />
-                <Split as="span" text={t.system.titleEm} delay={220} className="text-blood" />
-              </h2>
-              <p className="reveal mt-8 max-w-[46ch] text-[clamp(0.98rem,1.6vw,1.12rem)] leading-relaxed text-muted">
-                {t.system.sub}
-              </p>
-              <p className="reveal mt-5 max-w-[46ch] border-l-2 border-blood pl-4 text-[15px] leading-relaxed text-bone">
-                {t.system.note}
-              </p>
-              <div className="reveal mt-9">
-                <Cta href="#book">{t.nav.cta}</Cta>
-              </div>
+        {/* ───────── CALCULADORA ───────── */}
+        <section id="cost" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-36">
+          <div className="relative mx-auto max-w-6xl">
+            <Ghost n="02" />
+            <Tag n="02">{t.calc.eyebrow}</Tag>
+            <Split as="h2" text={t.calc.title} className="max-w-[20ch] flash-type text-[clamp(1.9rem,4.4vw,3.4rem)]" />
+            <p className="reveal mt-6 max-w-[46ch] text-[15.5px] text-muted">{t.calc.sub}</p>
+
+            <div className="reveal mt-14">
+              <Calculator t={t.calc} lang={lang} />
             </div>
 
-            <ol className="relative pl-12">
-              <span aria-hidden className="absolute left-[15px] top-2 bottom-2 w-px bg-gradient-to-b from-blood via-blood/45 to-transparent" />
-              {t.system.steps.map((s) => (
-                <li key={s.n} className="reveal relative pb-11 last:pb-0">
-                  <span
-                    aria-hidden
-                    className="absolute -left-12 top-1.5 flex size-[31px] items-center justify-center rounded-full bg-void text-[11px] font-bold tracking-[0.06em] text-blood ring-1 ring-blood/45"
-                  >
-                    {s.n}
-                  </span>
-                  <h3 className="text-[clamp(1.3rem,2.4vw,1.7rem)] font-bold tracking-[-0.032em]">{s.t}</h3>
-                  <p className="mt-2.5 max-w-[48ch] text-[15px] leading-relaxed text-muted">{s.d}</p>
-                </li>
-              ))}
-            </ol>
+            <div className="reveal mt-12">
+              <Cta href="#book" big>{t.calc.cta}</Cta>
+            </div>
+          </div>
+        </section>
+
+        {/* ───────── EL RECORRIDO ───────── */}
+        <section id="system" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-32">
+          <div className="relative mx-auto max-w-6xl">
+            <Ghost n="03" />
+            <Tag n="03">{t.funnel.tag}</Tag>
+            <Split as="h2" text={t.funnel.title} className="max-w-[20ch] flash-type text-[clamp(1.9rem,4.4vw,3.4rem)]" />
+            <p className="reveal mt-6 max-w-[52ch] text-[15.5px] leading-relaxed text-muted">{t.funnel.sub}</p>
+
+            <div className="mt-16">
+              <Funnel t={t.funnel} />
+            </div>
+
+            <p className="reveal mt-12 max-w-[54ch] border-l-2 border-blood pl-5 text-[15.5px] leading-relaxed text-bone">
+              {t.funnel.follow}
+            </p>
           </div>
         </section>
 
@@ -402,7 +405,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                     {/* cifras de campaña, solo si las hay */}
                     {c.figures.length > 0 && (
                       <>
-                        <div className="mt-10 grid gap-px bg-white/[0.08] sm:grid-cols-4">
+                        <div data-cursor="RESULTS" className="mt-10 grid gap-px bg-white/[0.08] sm:grid-cols-4">
                           {c.figures.map((f) => (
                             <div key={f.k} className="spot reveal bg-void px-5 py-6">
                               <p className="flash-type text-[clamp(1.5rem,2.6vw,2.1rem)] tabular-nums text-signal">
@@ -422,6 +425,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                     href={c.url}
                     target="_blank"
                     rel="noopener"
+                    data-cursor="VIEW"
                     className="reveal group relative block overflow-hidden border border-white/[0.1] transition hover:border-blood/50"
                   >
                     <Image
@@ -443,24 +447,6 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           </div>
 
           <p className="reveal mx-auto mt-14 max-w-6xl text-[11.5px] leading-relaxed text-faint">{t.cases.note}</p>
-        </section>
-
-        {/* ───────── CALCULADORA ───────── */}
-        <section id="cost" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-36">
-          <div className="relative mx-auto max-w-6xl">
-            <Ghost n="02" />
-            <Tag n="02">{t.calc.eyebrow}</Tag>
-            <Split as="h2" text={t.calc.title} className="max-w-[20ch] flash-type text-[clamp(1.9rem,4.4vw,3.4rem)]" />
-            <p className="reveal mt-6 max-w-[46ch] text-[15.5px] text-muted">{t.calc.sub}</p>
-
-            <div className="reveal mt-14">
-              <Calculator t={t.calc} lang={lang} />
-            </div>
-
-            <div className="reveal mt-12">
-              <Cta href="#book" big>{t.calc.cta}</Cta>
-            </div>
-          </div>
         </section>
 
         {/* ───────── PARA QUIÉN ───────── */}
@@ -531,28 +517,6 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           </div>
         </section>
 
-        {/* ───────── FAQ ───────── */}
-        <section id="faq" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-36">
-          <div className="mx-auto max-w-3xl">
-            <Tag n="11">{t.faq.eyebrow}</Tag>
-            <Split as="h2" text={t.faq.title} className="mb-12 max-w-[20ch] flash-type text-[clamp(1.9rem,4.2vw,3.2rem)]" />
-            <div className="divide-y divide-white/[0.07]">
-              {t.faq.items.map((f, i) => (
-                <details key={f.q} className="reveal group" open={i === 0}>
-                  <summary className="flex cursor-pointer list-none items-center justify-between gap-6 py-6 text-[16.5px] font-semibold tracking-[-0.024em] marker:hidden">
-                    {f.q}
-                    <span className="shrink-0 text-xl text-blood transition-transform duration-500 group-open:rotate-45">+</span>
-                  </summary>
-                  <p className="max-w-[64ch] pb-7 text-[15px] leading-relaxed text-muted">{f.a}</p>
-                </details>
-              ))}
-            </div>
-            <div className="reveal mt-12">
-              <Cta href="#book">{t.nav.cta}</Cta>
-            </div>
-          </div>
-        </section>
-
         {/* ───────── EQUIPO ───────── */}
         <section id="team" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-32">
           <div className="mx-auto max-w-6xl">
@@ -610,11 +574,34 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           </div>
         </section>
 
+        {/* ───────── FAQ ───────── */}
+        <section id="faq" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-36">
+          <div className="relative mx-auto max-w-3xl">
+            <Ghost n="10" />
+            <Tag n="10">{t.faq.eyebrow}</Tag>
+            <Split as="h2" text={t.faq.title} className="mb-12 max-w-[20ch] flash-type text-[clamp(1.9rem,4.2vw,3.2rem)]" />
+            <div className="divide-y divide-white/[0.07]">
+              {t.faq.items.map((f, i) => (
+                <details key={f.q} className="reveal group" open={i === 0}>
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-6 py-6 text-[16.5px] font-semibold tracking-[-0.024em] marker:hidden">
+                    {f.q}
+                    <span className="shrink-0 text-xl text-blood transition-transform duration-500 group-open:rotate-45">+</span>
+                  </summary>
+                  <p className="max-w-[64ch] pb-7 text-[15px] leading-relaxed text-muted">{f.a}</p>
+                </details>
+              ))}
+            </div>
+            <div className="reveal mt-12">
+              <Cta href="#book">{t.nav.cta}</Cta>
+            </div>
+          </div>
+        </section>
+
         {/* ───────── AGENDAR — CALENDARIO INCRUSTADO ───────── */}
         <section id="book" className="scroll-mt-24 border-t border-white/[0.07] px-6 py-16 sm:py-32">
           <div className="relative mx-auto max-w-5xl">
-            <Ghost n="10" />
-            <Tag n="10">{t.audit.tag}</Tag>
+            <Ghost n="11" />
+            <Tag n="11">{t.audit.tag}</Tag>
 
             <div className="grid gap-10 lg:grid-cols-[1.05fr_auto] lg:items-end">
               <div>

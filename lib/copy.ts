@@ -96,6 +96,20 @@ export const copy = {
       ],
     },
 
+    funnel: {
+      n: "03",
+      tag: "El recorrido",
+      title: "Así se ve un desconocido convirtiéndose en un depósito.",
+      sub: "Cinco pasos. Cada uno con una pieza que hoy probablemente no tienes.",
+      steps: [
+        { k: "Atención pagada", d: "Un anuncio en Instagram delante de gente de tu ciudad que quiere tatuarse ahora.", kind: "ad", ui: { t: "Realismo blanco y negro", s: "Salt Lake City · 24–45 años", cta: "Enviar mensaje" } },
+        { k: "Mensaje", d: "El primer contacto llega al DM. Aquí es donde hoy empieza el desorden.", kind: "dm", ui: { a: "hola, cuanto por un antebrazo?", b: "¡Hola! ¿Ya tienes una idea o referencia?" } },
+        { k: "Calificación", d: "Tres preguntas separan un proyecto serio de alguien preguntando el precio.", kind: "qual", ui: { rows: [["Estilo", "Realismo B/N"], ["Zona", "Codo a muñeca"], ["Presupuesto", "En rango"], ["Fecha", "Este mes"]] } },
+        { k: "Consulta agendada", d: "La conversación acaba en una hora concreta, no en «te escribo luego».", kind: "cal", ui: { d1: "Jue 5:00 pm", d2: "Vie 6:00 pm", ok: "Consulta reservada" } },
+        { k: "Depósito", d: "El compromiso real. Sin esto, una cita es solo una intención.", kind: "dep", ui: { label: "Depósito recibido", v: "$150", n: "Proyecto confirmado" } },
+      ],
+      follow: "Y lo que no cierra, entra en seguimiento. Ahí está la mitad de las reservas que hoy se pierden.",
+    },
     rupture: {
       a: "Tu portafolio consigue la atención.",
       b: "Tu sistema consigue el depósito.",
@@ -166,6 +180,13 @@ export const copy = {
       free: "Sin costo",
       dur: "15 minutos",
       noPitch: "Si no vemos una oportunidad clara, te lo decimos en la misma llamada.",
+    },
+    consent: {
+      title: "Cookies",
+      body: "Usamos cookies de medición para saber qué campañas traen consultas reales. No se cargan hasta que lo aceptes, y no vendemos tus datos.",
+      all: "Aceptar",
+      necessary: "Solo lo necesario",
+      more: "Leer la política de privacidad",
     },
     trust: {
       label: "Trabajamos con",
@@ -404,6 +425,20 @@ export const copy = {
       ],
     },
 
+    funnel: {
+      n: "03",
+      tag: "The journey",
+      title: "This is what a stranger turning into a deposit looks like.",
+      sub: "Five steps. Each one with a piece you probably don't have today.",
+      steps: [
+        { k: "Paid attention", d: "An Instagram ad in front of people in your city who want a tattoo now.", kind: "ad", ui: { t: "Black & grey realism", s: "Salt Lake City · 24–45", cta: "Send message" } },
+        { k: "The DM", d: "First contact lands in your inbox. This is where the mess starts today.", kind: "dm", ui: { a: "hey how much for a forearm?", b: "Hey! Do you have a reference in mind?" } },
+        { k: "Qualification", d: "Three questions separate a serious project from a price shopper.", kind: "qual", ui: { rows: [["Style", "B&G realism"], ["Placement", "Elbow to wrist"], ["Budget", "In range"], ["Timing", "This month"]] } },
+        { k: "Consultation booked", d: "The conversation ends on a specific time, not on \"I\'ll message you later\".", kind: "cal", ui: { d1: "Thu 5:00 pm", d2: "Fri 6:00 pm", ok: "Consultation booked" } },
+        { k: "Deposit", d: "The real commitment. Without it, an appointment is just an intention.", kind: "dep", ui: { label: "Deposit received", v: "$150", n: "Project confirmed" } },
+      ],
+      follow: "And whatever doesn't close goes into follow-up. That's where half of today's lost bookings live.",
+    },
     rupture: {
       a: "Your portfolio gets the attention.",
       b: "Your system gets the deposit.",
@@ -474,6 +509,13 @@ export const copy = {
       free: "No cost",
       dur: "15 minutes",
       noPitch: "If we don't see a clear opportunity, we'll tell you on the call.",
+    },
+    consent: {
+      title: "Cookies",
+      body: "We use measurement cookies to see which campaigns bring real inquiries. Nothing loads until you accept, and we don't sell your data.",
+      all: "Accept",
+      necessary: "Only what's necessary",
+      more: "Read the privacy policy",
     },
     trust: {
       label: "We work with",

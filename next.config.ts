@@ -23,12 +23,15 @@ const csp = [
   "default-src 'self'",
   // Calendly inyecta su widget. 'unsafe-inline' hace falta para los
   // estilos y scripts que Next escribe en línea al hidratar.
-  "script-src 'self' 'unsafe-inline' https://assets.calendly.com",
+  // Medición: los dominios ya están permitidos para que el día que
+  // enciendas el píxel funcione sin tocar nada. Mientras las variables
+  // no existan, no se carga ningún script de estos.
+  "script-src 'self' 'unsafe-inline' https://assets.calendly.com https://www.googletagmanager.com https://connect.facebook.net",
   "style-src 'self' 'unsafe-inline' https://assets.calendly.com https://fonts.googleapis.com",
   "font-src 'self' data: https://fonts.gstatic.com",
-  "img-src 'self' data: blob: https://assets.calendly.com https://*.calendly.com",
-  "connect-src 'self' https://calendly.com https://*.calendly.com https://vitals.vercel-insights.com",
-  "frame-src https://calendly.com https://*.calendly.com",
+  "img-src 'self' data: blob: https://assets.calendly.com https://*.calendly.com https://www.facebook.com https://www.google-analytics.com",
+  "connect-src 'self' https://calendly.com https://*.calendly.com https://vitals.vercel-insights.com https://www.google-analytics.com https://*.analytics.google.com https://connect.facebook.net",
+  "frame-src https://calendly.com https://*.calendly.com https://www.facebook.com",
   // Nadie puede meter este sitio dentro de un iframe.
   "frame-ancestors 'none'",
   "base-uri 'self'",
