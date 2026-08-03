@@ -833,9 +833,12 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  opacity: 0.16;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  mix-blend-mode: multiply;
+  /* Sin `mix-blend-mode`. Fusionar sobre una marquesina en movimiento
+     obliga a recomponer la sección entera cada frame: costaba 20 fps
+     (19 → 39 al quitarlo) y sobre un rojo plano se ve prácticamente
+     igual con opacidad normal. Misma lección que el blur de la tinta. */
+  opacity: 0.1;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' fill='%23000'/%3E%3C/svg%3E");
   pointer-events: none;
 }
 .rupture .flash-type { color: #fff; }
@@ -969,3 +972,38 @@ body {
 
 /* ── banda de consentimiento ─────────────────────────────── */
 .consent { animation: sheetRow 0.6s var(--ease) both; }
+
+/* La ruptura respira: una marquesina lenta con la palabra estampada
+   detrás. Solo translate — el compositor la mueve gratis. */
+.rupture-band {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0.085;
+}
+.rupture-run {
+  display: flex;
+  gap: 0.35em;
+  width: max-content;
+  font-family: var(--f-anton), sans-serif;
+  font-size: clamp(5rem, 14vw, 12rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: #000;
+  white-space: nowrap;
+  will-change: transform;
+  contain: paint;
+}
+/* Mover un texto de 200 px de alto cuesta en máquinas sin GPU. Va
+   detrás de la misma sonda que la tinta: si el navegador demuestra
+   que puede, se mueve; si no, la palabra se queda estampada y quieta,
+   que también funciona. */
+.ink-live .rupture-run { animation: runLeft 46s linear infinite; }
+@keyframes runLeft {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+@media (prefers-reduced-motion: reduce) { .rupture-run { animation: none; } }

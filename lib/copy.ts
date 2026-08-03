@@ -113,7 +113,9 @@ export const copy = {
     rupture: {
       a: "Tu portafolio consigue la atención.",
       b: "Tu sistema consigue el depósito.",
-      c: "Casi todos los tatuadores tienen lo primero. Casi ninguno tiene lo segundo.",
+      c: "El depósito asegura la agenda.",
+      d: "Casi todos los tatuadores tienen lo primero. Casi ninguno tiene lo segundo. Y sin lo segundo, lo tercero no llega.",
+      word: "DEPÓSITO",
     },
     assets: {
       n: "04",
@@ -442,7 +444,9 @@ export const copy = {
     rupture: {
       a: "Your portfolio gets the attention.",
       b: "Your system gets the deposit.",
-      c: "Almost every tattoo artist has the first. Almost none have the second.",
+      c: "The deposit secures the booking.",
+      d: "Almost every tattoo artist has the first. Almost none have the second. And without the second, the third never comes.",
+      word: "DEPOSIT",
     },
     assets: {
       n: "04",

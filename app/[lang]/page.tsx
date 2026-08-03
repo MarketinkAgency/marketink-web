@@ -16,6 +16,7 @@ import Glow from "@/components/Glow";
 import RailNav from "@/components/RailNav";
 import Consent from "@/components/Consent";
 import Funnel from "@/components/Funnel";
+import Jsonld from "@/components/Jsonld";
 import Analytics from "@/components/Analytics";
 
 /** marketINK• — el punto es la gota de tinta y el punto final de la frase. */
@@ -85,6 +86,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
 
   return (
     <>
+      <Jsonld t={t} lang={lang} />
       <Ink />
       <Glow />
       <Analytics />
@@ -338,10 +340,21 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
 
         {/* ───────── RUPTURA ───────── */}
         <section className="rupture px-6 py-24 text-center sm:py-36">
+          {/* la palabra de fondo, en marquesina lenta: tinta estampada
+              una y otra vez sobre el rojo */}
+          <div className="rupture-band" aria-hidden>
+            <div className="rupture-run">
+              {Array.from({ length: 8 }, (_, i) => (
+                <span key={i}>{t.rupture.word}</span>
+              ))}
+            </div>
+          </div>
+
           <div className="relative mx-auto max-w-4xl">
-            <Split as="p" text={t.rupture.a} className="flash-type text-[clamp(1.9rem,5.2vw,4rem)] opacity-70" />
-            <Split as="p" text={t.rupture.b} className="mt-2 flash-type text-[clamp(1.9rem,5.2vw,4rem)]" delay={240} />
-            <p className="reveal mx-auto mt-9 max-w-[46ch] text-[15px] leading-relaxed text-white/75">{t.rupture.c}</p>
+            <Split as="p" text={t.rupture.a} className="flash-type text-[clamp(1.7rem,4.6vw,3.4rem)] opacity-55" />
+            <Split as="p" text={t.rupture.b} className="mt-1.5 flash-type text-[clamp(2rem,5.6vw,4.2rem)]" delay={220} />
+            <Split as="p" text={t.rupture.c} className="mt-1.5 flash-type text-[clamp(1.7rem,4.6vw,3.4rem)] opacity-55" delay={460} />
+            <p className="reveal mx-auto mt-10 max-w-[52ch] text-[15px] leading-relaxed text-white/75">{t.rupture.d}</p>
           </div>
         </section>
 
