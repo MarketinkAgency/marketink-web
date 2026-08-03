@@ -52,10 +52,17 @@ body {
    parecer un rótulo de estudio.
    ══════════════════════════════════════════════════════════ */
 .flash-type {
-  font-weight: 900;
+  /* Anton solo existe en un grosor. Si dejáramos 900, el navegador
+     lo engorda a la fuerza y se ve sucio. */
+  font-family: var(--f-anton), var(--font-montserrat), sans-serif;
+  font-weight: 400;
   text-transform: uppercase;
-  letter-spacing: -0.045em;
-  line-height: 0.86;
+  letter-spacing: -0.008em;
+  /* 1.02 y no 0.86: Anton ya es estrechísima, y con la interlínea
+     comprimida las tildes de las mayúsculas (INTERÉS, DEPÓSITOS) se
+     montaban sobre la línea de arriba y desaparecían. El español las
+     necesita; el inglés no las echa de menos. */
+  line-height: 1.02;
 }
 .flash-sub {
   font-weight: 700;
@@ -405,8 +412,14 @@ body {
 .split { display: block; }
 .split-w {
   display: inline-block;
-  overflow: hidden;
   vertical-align: bottom;
+  /* Aquí NO va `overflow: hidden`.
+     Con interlínea comprimida, las tildes de las mayúsculas (É, Ó)
+     suben por encima de la caja de línea y `overflow` se las comía:
+     «INTERÉS» salía «INTERES». `clip-path` con el borde superior
+     negativo deja salir la tilde por arriba pero sigue tapando por
+     abajo, que es de donde entra la palabra al revelarse. */
+  clip-path: inset(-0.35em -0.06em 0 -0.06em);
   padding-bottom: 0.12em;
   margin-bottom: -0.12em;
 }
@@ -573,5 +586,150 @@ body {
     linear-gradient(168deg, rgba(255, 255, 255, 0.075) 0%, rgba(255, 255, 255, 0.02) 100%),
     rgba(10, 10, 12, 0.72); }
   .low-power .nav-pill { background: rgba(16, 16, 18, 0.92); }
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   ENTRADA DEL MES — ficha de capacidad, no contador de infoproducto
+
+   Sin esquinas redondeadas, borde grueso, tipografía de cartel y las
+   casillas ocupadas marcadas una a una. Se lee de un vistazo y se
+   parece más a una hoja de agenda de estudio que a un banner.
+   ══════════════════════════════════════════════════════════ */
+.intake {
+  position: relative;
+  display: inline-block;
+  min-width: 268px;
+  padding: 18px 22px 16px;
+  border: 1px solid rgba(225, 6, 0, 0.55);
+  background:
+    linear-gradient(180deg, rgba(225, 6, 0, 0.09), rgba(225, 6, 0, 0.02)),
+    rgba(9, 9, 11, 0.72);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.09), 0 20px 50px -30px rgba(225, 6, 0, 0.8);
+}
+/* marcas de esquina, como una hoja de flash clavada en la pared */
+.intake::before,
+.intake::after {
+  content: "";
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border: 1px solid var(--color-blood);
+}
+.intake::before { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
+.intake::after { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
+
+.intake-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--color-blood);
+}
+.intake-eyebrow .dot-live {
+  width: 6px;
+  height: 6px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--color-blood);
+  box-shadow: 0 0 10px 2px rgba(225, 6, 0, 0.85);
+}
+
+.intake-num {
+  display: flex;
+  align-items: baseline;
+  gap: 11px;
+  margin-top: 10px;
+}
+.intake-big {
+  font-weight: 900;
+  font-size: 52px;
+  line-height: 0.82;
+  letter-spacing: -0.05em;
+  color: var(--color-bone);
+  font-variant-numeric: tabular-nums;
+}
+.intake-word {
+  max-width: 13ch;
+  font-weight: 700;
+  font-size: 11px;
+  line-height: 1.25;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-bone);
+}
+
+/* casillas: ocupadas en rojo sólido, libres en hueco */
+.intake-slots {
+  display: flex;
+  gap: 4px;
+  margin-top: 15px;
+}
+.slot {
+  position: relative;
+  height: 22px;
+  flex: 1 1 0;
+  min-width: 0;
+  border: 1px solid rgba(237, 230, 220, 0.28);
+  background: transparent;
+  transition: background 0.5s var(--ease), border-color 0.5s var(--ease);
+}
+.slot b {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.slot.taken {
+  background: var(--color-blood);
+  border-color: var(--color-blood);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+/* las libres respiran despacio para que se note cuáles quedan */
+.slot:not(.taken)::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  background: rgba(237, 230, 220, 0.16);
+  animation: slotPulse 2.6s ease-in-out infinite;
+}
+.slot:not(.taken):nth-of-type(2)::after { animation-delay: -0.5s; }
+.slot:not(.taken):nth-of-type(3)::after { animation-delay: -1s; }
+.slot:not(.taken):nth-of-type(4)::after { animation-delay: -1.5s; }
+.slot:not(.taken):nth-of-type(5)::after { animation-delay: -2s; }
+@keyframes slotPulse {
+  0%, 100% { opacity: 0.35; }
+  50%      { opacity: 1; }
+}
+
+.intake-foot {
+  margin-top: 12px;
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  color: var(--color-muted);
+}
+
+/* mes cerrado: se apaga el rojo y sube el valor percibido */
+.intake.is-closed { border-color: rgba(237, 230, 220, 0.3); }
+.intake.is-closed::before,
+.intake.is-closed::after { border-color: rgba(237, 230, 220, 0.4); }
+.intake.is-closed .intake-eyebrow { color: var(--color-muted); }
+.intake.is-closed .intake-eyebrow .dot-live { background: var(--color-muted); box-shadow: none; animation: none; }
+.intake-closed-t {
+  margin-top: 12px;
+  font-weight: 900;
+  font-size: 21px;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: var(--color-bone);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slot:not(.taken)::after { animation: none; opacity: 0.6; }
 }
 

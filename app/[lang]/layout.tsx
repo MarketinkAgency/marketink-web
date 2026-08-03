@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Montserrat } from "next/font/google";
+import { Montserrat, Anton } from "next/font/google";
 import { notFound } from "next/navigation";
 import { copy, isLang, LOCALES } from "@/lib/copy";
 import "../globals.css";
@@ -11,6 +11,12 @@ const montserrat = Montserrat({
   variable: "--font-montserrat",
   display: "swap",
 });
+
+/* Anton para titulares: condensada, un solo grosor, tipografía de
+   cartel. Se eligió sobre Archivo Black porque el español ocupa más
+   y con una fuente ancha el titular empuja los botones fuera de la
+   primera pantalla. */
+const anton = Anton({ subsets: ["latin"], weight: "400", variable: "--f-anton", display: "swap" });
 
 export function generateStaticParams() {
   return LOCALES.map((lang) => ({ lang }));
@@ -42,7 +48,7 @@ export default async function RootLayout({
   if (!isLang(lang)) notFound();
 
   return (
-    <html lang={lang} className={montserrat.variable}>
+    <html lang={lang} className={`${montserrat.variable} ${anton.variable}`}>
       <body className="font-sans antialiased">{children}</body>
     </html>
   );

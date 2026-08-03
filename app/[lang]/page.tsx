@@ -145,6 +145,45 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           </div>
         </section>
 
+        {/* ───────── FRANJA DE CREDIBILIDAD ───────── */}
+        <section className="border-b border-white/[0.08] px-6 py-9">
+          <div className="mx-auto flex max-w-6xl flex-col gap-7 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex items-center gap-4">
+              <p className="flash-sub shrink-0 text-[10px] tracking-[0.22em] text-faint">{t.trust.label}</p>
+              <div className="flex items-center gap-3">
+                {t.cases.items.map((c) => (
+                  <a
+                    key={c.k}
+                    href={c.url}
+                    target="_blank"
+                    rel="noopener"
+                    className="group flex items-center gap-2.5 rounded-full py-1 pl-1 pr-3.5 ring-1 ring-white/12 transition hover:ring-blood/60"
+                    aria-label={`${c.studio} — ${c.handle}`}
+                  >
+                    <Image
+                      src={c.avatar}
+                      alt=""
+                      width={30}
+                      height={30}
+                      className="size-[30px] rounded-full object-cover grayscale transition duration-500 group-hover:grayscale-0"
+                    />
+                    <span className="text-[12.5px] text-muted transition group-hover:text-bone">{c.handle}</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            <ul className="flex flex-wrap gap-x-7 gap-y-2.5">
+              {t.trust.points.map((p) => (
+                <li key={p} className="flex items-center gap-2 text-[12.5px] text-muted">
+                  <span className="size-1 shrink-0 rounded-full bg-blood" />
+                  {p}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
         {/* ───────── VIDEO ───────── */}
         <section className="px-6 py-16 sm:py-32">
           <div className="mx-auto max-w-4xl text-center">
@@ -305,54 +344,106 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           </div>
         </section>
 
-        {/* ───────── CASO REAL ───────── */}
-        <section className="relative overflow-hidden px-6 py-16 sm:py-36">
-          <div className="bleed absolute inset-0 -z-10" aria-hidden>
-            <Image src="/img/estudio.webp" alt="" fill sizes="100vw" className="object-cover opacity-[0.18]" />
-            <div className="absolute inset-0 bg-gradient-to-b from-void via-void/80 to-void" />
-          </div>
-
+        {/* ───────── CASOS REALES ───────── */}
+        <section id="cases" className="scroll-mt-24 px-6 py-16 sm:py-32">
           <div className="mx-auto max-w-6xl">
-            <Eyebrow>{t.caseStudy.eyebrow}</Eyebrow>
-            <Split as="h2" text={t.caseStudy.title} className="max-w-[20ch] flash-type text-[clamp(2rem,4.6vw,3.6rem)]" />
-            <p className="reveal mt-6 max-w-[52ch] text-[15.5px] text-muted">{t.caseStudy.sub}</p>
-
-            <div className="mt-12 grid gap-px bg-white/[0.08] sm:grid-cols-3">
-              {t.caseStudy.figures.map((f) => (
-                <div key={f.k} className="spot reveal bg-void px-8 py-9">
-                  <p className="flash-type text-[clamp(1.9rem,3.6vw,2.9rem)] tabular-nums text-signal">{f.v}</p>
-                  <p className="mt-3 text-[13px] text-muted">{f.k}</p>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-4 grid gap-4 lg:grid-cols-2">
-              <div className="reveal border border-white/[0.07] p-8 sm:p-10">
-                <h3 className="flash-sub mb-7 text-[11px] tracking-[0.2em] text-faint">{t.caseStudy.beforeTitle}</h3>
-                <ul className="space-y-3.5">
-                  {t.caseStudy.before.map((x) => (
-                    <li key={x} className="flex gap-3.5 text-[15px] text-faint">
-                      <span className="mt-2.5 h-px w-3 shrink-0 bg-faint" />
-                      {x}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="flash-cell reveal border-l-2 border-l-signal p-8 sm:p-10">
-                <h3 className="flash-sub mb-7 text-[11px] tracking-[0.2em] text-signal">{t.caseStudy.afterTitle}</h3>
-                <ul className="space-y-3.5">
-                  {t.caseStudy.after.map((x) => (
-                    <li key={x} className="flex gap-3.5 text-[15.5px]">
-                      <span className="mt-2 size-1.5 shrink-0 rounded-full bg-signal shadow-[0_0_10px_2px_rgba(47,227,160,0.5)]" />
-                      {x}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            <p className="reveal mt-8 max-w-[76ch] text-[11.5px] leading-relaxed text-faint">{t.caseStudy.disclaimer}</p>
+            <Eyebrow>{t.cases.eyebrow}</Eyebrow>
+            <Split as="h2" text={t.cases.title} className="max-w-[20ch] flash-type text-[clamp(2rem,4.6vw,3.6rem)]" />
+            <p className="reveal mt-6 max-w-[56ch] text-[15.5px] leading-relaxed text-muted">{t.cases.sub}</p>
           </div>
+
+          {/* cada caso ocupa su propio bloque, no una tarjeta */}
+          <div className="mt-16 space-y-20 sm:mt-20 sm:space-y-28">
+            {t.cases.items.map((c, i) => (
+              <article key={c.k} className="mx-auto max-w-6xl">
+                <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-16">
+                  {/* izquierda: la historia */}
+                  <div>
+                    <p className="reveal mb-6 flex items-center gap-3 flash-sub text-[10.5px] tracking-[0.22em] text-faint">
+                      <span className="text-blood">{String(i + 1).padStart(2, "0")}</span>
+                      {c.studio} · {c.city}
+                    </p>
+
+                    <Split
+                      as="h3"
+                      text={c.name}
+                      className="flash-type text-[clamp(3.2rem,9vw,6.5rem)] leading-[0.86]"
+                    />
+
+                    {/* la cifra manda */}
+                    <div className="reveal mt-9 border-y border-white/[0.09] py-8">
+                      <p className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+                        <span className="flash-type text-[clamp(2.8rem,7vw,5rem)] text-blood">{c.big}</span>
+                        <span className="flash-type text-[clamp(1.1rem,2.4vw,1.8rem)] text-bone">{c.unit}</span>
+                      </p>
+                      <p className="mt-2.5 max-w-[34ch] text-[15px] leading-snug text-muted">{c.tail}</p>
+                      <p className="mt-5 flash-sub text-[10.5px] tracking-[0.2em] text-faint">
+                        {t.cases.inLabel} {c.span}
+                      </p>
+                    </div>
+
+                    {/* antes / después */}
+                    <div className="reveal mt-8 grid gap-5 sm:grid-cols-2">
+                      <p className="border-l-2 border-white/15 pl-4 text-[14.5px] leading-relaxed text-faint">{c.before}</p>
+                      <p className="border-l-2 border-blood pl-4 text-[15px] leading-relaxed text-bone">{c.after}</p>
+                    </div>
+
+                    {/* qué se instaló */}
+                    <div className="reveal mt-9">
+                      <p className="mb-4 flash-sub text-[10px] tracking-[0.2em] text-faint">{t.cases.movesLabel}</p>
+                      <ul className="flex flex-wrap gap-2.5">
+                        {c.moves.map((m) => (
+                          <li key={m} className="border border-white/[0.12] px-3.5 py-2 text-[12.5px] text-muted">
+                            {m}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {/* cifras de campaña, solo si las hay */}
+                    {c.figures.length > 0 && (
+                      <>
+                        <div className="mt-10 grid gap-px bg-white/[0.08] sm:grid-cols-4">
+                          {c.figures.map((f) => (
+                            <div key={f.k} className="spot reveal bg-void px-5 py-6">
+                              <p className="flash-type text-[clamp(1.5rem,2.6vw,2.1rem)] tabular-nums text-signal">
+                                <Count value={f.v} />
+                              </p>
+                              <p className="mt-2 text-[12px] leading-snug text-muted">{f.k}</p>
+                            </div>
+                          ))}
+                        </div>
+                        <p className="reveal mt-4 text-[11.5px] text-faint">{c.figNote}</p>
+                      </>
+                    )}
+                  </div>
+
+                  {/* derecha: la prueba que se puede comprobar */}
+                  <a
+                    href={c.url}
+                    target="_blank"
+                    rel="noopener"
+                    className="reveal group relative block overflow-hidden border border-white/[0.1] transition hover:border-blood/50"
+                  >
+                    <Image
+                      src={c.img}
+                      alt={`${t.trust.seeAll} ${c.handle}`}
+                      width={566}
+                      height={1210}
+                      sizes="(max-width: 1024px) 100vw, 360px"
+                      className="w-full transition duration-700 group-hover:scale-[1.02]"
+                    />
+                    <span className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-3 bg-gradient-to-t from-void via-void/90 to-transparent px-5 pb-4 pt-12 text-[13px]">
+                      <span className="font-semibold text-bone">{c.handle}</span>
+                      <span className="text-blood transition group-hover:translate-x-0.5">{t.trust.seeAll} →</span>
+                    </span>
+                  </a>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <p className="reveal mx-auto mt-14 max-w-6xl text-[11.5px] leading-relaxed text-faint">{t.cases.note}</p>
         </section>
 
         {/* ───────── CALCULADORA ───────── */}
@@ -503,6 +594,39 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           </div>
         </section>
 
+
+        {/* ───────── EQUIPO ───────── */}
+        <section id="team" className="scroll-mt-24 px-6 py-16 sm:py-32">
+          <div className="mx-auto max-w-6xl">
+            <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:gap-16">
+              <div>
+                <Eyebrow>{t.team.eyebrow}</Eyebrow>
+                <Split as="h2" text={t.team.title} className="max-w-[16ch] flash-type text-[clamp(1.9rem,4.4vw,3.4rem)]" />
+              </div>
+              <p className="reveal max-w-[52ch] self-end text-[15.5px] leading-relaxed text-muted">{t.team.sub}</p>
+            </div>
+
+            <div className="mt-14 grid gap-5 sm:grid-cols-2 sm:gap-6">
+              {t.team.people.map((p) => (
+                <figure key={p.k} className="reveal group relative overflow-hidden border border-white/[0.1]">
+                  <Image
+                    src={p.img}
+                    alt={p.name}
+                    width={1000}
+                    height={1250}
+                    sizes="(max-width: 640px) 100vw, 50vw"
+                    className="w-full object-cover transition duration-[900ms] group-hover:scale-[1.03]"
+                  />
+                  <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-void via-void/92 to-transparent px-6 pb-6 pt-20">
+                    <p className="flash-type text-[clamp(1.8rem,3.4vw,2.6rem)]">{p.name}</p>
+                    <p className="mt-1.5 text-[14px] text-muted">{p.role}</p>
+                    <p className="mt-3 flash-sub text-[10.5px] tracking-[0.18em] text-blood">{p.cred}</p>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
+        </section>
 
         {/* ───────── AGENDAR — CALENDARIO INCRUSTADO ───────── */}
         <section id="book" className="scroll-mt-24 border-t border-white/[0.07] px-6 py-16 sm:py-32">

@@ -5,19 +5,25 @@ import { capacity, freeSpots } from "@/lib/capacity";
 import type { Lang } from "@/lib/copy";
 
 type Labels = {
-  /** «{n} de {total} cupos de {mes} disponibles» */
-  spots: string;
-  /** «Quedan {d} días de {mes}» */
-  days: string;
-  full: string;
+  intake: string;   // «ENTRADA DE {mes}»
+  remaining: string; // «cupos disponibles» / «cupo disponible»
+  filled: string;    // «ocupado»
+  open: string;      // «libre»
+  days: string;      // «Cierra en {d} días»
+  closedT: string;   // «ENTRADA DE {mes} CERRADA»
+  closedS: string;   // «Escríbenos y entras a la lista de septiembre»
 };
 
 /**
- * Cupos del mes y días restantes.
+ * Etiqueta industrial de cupos.
+ *
+ * No es un contador de infoproducto: es una ficha de capacidad, con
+ * las casillas ocupadas marcadas una a una. Se lee de un vistazo y no
+ * promete nada que no puedas cumplir — el número sale de las variables
+ * que tú controlas en Vercel (ver lib/capacity.ts).
  *
  * Se calcula en el navegador para que refleje el mes real del visitante
- * y no quede congelado en la fecha de compilación. Durante el render en
- * servidor no se pinta nada, así no hay salto de hidratación.
+ * y no quede congelado en la fecha de compilación.
  */
 export default function Spots({
   lang,
@@ -28,54 +34,71 @@ export default function Spots({
   labels: Labels;
   className?: string;
 }) {
-  const [data, setData] = useState<{ free: number; days: number; month: string } | null>(null);
+  const [d, setD] = useState<{ free: number; days: number; month: string; next: string } | null>(null);
 
   useEffect(() => {
     const now = new Date();
-    const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
-    setData({
+    const loc = lang === "es" ? "es-ES" : "en-US";
+    const last = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+    setD({
       free: freeSpots(),
-      days: lastDay - now.getDate() + 1,
-      month: now.toLocaleDateString(lang === "es" ? "es-ES" : "en-US", { month: "long" }),
+      days: last - now.getDate() + 1,
+      month: now.toLocaleDateString(loc, { month: "long" }),
+      next: new Date(now.getFullYear(), now.getMonth() + 1, 1).toLocaleDateString(loc, { month: "long" }),
     });
   }, [lang]);
 
-  if (!data) return <div className={className} style={{ minHeight: 44 }} aria-hidden />;
+  // Reserva de espacio para que no salte el diseño al hidratar.
+  if (!d) return <div className={className} style={{ minHeight: 168 }} aria-hidden />;
 
-  const { free, days, month } = data;
-  const pct = Math.round((free / capacity.perMonth) * 100);
+  const { free, days, month, next } = d;
+  const total = capacity.perMonth;
+  const taken = total - free;
   const fill = (s: string) =>
     s
       .replace("{n}", String(free))
-      .replace("{total}", String(capacity.perMonth))
+      .replace("{total}", String(total))
       .replace("{d}", String(days))
       .replace("{mes}", month)
-      .replace("{month}", month);
+      .replace("{month}", month)
+      .replace("{sig}", next)
+      .replace("{nextm}", next);
+
+  const closed = free === 0;
 
   return (
-    <div className={`inline-flex flex-col items-start gap-3 ${className}`}>
-      <p className="flex items-center gap-2.5 text-[14px] text-bone" aria-live="polite">
-        <i className="dot-live size-2 shrink-0 rounded-full bg-blood shadow-[0_0_10px_2px_rgba(225,6,0,0.8)]" />
-        <span>
-          {free === 0 ? (
-            fill(labels.full)
-          ) : (
-            <>
-              <b className="font-bold text-blood">{free}</b> {fill(labels.spots).replace(`${free} `, "")}
-            </>
-          )}
-        </span>
+    <div className={`intake ${closed ? "is-closed" : ""} ${className}`} aria-live="polite">
+      {/* cabecera */}
+      <p className="intake-eyebrow">
+        <i className="dot-live" aria-hidden />
+        {fill(labels.intake)}
       </p>
 
-      {/* barra de ocupación */}
-      <div className="h-[3px] w-full min-w-[220px] max-w-[300px] overflow-hidden rounded-full bg-white/10">
-        <div
-          className="h-full rounded-full bg-blood transition-[width] duration-1000"
-          style={{ width: `${pct}%` }}
-        />
-      </div>
+      {closed ? (
+        <>
+          <p className="intake-num intake-closed-t">{fill(labels.closedT)}</p>
+          <p className="intake-foot">{fill(labels.closedS)}</p>
+        </>
+      ) : (
+        <>
+          {/* cifra */}
+          <p className="intake-num">
+            <span className="intake-big">{free}</span>
+            <span className="intake-word">{fill(labels.remaining)}</span>
+          </p>
 
-      <p className="text-[12.5px] text-faint">{fill(labels.days)}</p>
+          {/* casillas de capacidad */}
+          <div className="intake-slots" role="img" aria-label={`${taken}/${total}`}>
+            {Array.from({ length: total }, (_, i) => (
+              <span key={i} className={`slot ${i < taken ? "taken" : ""}`}>
+                <b>{i < taken ? fill(labels.filled) : fill(labels.open)}</b>
+              </span>
+            ))}
+          </div>
+
+          <p className="intake-foot">{fill(labels.days)}</p>
+        </>
+      )}
     </div>
   );
 }
