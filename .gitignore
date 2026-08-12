@@ -41,3 +41,6 @@ yarn-error.log*
 next-env.d.ts
 
 .vercel
+
+# carpeta de descartes: el puente no puede borrar, solo mover
+_to_delete/
