@@ -104,12 +104,26 @@ export const auditUi = {
     costC: "Of those, how many book",
     costOut: "Booking two more of them a month is worth",
     costYear: "a year",
-    ctaTitle: "Fifteen minutes.",
-    ctaBody: "We go through this live, you ask whatever you want, and you leave with the plan whether you hire us or not.",
-    ctaBook: "Book the 15 minutes",
+    ctaTitle: "Stop leaking bookings.",
+    ctaBody: "Everything above is what your profile does today. Below is the day we change it. We only take a handful of artists a month because one of us actually answers your DMs.",
     ctaPay: "Start the system",
-    ctaPayNote: "Prefer to skip the call? Start here and we set it up this week.",
-    sticky: "Book the 15 minutes",
+    ctaPayNote: "We set it up this week. You keep tattooing.",
+    ctaBook: "Book the 15 minutes",
+    ctaBookNote: "in case you missed our meeting",
+    /* Las bandas rojas que cortan la lectura cada tres o cuatro
+       secciones. La misma acción, dicha desde donde va el que lee: la
+       primera después de ver sus fugas, la segunda después de que ya
+       se llevó lo gratis. Repetir la frase idéntica tres veces suena a
+       anuncio; decir lo mismo desde otro sitio suena a conversación. */
+    bands: [
+      { line: "Three of these you can fix tonight. The rest need someone answering every day.", cta: "Start the system" },
+      { line: "You've got the easy ones now. The hard part isn't knowing what to say — it's saying it within five minutes, every time, while you're tattooing.", cta: "Start the system" },
+    ],
+    igTag: "One last thing",
+    igTitle: "Message us the moment you've done it.",
+    igBody: "Booked the call or started the system? Send us a DM so we know it's you and we start pulling your account apart today instead of tomorrow.",
+    igCta: "@marketinkagency",
+    sticky: "Start the system",
     footNote: "This audit was prepared by hand for one artist. It isn't published, indexed or shared.",
   },
   es: {
@@ -140,12 +154,21 @@ export const auditUi = {
     costC: "De esas, cuántas agendan",
     costOut: "Agendar dos más al mes vale",
     costYear: "al año",
-    ctaTitle: "Quince minutos.",
-    ctaBody: "Lo repasamos en vivo, preguntas lo que quieras, y te vas con el plan nos contrates o no.",
-    ctaBook: "Agenda los 15 minutos",
+    ctaTitle: "Deja de perder reservas.",
+    ctaBody: "Todo lo de arriba es lo que hace tu perfil hoy. Lo de abajo es el día en que eso cambia. Tomamos pocos artistas al mes porque tus mensajes los contesta alguien de verdad.",
     ctaPay: "Empezar el sistema",
-    ctaPayNote: "¿Prefieres saltarte la llamada? Empieza aquí y lo montamos esta semana.",
-    sticky: "Agenda los 15 minutos",
+    ctaPayNote: "Lo montamos esta semana. Tú sigues tatuando.",
+    ctaBook: "Agenda los 15 minutos",
+    ctaBookNote: "por si te perdiste nuestra reunión",
+    bands: [
+      { line: "Tres de estas las arreglas esta noche. Las demás necesitan a alguien contestando todos los días.", cta: "Empezar el sistema" },
+      { line: "Ya te llevaste las fáciles. Lo difícil no es saber qué decir: es decirlo en cinco minutos, siempre, mientras estás tatuando.", cta: "Empezar el sistema" },
+    ],
+    igTag: "Una última cosa",
+    igTitle: "Escríbenos apenas lo hagas.",
+    igBody: "¿Agendaste o ya empezaste el sistema? Mándanos un mensaje para saber que eres tú y empezamos a desarmar tu cuenta hoy y no mañana.",
+    igCta: "@marketinkagency",
+    sticky: "Empezar el sistema",
     footNote: "Esta auditoría se preparó a mano para un solo artista. No se publica, no se indexa y no se comparte.",
   },
 } as const;

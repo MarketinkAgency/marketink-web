@@ -13,18 +13,23 @@ import Ink from "@/components/Ink";
  * Una plantilla, todas las auditorías. Lo que cambia entre un artista y
  * otro vive en `lib/audits.ts`; aquí no hay una sola frase sobre nadie.
  *
- * Tres decisiones que conviene no deshacer sin pensarlo:
+ * Cuatro decisiones que conviene no deshacer sin pensarlo:
  *
  *  · `robots: noindex, nofollow` y fuera del sitemap. La página lleva el
  *    nombre y apellido de una persona y un juicio sobre su negocio. Que
  *    sea accesible con el enlace es lo que la hace cómoda de mandar; que
  *    sea encontrable en Google la volvería impublicable.
  *
- *  · Los dos botones conviven a propósito. La llamada es el camino que
- *    convierte mejor con alguien que todavía no nos conoce, pero el que
- *    ya decidió no debería tener que agendar quince minutos para poder
- *    pagarnos. El enlace de pago sale de una variable de entorno, así
- *    que se cambia desde Vercel sin tocar código.
+ *  · **La acción principal es empezar el sistema, no agendar.** Esta
+ *    auditoría se manda después de una reunión, así que quien la lee ya
+ *    nos conoce: pedirle otra llamada es retroceder un paso. El botón de
+ *    la llamada se queda como red de seguridad para el que se perdió la
+ *    reunión, y lo dice con esas palabras debajo.
+ *
+ *  · Las bandas rojas cada tres secciones. Una página de ocho mil
+ *    píxeles con un solo botón al final solo convierte al que llega al
+ *    final. La banda no repite el argumento: lo dice desde donde va el
+ *    que lee, y le da una salida sin obligarlo a terminar.
  *
  *  · El orden es el de siempre: primero lo que le pasa, después lo que
  *    le cuesta, después lo que se lleva gratis, y solo al final lo que
@@ -80,6 +85,27 @@ function Marca({ s }: { s: Estado }) {
   return <i aria-hidden className="mt-[7px] block size-2.5 shrink-0 rounded-full bg-blood" />;
 }
 
+/** La banda roja que corta la lectura. Usa `.rupture`, que es el mismo
+    recurso que rompe la portada: la auditoría no inventa un lenguaje
+    visual propio, usa el de la marca. */
+function Banda({ line, cta, href }: { line: string; cta: string; href: string }) {
+  return (
+    <section className="rupture my-4">
+      <div className="relative z-10 mx-auto flex max-w-[1180px] flex-col items-start gap-8 px-6 py-16 sm:px-10 sm:py-20 lg:flex-row lg:items-center lg:justify-between">
+        <p className="flash-type max-w-[20ch] text-[clamp(24px,3.6vw,44px)] text-white">{line}</p>
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener"
+          className="flex-none bg-white px-9 py-5 text-[15px] font-bold uppercase tracking-[0.02em] text-void transition-transform duration-300 hover:-translate-y-0.5"
+        >
+          {cta} →
+        </a>
+      </div>
+    </section>
+  );
+}
+
 export default async function AuditPage({
   params,
 }: {
@@ -100,6 +126,10 @@ export default async function AuditPage({
   });
 
   const fugas = a.puntos.filter((p) => p.s === "fuga").length;
+
+  /* Si todavía no hay enlace de pago, la banda y el botón principal
+     llevan a la llamada. Nunca a un botón muerto. */
+  const accion = plan.url || site.call;
 
   return (
     <main className="relative overflow-hidden">
@@ -134,12 +164,22 @@ export default async function AuditPage({
 
         <dl className="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-[18px] bg-white/[0.08] sm:grid-cols-4">
           {a.stats.map((s) => (
-            <div key={s.k} className="bg-void px-5 py-6">
+            <div key={s.k} className="spot bg-void px-5 py-6">
               <dt className="text-[11px] uppercase tracking-[0.14em] text-faint">{s.k}</dt>
               <dd className="mt-2 text-[26px] font-bold tabular-nums tracking-tight text-bone">{s.v}</dd>
             </div>
           ))}
         </dl>
+
+        {/* El número que resume la página, antes de que empiece a leerla. */}
+        <p className="mt-6 flex flex-wrap items-baseline gap-x-4 gap-y-1 border-l-2 border-blood pl-6 text-[15.5px] text-muted">
+          <b className="flash-type text-[clamp(30px,4vw,44px)] text-blood">{fugas}</b>
+          <span className="max-w-[46ch] leading-relaxed">
+            {es
+              ? `de los ${a.puntos.length} puntos que revisamos están perdiendo reservas ahora mismo.`
+              : `of the ${a.puntos.length} checks are leaking bookings right now.`}
+          </span>
+        </p>
 
         <div className="mt-6 rounded-[18px] px-6 py-5 ring-1 ring-white/[0.09]">
           <p className="mb-3 text-[11px] uppercase tracking-[0.14em] text-faint">{t.profileSeen}</p>
@@ -151,8 +191,9 @@ export default async function AuditPage({
         </div>
       </header>
 
-      {/* ── diagnóstico ────────────────────────────────────────── */}
-      <section className="relative mx-auto max-w-[1180px] px-6 py-24 sm:px-10">
+      {/* ── 01 · diagnóstico ───────────────────────────────────── */}
+      <section className="sec relative mx-auto max-w-[1180px] px-6 py-24 sm:px-10">
+        <span className="sec-n" aria-hidden>01</span>
         <Tag n="01">{t.verdictTag}</Tag>
         <div className="max-w-[62ch] space-y-6">
           {a.verdict.body.map((p, i) => (
@@ -163,8 +204,9 @@ export default async function AuditPage({
         </div>
       </section>
 
-      {/* ── los doce puntos ────────────────────────────────────── */}
-      <section className="relative mx-auto max-w-[1180px] px-6 pb-24 sm:px-10">
+      {/* ── 02 · los doce puntos ───────────────────────────────── */}
+      <section className="sec relative mx-auto max-w-[1180px] px-6 pb-24 sm:px-10">
+        <span className="sec-n" aria-hidden>02</span>
         <Tag n="02">{t.checksTag}</Tag>
         <h2 className="flash-type max-w-[16ch] text-[clamp(28px,4.4vw,52px)]">{t.checksTitle}</h2>
         <p className="mt-6 max-w-[58ch] text-[15px] leading-relaxed text-muted">{t.checksNote}</p>
@@ -186,7 +228,7 @@ export default async function AuditPage({
 
         <ol className="mt-12 grid gap-px overflow-hidden rounded-[18px] bg-white/[0.08]">
           {a.puntos.map((p, i) => (
-            <li key={p.k} className="flex gap-5 bg-void px-6 py-7 sm:gap-7 sm:px-9">
+            <li key={p.k} className="spot flex gap-5 bg-void px-6 py-7 sm:gap-7 sm:px-9">
               <span className="w-6 shrink-0 pt-[3px] text-[12px] font-bold tabular-nums text-faint">
                 {String(i + 1).padStart(2, "0")}
               </span>
@@ -201,8 +243,11 @@ export default async function AuditPage({
         </ol>
       </section>
 
-      {/* ── el mercado ─────────────────────────────────────────── */}
-      <section className="relative mx-auto max-w-[1180px] px-6 pb-24 sm:px-10">
+      <Banda line={t.bands[0].line} cta={t.bands[0].cta} href={accion} />
+
+      {/* ── 03 · el mercado ────────────────────────────────────── */}
+      <section className="sec relative mx-auto max-w-[1180px] px-6 py-24 sm:px-10">
+        <span className="sec-n" aria-hidden>03</span>
         <Tag n="03">{t.marketTag}</Tag>
         <div className="grid gap-5 md:grid-cols-3">
           {a.market.map((m) => (
@@ -214,8 +259,9 @@ export default async function AuditPage({
         </div>
       </section>
 
-      {/* ── lo que cuesta ──────────────────────────────────────── */}
-      <section className="relative mx-auto max-w-[1180px] px-6 pb-24 sm:px-10">
+      {/* ── 04 · lo que cuesta ─────────────────────────────────── */}
+      <section className="sec relative mx-auto max-w-[1180px] px-6 pb-24 sm:px-10">
+        <span className="sec-n" aria-hidden>04</span>
         <Tag n="04">{t.costTag}</Tag>
         <h2 className="flash-type mb-12 max-w-[18ch] text-[clamp(28px,4.4vw,52px)]">{t.costTitle}</h2>
         <AuditCost
@@ -224,15 +270,16 @@ export default async function AuditPage({
         />
       </section>
 
-      {/* ── los tres arreglos ──────────────────────────────────── */}
-      <section className="relative mx-auto max-w-[1180px] px-6 pb-24 sm:px-10">
+      {/* ── 05 · los tres arreglos ─────────────────────────────── */}
+      <section className="sec relative mx-auto max-w-[1180px] px-6 pb-24 sm:px-10">
+        <span className="sec-n" aria-hidden>05</span>
         <Tag n="05">{t.fixTag}</Tag>
         <h2 className="flash-type max-w-[17ch] text-[clamp(28px,4.4vw,52px)]">{t.fixTitle}</h2>
         <p className="mt-6 text-[15px] text-muted">{t.fixNote}</p>
 
         <div className="mt-14 space-y-5">
           {a.arreglos.map((f) => (
-            <article key={f.n} className="rounded-[22px] px-7 py-9 ring-1 ring-white/[0.09] sm:px-10">
+            <article key={f.n} className="spot rounded-[22px] px-7 py-9 ring-1 ring-white/[0.09] sm:px-10">
               <div className="flex flex-wrap items-baseline gap-x-5 gap-y-2">
                 <span className="flash-type text-[34px] text-blood">{f.n}</span>
                 <h3 className="flash-sub text-[15px] text-bone">{f.t}</h3>
@@ -286,8 +333,11 @@ export default async function AuditPage({
         </article>
       </section>
 
-      {/* ── lo que montaríamos + la venta ──────────────────────── */}
-      <section className="relative mx-auto max-w-[1180px] px-6 pb-28 sm:px-10">
+      <Banda line={t.bands[1].line} cta={t.bands[1].cta} href={accion} />
+
+      {/* ── 06 · lo que montaríamos ────────────────────────────── */}
+      <section className="sec relative mx-auto max-w-[1180px] px-6 py-24 sm:px-10">
+        <span className="sec-n" aria-hidden>06</span>
         <Tag n="06">{t.planTag}</Tag>
         <h2 className="flash-type max-w-[16ch] text-[clamp(28px,4.4vw,52px)]">{t.planTitle}</h2>
         <p className="mt-6 max-w-[58ch] text-[15px] leading-relaxed text-muted">{t.planNote}</p>
@@ -297,32 +347,65 @@ export default async function AuditPage({
             /* Con un número impar de piezas, la última dejaba media
                celda vacía y el fondo de la rejilla asomaba como si
                faltara contenido. Que ocupe las dos columnas. */
-            <li key={p.k} className="bg-void px-7 py-8 md:last:odd:col-span-2">
+            <li key={p.k} className="spot bg-void px-7 py-8 md:last:odd:col-span-2">
               <span className="text-[12px] font-bold tabular-nums text-blood">{String(i + 1).padStart(2, "0")}</span>
               <h3 className="mt-3 flash-sub text-[13.5px] text-bone">{p.k}</h3>
               <p className="mt-3 text-[14.5px] leading-[1.7] text-muted">{p.d}</p>
             </li>
           ))}
         </ol>
+      </section>
 
-        <div className="mt-16 rounded-[26px] px-7 py-12 ring-1 ring-white/[0.09] sm:px-14 sm:py-16">
-          <h2 className="flash-type text-[clamp(30px,5vw,58px)]">{t.ctaTitle}</h2>
-          <p className="mt-6 max-w-[54ch] text-[16px] leading-[1.75] text-muted">{t.ctaBody}</p>
+      {/* ── el cierre ──────────────────────────────────────────── */}
+      <section className="relative mx-auto max-w-[1180px] px-6 pb-8 sm:px-10">
+        <div className="rounded-[26px] px-7 py-12 ring-1 ring-white/[0.09] sm:px-14 sm:py-16">
+          <h2 className="flash-type max-w-[14ch] text-[clamp(32px,5.4vw,64px)]">{t.ctaTitle}</h2>
+          <p className="mt-7 max-w-[56ch] text-[16.5px] leading-[1.75] text-muted">{t.ctaBody}</p>
 
-          <div className="mt-10 flex flex-wrap items-center gap-4">
-            <a href={site.call} target="_blank" rel="noopener" className="btn btn-lg">
-              {t.ctaBook}
-            </a>
-            {plan.url && (
-              <a href={plan.url} target="_blank" rel="noopener" className="btn btn-ghost btn-lg">
+          <div className="mt-11 flex flex-col items-start gap-7 sm:flex-row sm:items-start sm:gap-10">
+            <div>
+              <a href={accion} target="_blank" rel="noopener" className="btn btn-lg">
                 {t.ctaPay}
               </a>
-            )}
+              <p className="mt-3 max-w-[30ch] text-[13px] text-faint">{t.ctaPayNote}</p>
+            </div>
+
+            {/* La llamada deja de ser la acción principal: quien lee esto
+                ya nos conoce. Se queda para el que se perdió la reunión,
+                y lo dice debajo con esas palabras. */}
+            <div>
+              <a href={site.call} target="_blank" rel="noopener" className="btn btn-ghost btn-lg">
+                {t.ctaBook}
+              </a>
+              <p className="mt-3 max-w-[30ch] text-[13px] text-faint">{t.ctaBookNote}</p>
+            </div>
           </div>
 
-          {plan.url && <p className="mt-6 text-[13.5px] text-faint">{t.ctaPayNote}</p>}
-          <p className="mt-8 max-w-[58ch] text-[14.5px] leading-relaxed text-muted">{a.cierre}</p>
+          <p className="mt-12 max-w-[58ch] text-[14.5px] leading-relaxed text-muted">{a.cierre}</p>
         </div>
+      </section>
+
+      {/* ── escríbenos por Instagram ───────────────────────────── */}
+      <section className="relative mx-auto max-w-[1180px] px-6 pb-24 sm:px-10">
+        <a
+          href={site.instagram}
+          target="_blank"
+          rel="noopener"
+          className="spot group flex flex-col gap-8 rounded-[26px] px-7 py-12 ring-1 ring-blood/30 sm:flex-row sm:items-center sm:justify-between sm:px-14"
+        >
+          <div>
+            <p className="sec-tag mb-5">
+              <b>→</b>
+              <i />
+              {t.igTag}
+            </p>
+            <h2 className="flash-type max-w-[18ch] text-[clamp(26px,3.8vw,46px)]">{t.igTitle}</h2>
+            <p className="mt-5 max-w-[52ch] text-[15px] leading-[1.7] text-muted">{t.igBody}</p>
+          </div>
+          <span className="flash-type flex-none text-[clamp(22px,3vw,34px)] text-blood transition-transform duration-500 group-hover:-translate-y-1">
+            {t.igCta}
+          </span>
+        </a>
 
         <p className="mt-12 text-[12.5px] leading-relaxed text-faint">{t.footNote}</p>
       </section>
@@ -330,7 +413,7 @@ export default async function AuditPage({
       {/* Los cupos del mes son de la agencia, no de la auditoría: se
           leen del mismo sitio que en la portada para que un artista que
           ve las dos páginas no vea dos números distintos. */}
-      <StickyCta href={site.call} label={t.sticky} lang={a.lang} spotsLabels={copy[a.lang].book} />
+      <StickyCta href={accion} label={t.sticky} lang={a.lang} spotsLabels={copy[a.lang].book} />
     </main>
   );
 }
