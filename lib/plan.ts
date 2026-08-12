@@ -30,9 +30,16 @@
  * mejor un camino que un botón roto.
  */
 
-const raw = process.env.NEXT_PUBLIC_PLAN_URL?.trim();
+/* El enlace que está vivo hoy. Va aquí y no solo en Vercel para que la
+   página funcione recién clonada, sin depender de que alguien se acuerde
+   de configurar una variable. La variable sigue mandando: si existe,
+   pisa a esta — así se cambia el precio o se apaga el botón sin tocar
+   código ni esperar un despliegue de git. */
+const POR_DEFECTO = "https://buy.stripe.com/6oU4grdE6brKg6o4uF53O00";
+
+const raw = process.env.NEXT_PUBLIC_PLAN_URL?.trim() ?? POR_DEFECTO;
 
 export const plan = {
-  /** El enlace de pago, o cadena vacía si todavía no existe. */
-  url: raw && /^https:\/\//.test(raw) ? raw : "",
+  /** El enlace de pago, o cadena vacía si se apagó a propósito. */
+  url: /^https:\/\//.test(raw) ? raw : "",
 };
