@@ -60,6 +60,13 @@ export type Audit = {
   profile: string;
   /** Fecha de la revisión, en ISO. Se muestra formateada. */
   reviewed: string;
+  /** Cuándo caduca, en ISO con hora. Lo gratuito no puede vivir para
+      siempre: si los tres arreglos siguen ahí dentro de un mes, no eran
+      un regalo, eran contenido. La fecha va en el dato y no calculada
+      sobre `reviewed` porque a veces la auditoría se manda dos días
+      después de hacerla, y el reloj tiene que empezar cuando él la
+      recibe, no cuando nosotros la escribimos. */
+  expira: string;
   stats: { k: string; v: string }[];
   bio: string[];
   verdict: { line: string; body: string[] };
@@ -70,6 +77,9 @@ export type Audit = {
   /** El regalo con dientes: una respuesta suya que hoy no está dando. */
   dm: { t: string; when: string; bad: string; good: string; why: string };
   plan: { k: string; d: string }[];
+  /** Solo para quien viene de otro oficio: compara lo que vale su hora
+      aquí y allá. Opcional — si no está, la sección no existe. */
+  ticket?: { tag: string; title: string; body: string };
   cierre: string;
 };
 
@@ -124,6 +134,26 @@ export const auditUi = {
     igBody: "Booked the call or started the system? Send us a DM so we know it's you and we start pulling your account apart today instead of tomorrow.",
     igCta: "@marketinkagency",
     sticky: "Start the system",
+    ticketHourA: "Per hour, in the barber chair",
+    ticketHourB: "Per hour, on the table",
+    ticketA: "One haircut",
+    ticketAPrice: "What you charge for a cut",
+    ticketAMin: "How long it takes you",
+    ticketB: "One tattoo",
+    ticketBPrice: "What an average piece brings in",
+    ticketBHours: "How long you sit with it",
+    ticketGap: "That's what one hour of tattooing is worth against one hour of cutting.",
+    ticketNote: "Your numbers, your arithmetic. Nobody is telling you to close the barbershop — this is what each hour you move is worth.",
+    expTag: "This audit expires in",
+    expDone: "This audit expired",
+    expUnits: { d: "d", h: "h", m: "m", s: "s" },
+    lockTitle: "The free part expired.",
+    lockBody:
+      "The three fixes and the script were yours for a week — long enough to use them, short enough to matter. The leaks they patch are still open, and there are seven of them. We close all of them, this week.",
+    lockCta: "Start the system",
+    lockAlt: "Or write to us and we'll talk about it",
+    spots: "spots left this month",
+    spotsNote: "We cap it because someone here answers your DMs by hand. When they're gone, the next one starts next month.",
     footNote: "This audit was prepared by hand for one artist. It isn't published, indexed or shared.",
   },
   es: {
@@ -169,6 +199,26 @@ export const auditUi = {
     igBody: "¿Agendaste o ya empezaste el sistema? Mándanos un mensaje para saber que eres tú y empezamos a desarmar tu cuenta hoy y no mañana.",
     igCta: "@marketinkagency",
     sticky: "Empezar el sistema",
+    ticketHourA: "La hora, en la silla",
+    ticketHourB: "La hora, en la camilla",
+    ticketA: "Un corte",
+    ticketAPrice: "Lo que cobras por un corte",
+    ticketAMin: "Lo que te toma hacerlo",
+    ticketB: "Un tatuaje",
+    ticketBPrice: "Lo que deja un tatuaje promedio",
+    ticketBHours: "Las horas que te sientas con él",
+    ticketGap: "Eso es lo que vale una hora tatuando frente a una hora cortando.",
+    ticketNote: "Tus números y tu cuenta. Nadie te está diciendo que cierres la barbería: esto es lo que vale cada hora que muevas.",
+    expTag: "Esta auditoría caduca en",
+    expDone: "Esta auditoría caducó",
+    expUnits: { d: "d", h: "h", m: "m", s: "s" },
+    lockTitle: "La parte gratis caducó.",
+    lockBody:
+      "Los tres arreglos y el guion fueron tuyos una semana: suficiente para usarlos, poco para dejarlos ahí. Las fugas que tapan siguen abiertas, y son siete. Las cerramos todas, esta semana.",
+    lockCta: "Empezar el sistema",
+    lockAlt: "O escríbenos y lo hablamos",
+    spots: "cupos libres este mes",
+    spotsNote: "Los limitamos porque tus mensajes los contesta alguien a mano. Cuando se acaban, el siguiente entra el mes que viene.",
     footNote: "Esta auditoría se preparó a mano para un solo artista. No se publica, no se indexa y no se comparte.",
   },
 } as const;
@@ -176,6 +226,116 @@ export const auditUi = {
 /* ── Las auditorías ───────────────────────────────────────────────── */
 
 export const AUDITS: Record<string, Audit> = {
+  "andy-lopez": {
+    slug: "andy-lopez",
+    lang: "es",
+    handle: "@andy_tattoo_artist",
+    name: "Andrés López",
+    studio: "Black & grey · lettering",
+    city: "Estados Unidos",
+    profile: "https://www.instagram.com/andy_tattoo_artist/",
+    reviewed: "2026-08-17",
+    expira: "2026-08-24T23:59:00-06:00",
+    stats: [
+      { k: "Publicaciones", v: "142" },
+      { k: "Seguidores", v: "443" },
+      { k: "Vistas del mejor reel", v: "1.582" },
+      { k: "Enlaces en la bio", v: "0" },
+    ],
+    bio: [
+      "tattoo artist // work in black and gray \\\\🚩 🇨🇴🇺🇸",
+      "appointment : 📩 ☎️ 3854647225",
+    ],
+
+    verdict: {
+      line: "Te ven tres veces más de lo que te siguen. Y no hay dónde tocar.",
+      body: [
+        "Entramos a tu perfil como entra un desconocido con una idea en la cabeza y dinero para gastársela. Lo primero: tu trabajo aguanta. Black and grey, lettering, retrato — se ve de qué vas en dos segundos, tienes las cinco destacadas puestas y los tres fijados usados. Eso es más de lo que hace la mayoría.",
+        "Lo segundo es el número que deberías estar mirando todos los días. Tienes 443 seguidores y tus reels van por 829, 856, 1.298 y hasta 1.582 vistas. Tres veces y media tu audiencia. Instagram ya te está enseñando a gente que no te conoce, gratis, todas las semanas.",
+        "Y cuando esa gente decide, se encuentra con esto: «appointment : 📩 ☎️» y diez dígitos escritos a pelo. Sin enlace, sin precio, sin depósito, sin saber cuánto tardas en contestar. El que quiere reservarte tiene que copiar un número a mano y esperar. Ahí se cae casi todo, y no es tu trabajo el que falla: es la puerta.",
+      ],
+    },
+
+    puntos: [
+      { k: "Un enlace en la bio", s: "fuga",
+        note: "No hay ninguno. El teléfono está escrito como diez dígitos sueltos, sin formato y sin ser un enlace: en el móvil no se puede tocar para llamar, hay que seleccionarlo y copiarlo. Es el paso más caro de tu perfil." },
+      { k: "Un camino para reservar", s: "fuga",
+        note: "Mensaje o llamada, y las dos caen en el mismo sitio: tú, cuando puedas. No hay formulario, ni calendario, ni nada que avance sin que tú estés libre." },
+      { k: "Una señal de precio", s: "fuga",
+        note: "En ninguna parte del perfil aparece un rango. El que no sabe si son 150 o 900 no pregunta: asume que no le alcanza, o pregunta a otro que sí lo dice." },
+      { k: "El depósito", s: "fuga",
+        note: "No se menciona. Sin depósito, una cita es una intención, y las intenciones no se presentan el sábado por la mañana." },
+      { k: "Cuándo respondes", s: "fuga",
+        note: "Nada le dice a nadie cuánto tardas. Para el que espera, tu silencio y un «no me interesa» se ven igual — y a las 24 horas asume el segundo." },
+      { k: "Destacadas", s: "bien",
+        note: "Cinco, con nombre: creative, processes, letters, practices, available. Esto está bien hecho y la mayoría no lo tiene. Lo único que les falta es que «available» diga precio y cómo reservar." },
+      { k: "Fijados", s: "bien",
+        note: "Los tres usados. Bien elegidos además: entra alguien nuevo y lo primero que ve es tu mejor trabajo." },
+      { k: "Diseños contra piel", s: "media",
+        note: "Media cuadrícula son dibujos en papel y media son tatuajes en piel. Los dibujos enseñan que sabes dibujar; la piel enseña que sabes tatuar, y es la que hace que alguien se imagine el suyo. Nada marca cuáles de esos diseños siguen disponibles." },
+      { k: "Reels", s: "bien",
+        note: "Once o más, y con alcance real: 1.582, 1.298, 856, 829 vistas contra 443 seguidores. Esta es tu mejor herramienta y ya está funcionando. El problema no es que no te vean." },
+      { k: "Dónde estás", s: "fuga",
+        note: "El perfil no dice tu ciudad en ninguna parte. Tu teléfono es del 385 —Utah— pero eso lo sabe alguien que se ponga a mirar códigos de área. El que quiere tatuarse cerca no puede saber si estás a diez minutos o a tres estados." },
+      { k: "Qué le pides que haga", s: "media",
+        note: "«appointment : 📩 ☎️» son dos símbolos y ninguna instrucción. «Mira lo disponible y reserva» le dice qué va a pasar cuando toque." },
+      { k: "Se entiende qué tatúas", s: "bien",
+        note: "Sí. Black and grey dicho en la bio y sostenido por toda la cuadrícula: lettering, retrato, religioso, chicano. Esto es lo más difícil de construir y ya lo tienes." },
+    ],
+
+    market: [
+      { t: "Tu alcance ya vale más que tu audiencia",
+        body: "1.582 vistas en un reel con 443 seguidores significa que Instagram te está regalando desconocidos cada semana. Esa gente llega, mira y se va sin dejar rastro, porque no hay un solo sitio donde dejar el dedo." },
+      { t: "Sigues a 754 y te siguen 443",
+        body: "Ese desbalance lo lee cualquiera que abra tu perfil, y dice «este busca clientes» en vez de «a este lo buscan». No es vanidad: es la primera impresión de alguien que está decidiendo si eres el artista al que le pide una cita." },
+      { t: "Vienes de la silla, y eso juega a favor",
+        body: "Un barbero ya sabe lo que casi ningún tatuador aprende nunca: agenda, cliente que vuelve, manejar a alguien que está sentado frente a ti una hora. Lo que cambia no es el oficio, es el ticket y la forma de llenar el calendario." },
+    ],
+
+    arreglos: [
+      { n: "01",
+        t: "Pon una puerta donde ahora hay diez dígitos",
+        body: "Cualquier cosa sirve: un Linktree, un formulario de Google, un WhatsApp con enlace directo. Lo que importa es que después de «lo quiero» venga un toque y no una tarea. Y reescribe la bio para que el toque tenga motivo. Aquí está entera, lista para pegar:",
+        copy: "Black & grey · lettering · retrato\nSalt Lake City, Utah\nFlash disponible + custom · el depósito aparta tu fecha\n↓ Mira lo disponible y reserva",
+        copyNote: "Cambia la ciudad si no es esa. Fíjate en lo que se movió: apareció dónde estás, el depósito se dice antes de que nadie tenga que preguntarlo, y la última línea apunta a algo en vez de pedir un mensaje." },
+      { n: "02",
+        t: "Arregla «available», que ya la tienes",
+        body: "De tus cinco destacadas, «available» es la única que puede cobrar, y hoy solo muestra diseños. Ponle tres cosas: el precio o el rango de cada pieza, cuánto es el depósito, y una última historia que diga «para reservar, toca el enlace de la bio».\n\nEs media hora de trabajo sobre algo que ya construiste, y convierte una galería en una tienda." },
+      { n: "03",
+        t: "Escribe tu ciudad, hoy",
+        body: "En la bio y en los pies de tus próximos reels. Suena a nada y es lo que separa a un desconocido que está a quince minutos de ti, de un desconocido que nunca va a poder ir. Tienes 1.500 vistas por reel: una parte de esa gente vive cerca y ahora mismo no tiene forma de saberlo." },
+    ],
+
+    dm: {
+      t: "Y la respuesta que convierte «¿cuánto vale?» en una cita",
+      when: "Cuando alguien abre con «¿cuánto me cobras por algo así?»",
+      bad: "Depende del diseño 🙏 mándame la idea y te digo",
+      good: "el tamaño y la zona mueven el precio mucho más que el diseño. ¿dónde te lo vas a poner y de qué tamaño lo estás pensando? con eso te doy un número real y no un rango.",
+      why: "La primera le devuelve el trabajo a él y termina la conversación con educación. La segunda pide las dos cosas que de verdad necesitas para cotizar, y le promete algo a cambio: un número real. Casi todo el mundo la contesta, y el que no la contesta no iba a reservar." },
+
+    ticket: {
+      tag: "Lo que vale tu hora",
+      title: "La silla y la camilla no pagan igual.",
+      body: "Vienes de cortar y quieres vivir de tatuar. Esta no es una comparación de precios —un corte y un tatuaje no se comparan— sino de lo que vale una hora de tu tiempo en cada oficio. Pon tus números: nosotros no los sabemos y tú sí.",
+    },
+
+    plan: [
+      { k: "La puerta",
+        d: "Enlace de reserva, un formulario que hace las tres preguntas correctas y un depósito que aparta la fecha. La fuga de arriba, cerrada bien y no tapada." },
+      { k: "Alguien contestando",
+        d: "Tus mensajes respondidos en minutos y no por la noche, con tu voz y tus precios. Que estar tatuando deje de costarte el siguiente tatuaje." },
+      { k: "El seguimiento",
+        d: "El que pregunta y se calla es la pila de dinero más grande de tu perfil, y nadie la está tocando. Esta es la parte que paga el resto." },
+      { k: "Los reels, dirigidos",
+        d: "Ya te funcionan sin ayuda. Con intención detrás —qué grabar, qué decir al final, a qué mandarlos— ese alcance deja de ser aplausos y empieza a ser agenda." },
+      { k: "Tu ciudad, en el mapa",
+        d: "Ubicación, etiquetas y pauta local para que las 1.500 vistas dejen de ser gente de cualquier parte y empiecen a ser gente que puede llegar a tu silla." },
+    ],
+
+    cierre:
+      "Si nos sentamos y no vemos una oportunidad clara en tu caso, te lo decimos en la llamada. Pasa, y es mejor final para los dos que el otro.",
+  },
+
   "josh-g-salem": {
     slug: "josh-g-salem",
     lang: "en",
@@ -184,7 +344,8 @@ export const AUDITS: Record<string, Audit> = {
     studio: "Vortex Tattoo Club",
     city: "Salem, Oregon",
     profile: "https://www.instagram.com/josh.g_tattoo/",
-    reviewed: "2026-08-12",
+    reviewed: "2026-08-13",
+    expira: "2026-08-20T23:59:00-07:00",
     stats: [
       { k: "Posts", v: "77" },
       { k: "Followers", v: "279" },

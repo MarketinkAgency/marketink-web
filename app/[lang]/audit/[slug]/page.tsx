@@ -6,6 +6,9 @@ import { plan } from "@/lib/plan";
 import AuditCost from "@/components/AuditCost";
 import StickyCta from "@/components/StickyCta";
 import Ink from "@/components/Ink";
+import AuditExpiry from "@/components/AuditExpiry";
+import AuditTicket from "@/components/AuditTicket";
+import { freeSpots } from "@/lib/capacity";
 
 /**
  * LA ENTREGA DE LA AUDITORÍA
@@ -131,9 +134,19 @@ export default async function AuditPage({
      llevan a la llamada. Nunca a un botón muerto. */
   const accion = plan.url || site.call;
 
+  /* Cupos libres del mes, del mismo sitio que la portada. */
+  const cupos = freeSpots();
+
   return (
-    <main className="relative overflow-hidden">
+    <main className="relative overflow-hidden pt-[46px]">
       <Ink />
+
+      {/* El reloj. Fijo arriba, visible en todo el scroll. */}
+      <AuditExpiry
+        expira={a.expira}
+        lang={a.lang}
+        labels={{ tag: t.expTag, done: t.expDone, cta: t.ctaPay, units: t.expUnits }}
+      />
 
       {/* ── cabecera ───────────────────────────────────────────── */}
       <header className="relative mx-auto max-w-[1180px] px-6 pt-14 sm:px-10 sm:pt-20">
@@ -259,6 +272,25 @@ export default async function AuditPage({
         </div>
       </section>
 
+      {/* ── 03b · la hora de un oficio contra la del otro ───────
+          Solo existe si la auditoría lo trae. Un tatuador que siempre
+          ha tatuado no tiene nada que comparar. */}
+      {a.ticket && (
+        <section className="sec relative mx-auto max-w-[1180px] px-6 pb-24 sm:px-10">
+          <Tag n="+">{a.ticket.tag}</Tag>
+          <h2 className="flash-type max-w-[18ch] text-[clamp(28px,4.4vw,52px)]">{a.ticket.title}</h2>
+          <p className="mt-6 mb-12 max-w-[58ch] text-[15px] leading-relaxed text-muted">{a.ticket.body}</p>
+          <AuditTicket
+            lang={a.lang}
+            labels={{
+              aTitle: t.ticketA, aPrice: t.ticketAPrice, aMin: t.ticketAMin,
+              bTitle: t.ticketB, bPrice: t.ticketBPrice, bHours: t.ticketBHours,
+              hourA: t.ticketHourA, hourB: t.ticketHourB, gap: t.ticketGap, note: t.ticketNote,
+            }}
+          />
+        </section>
+      )}
+
       {/* ── 04 · lo que cuesta ─────────────────────────────────── */}
       <section className="sec relative mx-auto max-w-[1180px] px-6 pb-24 sm:px-10">
         <span className="sec-n" aria-hidden>04</span>
@@ -277,7 +309,8 @@ export default async function AuditPage({
         <h2 className="flash-type max-w-[17ch] text-[clamp(28px,4.4vw,52px)]">{t.fixTitle}</h2>
         <p className="mt-6 text-[15px] text-muted">{t.fixNote}</p>
 
-        <div className="mt-14 space-y-5">
+        {/* Lo único que caduca de la página: lo que se llevaba gratis. */}
+        <div className="expira-oculto mt-14 space-y-5">
           {a.arreglos.map((f) => (
             <article key={f.n} className="spot rounded-[22px] px-7 py-9 ring-1 ring-white/[0.09] sm:px-10">
               <div className="flex flex-wrap items-baseline gap-x-5 gap-y-2">
@@ -306,7 +339,7 @@ export default async function AuditPage({
         </div>
 
         {/* el cuarto regalo: la respuesta que hoy no está dando */}
-        <article className="mt-5 rounded-[22px] px-7 py-9 ring-1 ring-white/[0.09] sm:px-10">
+        <article className="expira-oculto mt-5 rounded-[22px] px-7 py-9 ring-1 ring-white/[0.09] sm:px-10">
           <p className="sec-tag mb-5">
             <b>+</b>
             <i />
@@ -331,6 +364,29 @@ export default async function AuditPage({
           </div>
           <p className="mt-6 max-w-[64ch] text-[14.5px] leading-[1.7] text-muted">{a.dm.why}</p>
         </article>
+
+        {/* Aparece cuando el reloj llega a cero. Sin esto, la cuenta
+            atrás sería una amenaza que no se cumple, y eso enseña que
+            nuestros plazos no significan nada. */}
+        <div className="expira-aviso mt-8">
+          <div className="rounded-[22px] px-7 py-11 ring-1 ring-blood/40 sm:px-12">
+            <h3 className="flash-type max-w-[16ch] text-[clamp(26px,3.6vw,44px)]">{t.lockTitle}</h3>
+            <p className="mt-6 max-w-[58ch] text-[15.5px] leading-[1.75] text-muted">{t.lockBody}</p>
+            <div className="mt-9 flex flex-wrap items-center gap-5">
+              <a href={accion} target="_blank" rel="noopener" className="btn">
+                {t.lockCta}
+              </a>
+              <a
+                href={site.instagram}
+                target="_blank"
+                rel="noopener"
+                className="text-[13.5px] text-faint underline underline-offset-4 hover:text-bone"
+              >
+                {t.lockAlt}
+              </a>
+            </div>
+          </div>
+        </div>
       </section>
 
       <Banda line={t.bands[1].line} cta={t.bands[1].cta} href={accion} />
@@ -357,7 +413,7 @@ export default async function AuditPage({
       </section>
 
       {/* ── el cierre ──────────────────────────────────────────── */}
-      <section className="relative mx-auto max-w-[1180px] px-6 pb-8 sm:px-10">
+      <section id="empezar" className="relative mx-auto max-w-[1180px] px-6 pb-8 sm:px-10 scroll-mt-[70px]">
         <div className="rounded-[26px] px-7 py-12 ring-1 ring-white/[0.09] sm:px-14 sm:py-16">
           <h2 className="flash-type max-w-[14ch] text-[clamp(32px,5.4vw,64px)]">{t.ctaTitle}</h2>
           <p className="mt-7 max-w-[56ch] text-[16.5px] leading-[1.75] text-muted">{t.ctaBody}</p>
@@ -380,6 +436,19 @@ export default async function AuditPage({
               <p className="mt-3 max-w-[30ch] text-[13px] text-faint">{t.ctaBookNote}</p>
             </div>
           </div>
+
+          {/* Los cupos del mes. Salen del mismo sitio que en la portada
+              para que quien vea las dos páginas no lea dos números
+              distintos, y son de verdad: los pone Nick a mano. */}
+          {cupos > 0 && (
+            <div className="mt-12 border-l-2 border-blood pl-6">
+              <p className="flex flex-wrap items-baseline gap-x-3">
+                <b className="flash-type text-[clamp(28px,3.6vw,40px)] text-blood">{cupos}</b>
+                <span className="text-[15px] uppercase tracking-[0.1em] text-bone">{t.spots}</span>
+              </p>
+              <p className="mt-3 max-w-[52ch] text-[13.5px] leading-relaxed text-faint">{t.spotsNote}</p>
+            </div>
+          )}
 
           <p className="mt-12 max-w-[58ch] text-[14.5px] leading-relaxed text-muted">{a.cierre}</p>
         </div>
