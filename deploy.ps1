@@ -70,9 +70,17 @@ Aviso "Commit $sha guardado en GitHub"
 # El despliegue se hace aqui, explicitamente. El webhook de GitHub puede
 # hacerlo tambien, y entonces sobra un build; eso cuesta un minuto. No
 # hacerlo cuando el webhook falla cuesta una entrega a un cliente.
+# El "--yes" que va ANTES de "vercel" es de npx, y responde por ti a
+# "Need to install the following packages... Ok to proceed?". El que va
+# despues es de Vercel, para que no pregunte por el proyecto.
+#
+# Y la salida se muestra mientras corre, no despues. Guardarla en una
+# variable la hacia invisible, asi que cuando npx preguntaba algo la
+# pregunta quedaba escondida y el script parecia colgado cuando en
+# realidad estaba esperando una tecla. Tee-Object hace las dos cosas:
+# la imprime y la guarda para poder sacar la URL al final.
 Paso "Desplegando a produccion"
-$salida = npx vercel --prod --yes 2>&1
-$salida | ForEach-Object { Write-Host $_ }
+npx --yes vercel --prod --yes 2>&1 | Tee-Object -Variable salida
 if ($LASTEXITCODE -ne 0) { Morir "FALLO EL DESPLIEGUE. Lo de arriba sigue sin publicarse." }
 
 $url = ($salida | Select-String -Pattern "https://[^\s]+\.vercel\.app" -AllMatches |

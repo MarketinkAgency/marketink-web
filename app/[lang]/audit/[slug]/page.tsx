@@ -130,9 +130,15 @@ export default async function AuditPage({
 
   const fugas = a.puntos.filter((p) => p.s === "fuga").length;
 
-  /* Si todavía no hay enlace de pago, la banda y el botón principal
-     llevan a la llamada. Nunca a un botón muerto. */
-  const accion = plan.url || site.call;
+  /* El enlace de pago de esta auditoría, si tiene uno propio.
+     Un tatuador en Bogotá y uno en Salt Lake City no pueden mandarse al
+     mismo cobro: la cifra correcta en dólares es una cifra absurda en
+     pesos, y un precio absurdo no se negocia, se cierra la pestaña. Por
+     eso el enlace puede venir en el dato de cada auditoría.
+
+     Si no lo tiene, cae al enlace general; y si tampoco hay, a la
+     llamada. Nunca a un botón muerto. */
+  const accion = a.planUrl || plan.url || site.call;
 
   /* Cupos libres del mes, del mismo sitio que la portada. */
   const cupos = freeSpots();

@@ -77,6 +77,12 @@ export type Audit = {
   /** El regalo con dientes: una respuesta suya que hoy no está dando. */
   dm: { t: string; when: string; bad: string; good: string; why: string };
   plan: { k: string; d: string }[];
+  /** El enlace de pago de este artista, cuando el general no sirve.
+      El precio de un estudio en Bogotá y el de uno en Utah no son el
+      mismo número, y tampoco la misma moneda: mandar a un colombiano a
+      un cobro en dólares no es un detalle de formato, es pedirle otra
+      cifra. Opcional — sin esto se usa el enlace general de lib/plan.ts. */
+  planUrl?: string;
   /** Solo para quien viene de otro oficio: compara lo que vale su hora
       aquí y allá. Opcional — si no está, la sección no existe. */
   ticket?: { tag: string; title: string; body: string };
@@ -238,6 +244,9 @@ export const AUDITS: Record<string, Audit> = {
     profile: "https://www.instagram.com/bykolyn/",
     reviewed: "2026-08-24",
     expira: "2026-08-31T23:59:00-05:00",
+    /* Cobro para Colombia. El enlace general está en dólares y a un
+       precio pensado para Estados Unidos. */
+    planUrl: "https://buy.stripe.com/14AdR1fMe8fyg6od1b53O02",
     stats: [
       { k: "Publicaciones", v: "384" },
       { k: "Seguidores", v: "12.871" },
@@ -253,22 +262,23 @@ export const AUDITS: Record<string, Audit> = {
     ],
 
     verdict: {
-      line: "El primer botón de tu bio vende un regalo del Día del Padre. Estamos a 24 de agosto.",
+      line: "66.681 vistas en 26 reels. Y una sola puerta, tapada por un bono de junio.",
       body: [
-        "Entramos a tu perfil como entra una desconocida con una idea en la cabeza y con con qué pagarla. Y lo primero hay que decirlo claro: tú no tienes un problema de trabajo ni de audiencia. Línea fina y microrealismo de verdad, 384 publicaciones, ocho destacadas con nombre, los tres fijados usados y la ciudad escrita en la bio. Tienes hasta lo que casi ningún tatuador tiene: dominio propio, bykolyn.com, con tu nombre y bien hecho.",
-        "El alcance tampoco es el problema. Medimos tus últimos 26 reels: 66.681 vistas entre todos, con uno en 12.200 y otro en 8.859. Ese de 12.200 vio casi tanta gente como seguidores tienes. Instagram te está poniendo delante de desconocidos todas las semanas, gratis.",
-        "El problema empieza en las tres flechas del final de tu bio. Llevan a un Linktree con dos botones. El de arriba —el primero que ve todo el mundo— dice «Compra tu bono de regalo para el día del Padre». En Colombia el Día del Padre fue el 21 de junio: hace nueve semanas. El de abajo es un WhatsApp que se abre en blanco, sin una sola palabra escrita, y ahí la desconocida tiene que inventarse cómo empezar.",
-        "Y tu web, la buena, no está enlazada desde ninguna parte. Para llegar a bykolyn.com hay que tocar el botón del bono caducado. Cuando alguien llega, encuentra 6.666 píxeles de tatuajes preciosos y ni un formulario, ni un correo, ni un teléfono, ni un botón de agenda. Un solo enlace en toda la página: otra vez el bono. La vitrina está impecable. Lo que no hay es puerta.",
+        "Entramos a tu perfil como entra una desconocida con una idea en la cabeza y dinero para pagarla. Y lo primero hay que decirlo claro, porque el resto de esta página va a sonar duro: tú no tienes un problema de trabajo ni de audiencia. Línea fina y microrealismo de verdad, 384 publicaciones, ocho destacadas con nombre, los tres fijados usados y la ciudad escrita en la bio. Tienes hasta lo que casi ningún tatuador tiene: dominio propio, bykolyn.com, con tu nombre y bien hecho.",
+        "El alcance tampoco es el problema. Medimos tus últimos 26 reels: 66.681 vistas entre todos, con uno en 12.200 y otro en 8.859. A ese de 12.200 lo vio casi tanta gente como seguidores tienes. Instagram te está poniendo delante de desconocidos todas las semanas, gratis, y eso no lo puede comprar nadie.",
+        "El problema es lo que pasa después. Toda esa gente termina en el mismo sitio: las tres flechas del final de tu bio. Llevan a un Linktree con exactamente dos botones. El de arriba —el primero que ve todo el mundo— dice «Compra tu bono de regalo para el día del Padre». En Colombia el Día del Padre fue el 21 de junio: hace nueve semanas. El de abajo es un WhatsApp que se abre en blanco, sin una sola palabra escrita, y ahí la desconocida que venía decidida tiene que ponerse a redactar.",
+        "Y tu web, la buena, no está enlazada desde ninguna parte. Para llegar a bykolyn.com hay que entrar por el botón del bono caducado. Cuando alguien llega, encuentra una galería que baja y baja, preciosa, y ni un formulario, ni un correo, ni un teléfono, ni un botón de agenda. Un solo enlace en toda la página: otra vez el bono.",
+        "Ese es el resumen. Tienes montada la parte que cuesta años —el trabajo, la audiencia, el alcance, el dominio— y la parte que decide si cobras o no está sin montar. La vitrina es de las mejores que hemos visto. Lo que no hay es puerta.",
       ],
     },
 
     puntos: [
       { k: "Un enlace en la bio", s: "media",
-        note: "Hay uno, y eso ya te pone por delante de la mayoría. Pero va a un Linktree en vez de a tu web, así que todo el que quiere algo tuyo paga un toque de peaje antes de llegar a cualquier sitio. Y el Linktree gratuito remata con «Únete a ByKolynTattooArtist en Linktree» y enlaces a otros creadores: tu página de bio le hace publicidad a Linktree y a gente que no eres tú." },
+        note: "Hay uno, y eso ya te pone por delante de la mayoría. Pero va a un Linktree en vez de a tu web, así que todo el que quiere algo tuyo gasta un toque de más antes de llegar a ninguna parte. Y el Linktree gratuito remata con «Únete a ByKolynTattooArtist en Linktree» y enlaces a otros creadores: tu página de bio le hace publicidad a Linktree y a gente que no eres tú." },
       { k: "Un camino para reservar", s: "fuga",
-        note: "El único es «Agenda tu cita por WhatsApp», y está en segundo lugar, debajo del bono. Abre un chat vacío: sin mensaje preescrito, sin preguntas, sin nada que le diga qué pasa ahora. Lo que ella tiene que hacer para reservarte es redactar. Ahí se cae el que dudaba." },
+        note: "El único es «Agenda tu cita por WhatsApp», y está en segundo lugar, debajo del bono. Abre un chat vacío: sin mensaje preescrito, sin preguntas, sin nada que le diga qué pasa ahora. Lo que tiene que hacer para reservarte es redactar. Ahí se cae la que dudaba." },
       { k: "Una señal de precio", s: "fuga",
-        note: "En ninguna parte —ni bio, ni destacadas, ni web— aparece un rango. Con microrealismo, que la gente sabe que es caro, el silencio no da misterio: da miedo. La que no sabe si son 300 mil o dos millones no pregunta, asume lo peor y se va con otra que sí lo dice." },
+        note: "En ninguna parte —ni bio, ni destacadas, ni web— aparece un rango. Con microrealismo —que todo el mundo sabe que es caro— el silencio no da misterio: da miedo. La que no sabe si son 300 mil o dos millones de pesos no pregunta: asume lo peor y se va con otra que sí lo dice." },
       { k: "El depósito", s: "fuga",
         note: "No se menciona en ningún sitio. Sin depósito la cita es una intención, y las intenciones no aparecen el sábado a las diez. Con tu volumen, cada hueco que se cae es una hora de camilla que ya no vuelve." },
       { k: "Cuándo respondes", s: "fuga",
@@ -280,7 +290,7 @@ export const AUDITS: Record<string, Audit> = {
       { k: "Diseños contra piel", s: "bien",
         note: "Casi toda la cuadrícula es tinta en piel, no dibujos en papel. La piel es la que hace que alguien se imagine el suyo, y además tienes la destacada «Diseños disponibles» para lo que está libre. Bien resuelto." },
       { k: "Reels", s: "bien",
-        note: "26 medidos, 66.681 vistas entre todos. El mejor en 12.200, el segundo en 8.859, y la mayoría entre 1.000 y 3.500. Publicaste hace dos días. Tu motor de atención funciona solo: el problema está detrás de él, no delante." },
+        note: "26 medidos, 66.681 vistas entre todos. El mejor en 12.200, el segundo en 8.859, y la mayoría entre 1.000 y 3.500. Publicaste la semana pasada. Tu motor de atención funciona solo: el problema está detrás de él, no delante." },
       { k: "Dónde estás", s: "bien",
         note: "«📍Bogotá» en la primera línea, y «Agenda Agosto Bogotá» debajo. Cualquiera sabe en dos segundos si puede llegar a ti. La mitad de los perfiles que revisamos no lo dicen." },
       { k: "Qué le pides que haga", s: "fuga",
@@ -301,9 +311,9 @@ export const AUDITS: Record<string, Audit> = {
     arreglos: [
       { n: "01",
         t: "Cambia el orden del Linktree. Dos minutos.",
-        body: "«Agenda tu cita» arriba, el bono debajo y sin la fecha del Día del Padre. Ahora mismo lo primero que ve tu clienta nueva es una promoción caducada, y eso no la manda a otro perfil por el bono: la manda porque le dice, sin querer, que aquí nadie está pendiente.\n\nDe paso, cambia el nombre del segundo botón por algo que no dependa del calendario:",
+        body: "«Agenda tu cita» arriba, el bono debajo y sin la fecha del Día del Padre. Ahora mismo lo primero que ve una clienta nueva es una promoción vencida. No la pierdes por el bono en sí: la pierdes porque ese bono le dice, sin que tú quieras, que aquí hace rato que nadie toca nada.\n\nDe paso, cámbiale el nombre al botón del bono por uno que no dependa del calendario:",
         copy: "Regala un tatuaje · Bono de regalo",
-        copyNote: "Sirve para cumpleaños, navidad, aniversarios y el Día del Padre del año que viene. Un botón que no caduca es un botón que no tienes que acordarte de apagar." },
+        copyNote: "Sirve para cumpleaños, Navidad, aniversarios y el Día del Padre del año que viene. Un botón que no caduca es un botón que no tienes que acordarte de apagar." },
       { n: "02",
         t: "Que tu WhatsApp se abra escrito, no en blanco",
         body: "Hoy tu enlace abre un chat vacío y la clienta tiene que redactar desde cero. Ese momento —la pantalla en blanco— es donde se cae la que estaba dudando. WhatsApp deja precargar el mensaje: cambias el enlace del Linktree por este y el chat se abre con las palabras ya puestas.",
@@ -321,7 +331,7 @@ export const AUDITS: Record<string, Audit> = {
       when: "Cuando ya hablaron del diseño, del tamaño y del precio, y ella escribe «listo, déjame lo pienso y te escribo»",
       bad: "Claro! Aquí estaré 💕 cualquier cosa me avisas",
       good: "tranquila, tómate el tiempo — esto se lleva puesto toda la vida y hay que estar segura. te cuento cómo va mi agenda: esta semana me quedan el jueves 4pm y el sábado 11am. te los aparto 48 horas sin compromiso. si dentro de ese rato dices que sí, el depósito de $XX aparta la tuya y ya no me la quita nadie. si no, los suelto y seguimos hablando cuando quieras.",
-      why: "La primera es amable y termina la conversación: le deja todo el trabajo a ella y tú no vuelves a saber nada. La segunda le da la razón —de verdad hay que pensárselo— y al mismo tiempo pone dos cosas que antes no existían: fechas concretas y un plazo. No la presiona, la ayuda a decidir. Y la que no contesta a esto no iba a reservar nunca; lo único que cambia es que ahora lo sabes hoy en vez de dentro de tres semanas." },
+      why: "La primera es amable y termina la conversación: le deja todo el trabajo a ella y tú no vuelves a saber nada. La segunda le da la razón —de verdad hay que pensárselo— y al mismo tiempo pone dos cosas que antes no existían: fechas concretas y un plazo. No la presiona, la ayuda a decidir. Y la que no contesta a esto no iba a reservar nunca; lo único que cambia es que lo sabes hoy en vez de dentro de tres semanas.\n\nCambia las dos fechas y el monto del depósito por los tuyos antes de usarlo." },
 
     plan: [
       { k: "La puerta, en tu web y no en Linktree",
@@ -337,7 +347,7 @@ export const AUDITS: Record<string, Audit> = {
     ],
 
     cierre:
-      "Si nos sentamos y no vemos una oportunidad clara en tu caso, te lo decimos en la misma llamada. Pasa, y es mejor final para las dos que el otro.",
+      "Si nos sentamos y no vemos una oportunidad clara en tu caso, te lo decimos en la misma llamada. Pasa, y es mejor para las dos que descubrirlo dentro de tres meses.",
   },
   "andy-lopez": {
     slug: "andy-lopez",
