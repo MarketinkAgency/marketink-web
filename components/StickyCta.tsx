@@ -18,7 +18,7 @@ export default function StickyCta({
   href: string;
   label: string;
   lang: Lang;
-  spotsLabels: { intake: string; remaining: string };
+  spotsLabels: { intake: string; remaining: string; remaining1: string };
 }) {
   const [spots, setSpots] = useState<{ free: number; month: string } | null>(null);
 
@@ -51,7 +51,7 @@ export default function StickyCta({
 
   const line =
     spots && spots.free > 0
-      ? `${spots.free} ${spotsLabels.remaining} · ${spotsLabels.intake.replace("{mes}", spots.month).replace("{month}", spots.month)}`
+      ? `${spots.free} ${spots.free === 1 ? spotsLabels.remaining1 : spotsLabels.remaining} · ${spotsLabels.intake.replace("{mes}", spots.month).replace("{month}", spots.month)}`
       : null;
 
   return (

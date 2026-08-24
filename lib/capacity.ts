@@ -24,9 +24,14 @@ function num(v: string | undefined, fallback: number) {
   return Number.isFinite(n) && n >= 0 ? n : fallback;
 }
 
+/* Los valores de hoy, 24 de agosto de 2026: cinco al mes, cuatro
+   cerrados. Van aquí y no solo en Vercel para que el número por defecto
+   sea el cierto y no uno inventado — un valor de relleno optimista es
+   exactamente la mentira que este archivo intenta evitar. La variable de
+   entorno sigue mandando por encima. */
 export const capacity = {
-  perMonth: num(process.env.NEXT_PUBLIC_SPOTS_TOTAL, 6),
-  taken: num(process.env.NEXT_PUBLIC_SPOTS_TAKEN, 0),
+  perMonth: num(process.env.NEXT_PUBLIC_SPOTS_TOTAL, 5),
+  taken: num(process.env.NEXT_PUBLIC_SPOTS_TAKEN, 4),
 };
 
 /** Cupos libres, nunca por debajo de 0 ni por encima del total. */

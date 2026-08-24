@@ -117,6 +117,14 @@ export const copy = {
       d: "Casi todos los tatuadores tienen lo primero. Casi ninguno tiene lo segundo. Y sin lo segundo, lo tercero no llega.",
       word: "DEPÓSITO",
     },
+
+    /* Las bandas de acción: una detrás de la cifra que pierde, otra
+       detrás de la prueba de que a otro le funcionó. Son los dos
+       momentos en los que alguien decide. */
+    bandas: [
+      { line: "Esa cifra se repite cada mes que lo dejas igual.", cta: "Agenda los 15 minutos" },
+      { line: "Eso no fue suerte. Fue un sistema, y se instala.", cta: "Quiero el mío" },
+    ],
     assets: {
       n: "04",
       tag: "Qué se instala",
@@ -182,6 +190,7 @@ export const copy = {
       free: "Sin costo",
       dur: "15 minutos",
       noPitch: "Si no vemos una oportunidad clara, te lo decimos en la misma llamada.",
+      priceNote: "En esta página no hay precio porque no cobramos igual a un artista independiente que a un estudio de tres sillas. Sale de tu volumen, tu ciudad y cuánto del trabajo llevamos nosotros. La cifra exacta te la damos en la llamada.",
     },
     consent: {
       title: "Cookies",
@@ -309,6 +318,7 @@ export const copy = {
       title: "Lo que todo tatuador pregunta antes de empezar.",
       items: [
         { q: "¿Qué hace exactamente MarketINK para un tatuador?", a: "Construimos y gestionamos tus campañas pagadas enfocadas en generar consultas por Instagram, e instalamos el sistema que convierte esas consultas en citas: guiones de respuesta, calificación del proyecto, secuencias de seguimiento, flujo de agendamiento y conversación de depósito. La publicidad es la puerta. El sistema es lo que llena la agenda." },
+        { q: "¿Cuánto cuesta?", a: "No publicamos una cifra porque no cobramos igual a un artista independiente que a un estudio con tres sillas y setenta mensajes al día. El presupuesto sale de tu volumen, tu ciudad y cuánto del trabajo llevamos nosotros. En la llamada te damos la cifra exacta, y si no encaja te lo decimos ahí mismo en vez de hacerte perder una semana." },
         { q: "¿Qué tan rápido puedo empezar a recibir consultas?", a: "Las primeras suelen aparecer en las primeras semanas después del lanzamiento. Lo que toma tiempo no es generar mensajes: es aprender cuáles de esos mensajes se convierten en depósitos en tu ciudad y con tu estilo." },
         { q: "¿Cuánto debería invertir en publicidad?", a: "Depende de tu ciudad y tu competencia. Con un presupuesto muy bajo el algoritmo no consigue datos suficientes para optimizar y el sistema nunca aprende. En la auditoría te damos un rango realista según tu ubicación, tu estilo y tu ticket promedio." },
         { q: "¿Quién responde los mensajes de Instagram?", a: "Lo definimos contigo. Puede responder tu equipo con nuestros guiones, podemos responder nosotros, o puede apoyarse en automatización para la primera respuesta y el seguimiento. Lo que no cambia es el proceso: calificar, agendar, seguir." },
@@ -325,10 +335,15 @@ export const copy = {
       loading: "Cargando el calendario…",
       fallback: "Abrir el calendario",
       intake: "Entrada de {mes}",
+      /* Singular aparte: «1 cupos disponibles» delata que el número es
+         una plantilla y no una cuenta real, justo en el sitio donde más
+         importa que parezca de verdad — porque lo es. */
       remaining: "cupos disponibles",
+      remaining1: "cupo disponible",
       filled: "ocupado",
       open: "libre",
       days: "Cierra en {d} días.",
+      days1: "Cierra mañana.",
       closedT: "Entrada de {mes} cerrada",
       closedS: "Escríbenos y entras a la lista de {sig}.",
     },
@@ -448,6 +463,11 @@ export const copy = {
       d: "Almost every tattoo artist has the first. Almost none have the second. And without the second, the third never comes.",
       word: "DEPOSIT",
     },
+
+    bandas: [
+      { line: "That number repeats every month you leave it alone.", cta: "Book the 15 minutes" },
+      { line: "That wasn't luck. It was a system, and it gets installed.", cta: "I want mine" },
+    ],
     assets: {
       n: "04",
       tag: "What gets installed",
@@ -513,6 +533,7 @@ export const copy = {
       free: "No cost",
       dur: "15 minutes",
       noPitch: "If we don't see a clear opportunity, we'll tell you on the call.",
+      priceNote: "There's no price on this page because we don't charge an independent artist what we charge a three-chair studio. It comes from your volume, your city and how much of the work we carry. You get the exact figure on the call.",
     },
     consent: {
       title: "Cookies",
@@ -640,6 +661,7 @@ export const copy = {
       title: "What every artist asks before starting.",
       items: [
         { q: "What exactly does MarketINK do for tattoo artists?", a: "We build and manage your paid campaigns focused on generating Instagram inquiries, and we install the system that turns those inquiries into appointments: response scripts, project qualification, follow-up sequences, booking flow and deposit conversation. Ads are the door. The system is what fills the calendar." },
+        { q: "What does it cost?", a: "We don't publish a number because we don't charge an independent artist what we charge a three-chair studio fielding seventy messages a day. The budget comes from your volume, your city and how much of the work we carry. On the call you get the exact figure — and if it doesn't fit, we tell you right there instead of costing you a week." },
         { q: "How quickly can I start receiving inquiries?", a: "First inquiries usually appear within the first weeks after launch. What takes time isn't generating messages — it's learning which of those messages turn into deposits in your city, with your style." },
         { q: "How much should I invest in advertising?", a: "It depends on your city and your competition. On a very small budget the algorithm never gets enough data to optimize and the system never learns. On the audit we give you a realistic range based on your location, style and average ticket." },
         { q: "Who replies to the Instagram messages?", a: "We define it with you. Your team can reply using our scripts, we can reply, or automation can handle the first response and follow-up. What doesn't change is the process: qualify, book, follow up." },
@@ -657,9 +679,11 @@ export const copy = {
       fallback: "Open the calendar",
       intake: "{month} intake",
       remaining: "spots remaining",
+      remaining1: "spot remaining",
       filled: "filled",
       open: "open",
       days: "Closes in {d} days.",
+      days1: "Closes tomorrow.",
       closedT: "{month} intake closed",
       closedS: "Message us and we'll add you to the {nextm} list.",
     },

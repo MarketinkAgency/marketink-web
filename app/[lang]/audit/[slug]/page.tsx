@@ -371,7 +371,13 @@ export default async function AuditPage({
         <div className="expira-aviso mt-8">
           <div className="rounded-[22px] px-7 py-11 ring-1 ring-blood/40 sm:px-12">
             <h3 className="flash-type max-w-[16ch] text-[clamp(26px,3.6vw,44px)]">{t.lockTitle}</h3>
-            <p className="mt-6 max-w-[58ch] text-[15.5px] leading-[1.75] text-muted">{t.lockBody}</p>
+            {/* El número de fugas sale del recuento real de esta auditoría.
+                Estaba escrito a mano —«y son siete»— y habría mentido en
+                cuanto una cuenta tuviera menos, justo en el párrafo cuyo
+                trabajo es que se fíe de nosotros. */}
+            <p className="mt-6 max-w-[58ch] text-[15.5px] leading-[1.75] text-muted">
+              {t.lockBody.replace("{n}", String(fugas))}
+            </p>
             <div className="mt-9 flex flex-wrap items-center gap-5">
               <a href={accion} target="_blank" rel="noopener" className="btn">
                 {t.lockCta}
@@ -444,7 +450,7 @@ export default async function AuditPage({
             <div className="mt-12 border-l-2 border-blood pl-6">
               <p className="flex flex-wrap items-baseline gap-x-3">
                 <b className="flash-type text-[clamp(28px,3.6vw,40px)] text-blood">{cupos}</b>
-                <span className="text-[15px] uppercase tracking-[0.1em] text-bone">{t.spots}</span>
+                <span className="text-[15px] uppercase tracking-[0.1em] text-bone">{cupos === 1 ? t.spots1 : t.spots}</span>
               </p>
               <p className="mt-3 max-w-[52ch] text-[13.5px] leading-relaxed text-faint">{t.spotsNote}</p>
             </div>

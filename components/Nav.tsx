@@ -79,13 +79,20 @@ export default function Nav({
               {other}
             </Link>
 
-            <a
-              href={ctaHref}
-              onClick={() => setOpen(false)}
-              className="btn hidden !px-5 !py-2.5 !text-[12.5px] sm:inline-flex"
-            >
-              {cta}
-            </a>
+            {/* El «hidden» va en el envoltorio, no en el botón: .btn fija
+                display:inline-flex en CSS plano, que se carga después de
+                las utilidades de Tailwind y por tanto le gana a «hidden».
+                Puesto en el <a>, el botón seguía visible en el móvil y se
+                salía por el borde derecho tapando la hamburguesa. */}
+            <span className="hidden sm:inline-flex">
+              <a
+                href={ctaHref}
+                onClick={() => setOpen(false)}
+                className="btn !px-5 !py-2.5 !text-[12.5px]"
+              >
+                {cta}
+              </a>
+            </span>
 
             {/* hamburguesa */}
             <button

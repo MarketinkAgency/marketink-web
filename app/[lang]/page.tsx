@@ -16,6 +16,7 @@ import Glow from "@/components/Glow";
 import RailNav from "@/components/RailNav";
 import Consent from "@/components/Consent";
 import Funnel from "@/components/Funnel";
+import Banda from "@/components/Banda";
 import Jsonld from "@/components/Jsonld";
 import Analytics from "@/components/Analytics";
 
@@ -186,9 +187,12 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         {/* ───────── FRANJA DE CREDIBILIDAD ───────── */}
         <section className="border-b border-white/[0.08] px-6 py-9">
           <div className="mx-auto flex max-w-6xl flex-col gap-7 lg:flex-row lg:items-center lg:justify-between">
-            <div className="flex items-center gap-4">
+            {/* Envuelve en móvil: sin esto los tres estudios se salían por
+                la derecha y arrastraban toda la página 102px, lo que hacía
+                que la barra fija de arriba tampoco cupiera. */}
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
               <p className="flash-sub shrink-0 text-[10px] tracking-[0.22em] text-faint">{t.trust.label}</p>
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center gap-3">
                 {t.cases.items.map((c) => (
                   <a
                     key={c.k}
@@ -282,6 +286,15 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             </div>
           </div>
         </section>
+
+        {/* ───────── BANDA 1 — justo después de la cifra que pierde ───────── */}
+        <Banda
+          line={t.bandas[0].line}
+          cta={t.bandas[0].cta}
+          href="#book"
+          lang={lang}
+          spotsLabels={t.book}
+        />
 
         {/* ───────── EL RECORRIDO ───────── */}
         <section id="system" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-32">
@@ -461,6 +474,15 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
 
           <p className="reveal mx-auto mt-14 max-w-6xl text-[11.5px] leading-relaxed text-faint">{t.cases.note}</p>
         </section>
+
+        {/* ───────── BANDA 2 — justo después de la prueba ───────── */}
+        <Banda
+          line={t.bandas[1].line}
+          cta={t.bandas[1].cta}
+          href="#book"
+          lang={lang}
+          spotsLabels={t.book}
+        />
 
         {/* ───────── PARA QUIÉN ───────── */}
         <section id="fit" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-36">
@@ -657,6 +679,13 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
               </ol>
               <p className="mt-9 max-w-[52ch] border-l-2 border-signal/60 pl-4 text-[14.5px] leading-relaxed text-bone">
                 {t.audit.noPitch}
+              </p>
+
+              {/* La objeción que más gente se lleva sin decirla en voz alta.
+                  Callarla no la elimina: hace que el visitante se invente
+                  una cifra —siempre la peor— y se vaya sin agendar. */}
+              <p className="mt-5 max-w-[58ch] text-[13.5px] leading-relaxed text-faint">
+                {t.audit.priceNote}
               </p>
             </div>
 

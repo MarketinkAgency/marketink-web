@@ -5,13 +5,15 @@ import { capacity, freeSpots } from "@/lib/capacity";
 import type { Lang } from "@/lib/copy";
 
 type Labels = {
-  intake: string;   // «ENTRADA DE {mes}»
-  remaining: string; // «cupos disponibles» / «cupo disponible»
-  filled: string;    // «ocupado»
-  open: string;      // «libre»
-  days: string;      // «Cierra en {d} días»
-  closedT: string;   // «ENTRADA DE {mes} CERRADA»
-  closedS: string;   // «Escríbenos y entras a la lista de septiembre»
+  intake: string;     // «ENTRADA DE {mes}»
+  remaining: string;  // «cupos disponibles»
+  remaining1: string; // «cupo disponible» — el singular, que es el caso que más se ve
+  filled: string;     // «ocupado»
+  open: string;       // «libre»
+  days: string;       // «Cierra en {d} días»
+  days1: string;      // «Cierra mañana»
+  closedT: string;    // «ENTRADA DE {mes} CERRADA»
+  closedS: string;    // «Escríbenos y entras a la lista de septiembre»
 };
 
 /**
@@ -84,7 +86,7 @@ export default function Spots({
           {/* cifra */}
           <p className="intake-num">
             <span className="intake-big">{free}</span>
-            <span className="intake-word">{fill(labels.remaining)}</span>
+            <span className="intake-word">{fill(free === 1 ? labels.remaining1 : labels.remaining)}</span>
           </p>
 
           {/* casillas de capacidad */}
@@ -96,7 +98,7 @@ export default function Spots({
             ))}
           </div>
 
-          <p className="intake-foot">{fill(labels.days)}</p>
+          <p className="intake-foot">{fill(days === 1 ? labels.days1 : labels.days)}</p>
         </>
       )}
     </div>
