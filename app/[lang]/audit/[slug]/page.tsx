@@ -304,7 +304,7 @@ export default async function AuditPage({
         <AuditCost
           lang={a.lang}
           moneda={a.moneda}
-          labels={{ a: t.costA, b: t.costB, c: t.costC, out: t.costOut, year: t.costYear, note: t.costNote, zero: t.costZero }}
+          labels={{ a: t.costA, b: t.costB, c: t.costC, out: t.costOut, month: t.costMonth, one: t.costOne, note: t.costNote, zero: t.costZero }}
         />
       </section>
 

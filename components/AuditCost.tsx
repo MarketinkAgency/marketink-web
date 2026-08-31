@@ -49,9 +49,6 @@ const ESCALAS: Record<Moneda, { min: number; max: number; step: number; inicial:
 /** Semanas por mes. 52/12, no 4: usar 4 se come casi un mes al año. */
 const SEMANAS_MES = 52 / 12;
 
-/** De cada cuántas perdidas suponemos que se recupera una. */
-const DE_CADA = 20;
-
 export default function AuditCost({
   lang,
   moneda = "USD",
@@ -59,7 +56,7 @@ export default function AuditCost({
 }: {
   lang: Lang;
   moneda?: Moneda;
-  labels: { a: string; b: string; c: string; out: string; year: string; note: string; zero: string };
+  labels: { a: string; b: string; c: string; out: string; month: string; one: string; note: string; zero: string };
 }) {
   const escala = ESCALAS[moneda];
   const [ticket, setTicket] = useState(escala.inicial);
@@ -88,12 +85,15 @@ export default function AuditCost({
   const perdidasSemana = Math.max(0, dms - agendadas);
   const perdidasMes = perdidasSemana * SEMANAS_MES;
 
-  /* Una de cada veinte. Sin redondear a entero antes de multiplicar:
-     redondear aquí haría que el número diera saltos raros al arrastrar
-     el deslizador, que es justo la sensación de «esto no funciona». */
-  const citasMes = perdidasMes / DE_CADA;
-  const mes = citasMes * ticket;
-  const anio = mes * 12;
+  /* Lo que ya le están pidiendo y no se convierte. Es multiplicación
+     pura de sus tres cifras: nada aquí es un supuesto nuestro, y por eso
+     se puede comprobar con la calculadora del teléfono. */
+  const valorPerdido = perdidasMes * ticket;
+
+  /* Y el aterrizaje: una sola cita más por semana. Es la unidad más
+     pequeña que se puede pedir, sale del mismo sitio, y convierte una
+     cifra enorme en algo que se ve alcanzable. */
+  const unaMas = SEMANAS_MES * ticket;
 
   const barra = (
     v: number, min: number, max: number, set: (n: number) => void,
@@ -132,16 +132,15 @@ export default function AuditCost({
       </div>
 
       <div className="flex flex-col justify-center gap-6 rounded-[22px] p-8 ring-1 ring-white/[0.09] sm:p-10">
+        {/* En meses, no en semanas: el resultado es mensual, y saltar de
+            una unidad a otra en mitad de la cuenta es justo lo que hace
+            que no se entienda de dónde sale la cifra. */}
         {perdidasSemana > 0 && (
           <p className="text-[14px] leading-relaxed text-muted">
-            <b className="tabular-nums text-bone">{perdidasSemana}</b>{" "}
+            <b className="tabular-nums text-bone">{Math.round(perdidasMes)}</b>{" "}
             {es
-              ? perdidasSemana === 1
-                ? "conversación a la semana que no termina en una cita."
-                : "conversaciones a la semana que no terminan en una cita."
-              : perdidasSemana === 1
-                ? "conversation a week that doesn't end in a chair."
-                : "conversations a week that don't end in a chair."}
+              ? "conversaciones al mes que no terminan en una cita."
+              : "conversations a month that don't end in a chair."}
           </p>
         )}
 
@@ -156,14 +155,17 @@ export default function AuditCost({
               <p className="mb-2 max-w-[34ch] text-[13px] uppercase leading-relaxed tracking-[0.14em] text-faint">
                 {labels.out}
               </p>
-              <p className="flash-type text-[clamp(40px,7.4vw,78px)] text-blood">{fmt(anio)}</p>
-              <p className="mt-1 text-[13px] uppercase tracking-[0.14em] text-faint">{labels.year}</p>
+              <p className="flash-type text-[clamp(40px,7.4vw,78px)] text-blood">{fmt(valorPerdido)}</p>
+              <p className="mt-1 text-[13px] uppercase tracking-[0.14em] text-faint">{labels.month}</p>
             </div>
 
-            <p className="text-[13px] leading-relaxed text-muted">
-              {fmt(mes)} {es ? "al mes" : "a month"} ·{" "}
-              <span className="tabular-nums">{citasMes.toFixed(1)}</span>{" "}
-              {es ? "citas más al mes" : "more bookings a month"}
+            {/* El aterrizaje. Sin esto la cifra de arriba es tan grande
+                que se lee como exageración; con esto se convierte en una
+                tarea concreta: de esas, cerrar una. */}
+            <p className="border-t border-white/[0.09] pt-6 text-[14px] leading-[1.7] text-muted">
+              {labels.one}{" "}
+              <b className="whitespace-nowrap text-bone">+{fmt(unaMas)}</b>{" "}
+              {es ? "al mes." : "a month."}
             </p>
           </>
         )}
