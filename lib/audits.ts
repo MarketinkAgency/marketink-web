@@ -88,6 +88,14 @@ export type Audit = {
       la sección que sostiene la decisión es la forma más cara de mentir.
       Opcional — si no está, la sección no existe. */
   dias90?: { d: string; t: string; items: string[] }[];
+  /** En qué moneda piensa este artista. La calculadora del costo usa
+      sus cifras, así que tiene que usar también su moneda: enseñarle a
+      alguien de Bogotá una pieza de «$700» no es un detalle de formato,
+      es decirle que esta página no está escrita para él. Cambia además
+      los topes y el paso del deslizador, porque moverse de 25 en 25
+      tiene sentido en dólares y ninguno en pesos.
+      Opcional — por defecto, dólares. */
+  moneda?: "COP" | "USD";
   /** El enlace de pago de este artista, cuando el general no sirve.
       El precio de un estudio en Bogotá y el de uno en Utah no son el
       mismo número, y tampoco la misma moneda: mandar a un colombiano a
@@ -132,7 +140,8 @@ export const auditUi = {
     costA: "What an average piece brings in",
     costB: "Inquiries you get in a week",
     costC: "Of those, how many book",
-    costOut: "Booking two more of them a month is worth",
+    costOut: "If 1 in every 20 of those ended in a booking",
+    costZero: "With those numbers nothing is leaking — every inquiry you get ends in a chair. Move the sliders until they look like a real month.",
     costYear: "a year",
     ctaTitle: "Stop leaking bookings.",
     ctaBody: "Everything above is what your profile does today. Below is the day we change it. We only take a handful of artists a month because one of us actually answers your DMs.",
@@ -206,7 +215,8 @@ export const auditUi = {
     costA: "Lo que deja una pieza promedio",
     costB: "Consultas que recibes en una semana",
     costC: "De esas, cuántas agendan",
-    costOut: "Agendar dos más al mes vale",
+    costOut: "Si 1 de cada 20 de esas terminara en cita",
+    costZero: "Con esos números no se te está cayendo ninguna: todas las que te escriben terminan en la camilla. Mueve las barras hasta que se parezcan a un mes de verdad.",
     costYear: "al año",
     ctaTitle: "Deja de perder reservas.",
     ctaBody: "Todo lo de arriba es lo que hace tu perfil hoy. Lo de abajo es el día en que eso cambia. Tomamos pocos artistas al mes porque tus mensajes los contesta alguien de verdad.",
@@ -261,6 +271,7 @@ export const AUDITS: Record<string, Audit> = {
     profile: "https://www.instagram.com/xime.lizarazutattoo/",
     reviewed: "2026-08-30",
     expira: "2026-09-06T23:59:00-05:00",
+    moneda: "COP",
     planUrl: "https://buy.stripe.com/14AdR1fMe8fyg6od1b53O02",
     stats: [
       { k: "Seguidores", v: "24.009" },
@@ -411,6 +422,7 @@ export const AUDITS: Record<string, Audit> = {
     expira: "2026-08-31T23:59:00-05:00",
     /* Cobro para Colombia. El enlace general está en dólares y a un
        precio pensado para Estados Unidos. */
+    moneda: "COP",
     planUrl: "https://buy.stripe.com/14AdR1fMe8fyg6od1b53O02",
     stats: [
       { k: "Publicaciones", v: "384" },
@@ -524,6 +536,7 @@ export const AUDITS: Record<string, Audit> = {
     profile: "https://www.instagram.com/andy_tattoo_artist/",
     reviewed: "2026-08-17",
     expira: "2026-08-24T23:59:00-06:00",
+    moneda: "USD",
     stats: [
       { k: "Publicaciones", v: "142" },
       { k: "Seguidores", v: "443" },

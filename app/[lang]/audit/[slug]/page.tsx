@@ -303,7 +303,8 @@ export default async function AuditPage({
         <h2 className="flash-type mb-12 max-w-[18ch] text-[clamp(28px,4.4vw,52px)]">{t.costTitle}</h2>
         <AuditCost
           lang={a.lang}
-          labels={{ a: t.costA, b: t.costB, c: t.costC, out: t.costOut, year: t.costYear, note: t.costNote }}
+          moneda={a.moneda}
+          labels={{ a: t.costA, b: t.costB, c: t.costC, out: t.costOut, year: t.costYear, note: t.costNote, zero: t.costZero }}
         />
       </section>
 
