@@ -92,14 +92,17 @@ function Marca({ s }: { s: Estado }) {
     recurso que rompe la portada: la auditoría no inventa un lenguaje
     visual propio, usa el de la marca. */
 function Banda({ line, cta, href }: { line: string; cta: string; href: string }) {
+  /* Un ancla de la misma página no puede abrirse en pestaña nueva: el
+     que toca «ver los 90 días» acabaría con dos copias de la auditoría
+     abiertas y sin haber llegado a la sección. Solo lo externo salta. */
+  const interno = href.startsWith("#");
   return (
     <section className="rupture my-4">
       <div className="relative z-10 mx-auto flex max-w-[1180px] flex-col items-start gap-8 px-6 py-16 sm:px-10 sm:py-20 lg:flex-row lg:items-center lg:justify-between">
         <p className="flash-type max-w-[20ch] text-[clamp(24px,3.6vw,44px)] text-white">{line}</p>
         <a
           href={href}
-          target="_blank"
-          rel="noopener"
+          {...(interno ? {} : { target: "_blank", rel: "noopener" })}
           className="flex-none bg-white px-9 py-5 text-[15px] font-bold uppercase tracking-[0.02em] text-void transition-transform duration-300 hover:-translate-y-0.5"
         >
           {cta} →
@@ -222,6 +225,16 @@ export default async function AuditPage({
         </div>
       </section>
 
+      {/* La pregunta que se hace todo el que acaba de leer su
+          diagnóstico: vale, ¿y ahora qué? La sección de los 90 días
+          contesta eso, pero vive al final de una página larguísima y el
+          que no llega abajo no la ve nunca. Esta banda la sube al sitio
+          donde nace la pregunta, sin sacarlo de la lectura: lleva a la
+          sección, no al pago. */}
+      {a.dias90 && a.dias90.length > 0 && (
+        <Banda line={t.d90Tease} cta={t.d90TeaseCta} href="#dias90" />
+      )}
+
       {/* ── 02 · los doce puntos ───────────────────────────────── */}
       <section className="sec relative mx-auto max-w-[1180px] px-6 pb-24 sm:px-10">
         <span className="sec-n" aria-hidden>02</span>
@@ -304,7 +317,7 @@ export default async function AuditPage({
         <AuditCost
           lang={a.lang}
           moneda={a.moneda}
-          labels={{ a: t.costA, b: t.costB, c: t.costC, out: t.costOut, month: t.costMonth, one: t.costOne, note: t.costNote, zero: t.costZero }}
+          labels={{ a: t.costA, b: t.costB, c: t.costC, now: t.costNow, table: t.costTable, rate: t.costRate, month: t.costMonth, gap: t.costGap, note: t.costNote, zero: t.costZero }}
         />
       </section>
 
@@ -431,7 +444,7 @@ export default async function AuditPage({
            convence ver el calendario. Solo aparece si la auditoría
            trae las cuatro fases. */}
       {a.dias90 && a.dias90.length > 0 && (
-        <section className="sec relative mx-auto max-w-[1180px] px-6 pb-6 pt-4 sm:px-10">
+        <section id="dias90" className="sec relative mx-auto max-w-[1180px] px-6 pb-6 pt-4 scroll-mt-[70px] sm:px-10">
           <span className="sec-n" aria-hidden>07</span>
           <Tag n="07">{t.d90Tag}</Tag>
           <h2 className="flash-type max-w-[16ch] text-[clamp(28px,4.4vw,52px)]">{t.d90Title}</h2>

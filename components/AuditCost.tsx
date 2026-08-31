@@ -56,7 +56,7 @@ export default function AuditCost({
 }: {
   lang: Lang;
   moneda?: Moneda;
-  labels: { a: string; b: string; c: string; out: string; month: string; one: string; note: string; zero: string };
+  labels: { a: string; b: string; c: string; now: string; table: string; rate: string; month: string; gap: string; note: string; zero: string };
 }) {
   const escala = ESCALAS[moneda];
   const [ticket, setTicket] = useState(escala.inicial);
@@ -85,14 +85,26 @@ export default function AuditCost({
   const perdidasSemana = Math.max(0, dms - agendadas);
   const perdidasMes = perdidasSemana * SEMANAS_MES;
 
-  /* Lo que ya le están pidiendo y no se convierte. Es multiplicación
-     pura de sus tres cifras: nada aquí es un supuesto nuestro, y por eso
-     se puede comprobar con la calculadora del teléfono. */
-  const valorPerdido = perdidasMes * ticket;
+  /* Las tres cifras que importan, y las tres son multiplicación pura de
+     lo que él mismo puso. Ninguna es un supuesto nuestro.
 
-  /* Y el aterrizaje: una sola cita más por semana. Es la unidad más
-     pequeña que se puede pedir, sale del mismo sitio, y convierte una
-     cifra enorme en algo que se ve alcanzable. */
+     `hoy` es lo que ya se lleva de las conversaciones que recibe.
+     `mesa` es lo que habría si las cerrara todas — el techo, no una
+     meta: nadie cierra el 100%, y el texto lo dice. La diferencia entre
+     las dos es la sección entera.
+
+     Enseñar solo la pérdida era el error: un número grande de dinero
+     perdido, sin nada al lado, no se puede juzgar. Puesto junto a lo que
+     ya gana, cualquiera ve de un vistazo el tamaño del hueco. */
+  const agendadasMes = agendadas * SEMANAS_MES;
+  const hoy = agendadasMes * ticket;
+  const mesa = dms * SEMANAS_MES * ticket;
+
+  /** Qué porcentaje de los que le escriben termina en la camilla. */
+  const tasa = dms > 0 ? (agendadas / dms) * 100 : 0;
+
+  /* El aterrizaje: una sola cita más por semana. Es la unidad más
+     pequeña que se puede pedir y convierte el hueco en una tarea. */
   const unaMas = SEMANAS_MES * ticket;
 
   const barra = (
@@ -131,39 +143,37 @@ export default function AuditCost({
         <p className="text-[12.5px] leading-relaxed text-faint">{labels.note}</p>
       </div>
 
-      <div className="flex flex-col justify-center gap-6 rounded-[22px] p-8 ring-1 ring-white/[0.09] sm:p-10">
-        {/* En meses, no en semanas: el resultado es mensual, y saltar de
-            una unidad a otra en mitad de la cuenta es justo lo que hace
-            que no se entienda de dónde sale la cifra. */}
-        {perdidasSemana > 0 && (
-          <p className="text-[14px] leading-relaxed text-muted">
-            <b className="tabular-nums text-bone">{Math.round(perdidasMes)}</b>{" "}
-            {es
-              ? "conversaciones al mes que no terminan en una cita."
-              : "conversations a month that don't end in a chair."}
+      <div className="flex flex-col justify-center gap-7 rounded-[22px] p-8 ring-1 ring-white/[0.09] sm:p-10">
+        {/* Lo que ya gana. Va primero y en hueso, no en rojo: es su
+            resultado, no nuestro argumento. Empezar por aquí es lo que
+            hace que lo de abajo se lea como una comparación y no como un
+            reproche. */}
+        <div>
+          <p className="text-[12.5px] uppercase tracking-[0.14em] text-faint">{labels.now}</p>
+          <p className="flash-type mt-1 text-[clamp(28px,3.4vw,40px)] text-bone">{fmt(hoy)}</p>
+          <p className="mt-1 text-[13px] text-muted">
+            {labels.month} · <span className="tabular-nums">{Math.round(tasa)}%</span> {labels.rate}
           </p>
-        )}
+        </div>
 
-        {/* Si agenda todas las que le escriben no hay fuga, y la cuenta
-            da cero. Es correcto, pero un «$0» gigante y solo se lee como
-            que la calculadora se rompió. Se dice con palabras. */}
         {perdidasSemana === 0 ? (
-          <p className="max-w-[34ch] text-[15px] leading-[1.7] text-muted">{labels.zero}</p>
+          <p className="max-w-[34ch] border-t border-white/[0.09] pt-7 text-[15px] leading-[1.7] text-muted">
+            {labels.zero}
+          </p>
         ) : (
           <>
-            <div>
-              <p className="mb-2 max-w-[34ch] text-[13px] uppercase leading-relaxed tracking-[0.14em] text-faint">
-                {labels.out}
-              </p>
-              <p className="flash-type text-[clamp(40px,7.4vw,78px)] text-blood">{fmt(valorPerdido)}</p>
-              <p className="mt-1 text-[13px] uppercase tracking-[0.14em] text-faint">{labels.month}</p>
+            {/* El techo: lo mismo, si cerrara todas las que ya le
+                escriben. No es una meta y no lo vendemos como tal — el
+                pie lo dice con todas las letras. */}
+            <div className="border-t border-white/[0.09] pt-7">
+              <p className="text-[12.5px] uppercase tracking-[0.14em] text-faint">{labels.table}</p>
+              <p className="flash-type mt-1 text-[clamp(40px,7.4vw,78px)] text-blood">{fmt(mesa)}</p>
+              <p className="mt-1 text-[13px] text-muted">{labels.month}</p>
             </div>
 
-            {/* El aterrizaje. Sin esto la cifra de arriba es tan grande
-                que se lee como exageración; con esto se convierte en una
-                tarea concreta: de esas, cerrar una. */}
-            <p className="border-t border-white/[0.09] pt-6 text-[14px] leading-[1.7] text-muted">
-              {labels.one}{" "}
+            <p className="text-[14px] leading-[1.7] text-muted">
+              <b className="tabular-nums text-bone">{Math.round(perdidasMes)}</b>{" "}
+              {labels.gap}{" "}
               <b className="whitespace-nowrap text-bone">+{fmt(unaMas)}</b>{" "}
               {es ? "al mes." : "a month."}
             </p>
