@@ -8,7 +8,7 @@ import StickyCta from "@/components/StickyCta";
 import Ink from "@/components/Ink";
 import AuditExpiry from "@/components/AuditExpiry";
 import AuditTicket from "@/components/AuditTicket";
-import { freeSpots } from "@/lib/capacity";
+import CuposAudit from "@/components/CuposAudit";
 
 /**
  * LA ENTREGA DE LA AUDITORÍA
@@ -141,7 +141,6 @@ export default async function AuditPage({
   const accion = a.planUrl || plan.url || site.call;
 
   /* Cupos libres del mes, del mismo sitio que la portada. */
-  const cupos = freeSpots();
 
   return (
     <main className="relative overflow-hidden pt-[46px]">
@@ -424,6 +423,38 @@ export default async function AuditPage({
         </ol>
       </section>
 
+      {/* ── 07 · los primeros 90 días ──────────────────────────
+           Va aquí, pegado al cierre, porque es la sección que
+           decide. Los tres arreglos gratis convencen al que tiene
+           el perfil roto; al que ya lo tiene casi todo bien lo
+           convence ver el calendario. Solo aparece si la auditoría
+           trae las cuatro fases. */}
+      {a.dias90 && a.dias90.length > 0 && (
+        <section className="sec relative mx-auto max-w-[1180px] px-6 pb-6 pt-4 sm:px-10">
+          <span className="sec-n" aria-hidden>07</span>
+          <Tag n="07">{t.d90Tag}</Tag>
+          <h2 className="flash-type max-w-[16ch] text-[clamp(28px,4.4vw,52px)]">{t.d90Title}</h2>
+          <p className="mt-6 max-w-[62ch] text-[15px] leading-relaxed text-muted">{t.d90Note}</p>
+
+          <div className="mt-12 grid gap-px overflow-hidden rounded-[18px] bg-white/[0.08] md:grid-cols-2 lg:grid-cols-4">
+            {a.dias90.map((f) => (
+              <div key={f.d} className="spot bg-void px-7 py-9">
+                <p className="flash-sub text-[11px] tracking-[0.18em] text-blood">{f.d}</p>
+                <h3 className="mt-4 flash-type text-[clamp(20px,2.2vw,27px)] text-bone">{f.t}</h3>
+                <ul className="mt-6 space-y-3">
+                  {f.items.map((x) => (
+                    <li key={x} className="flex gap-3 text-[13.5px] leading-snug text-muted">
+                      <span className="mt-[7px] size-1 shrink-0 rounded-full bg-signal" aria-hidden />
+                      {x}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* ── el cierre ──────────────────────────────────────────── */}
       <section id="empezar" className="relative mx-auto max-w-[1180px] px-6 pb-8 sm:px-10 scroll-mt-[70px]">
         <div className="rounded-[26px] px-7 py-12 ring-1 ring-white/[0.09] sm:px-14 sm:py-16">
@@ -449,18 +480,10 @@ export default async function AuditPage({
             </div>
           </div>
 
-          {/* Los cupos del mes. Salen del mismo sitio que en la portada
-              para que quien vea las dos páginas no lea dos números
-              distintos, y son de verdad: los pone Nick a mano. */}
-          {cupos > 0 && (
-            <div className="mt-12 border-l-2 border-blood pl-6">
-              <p className="flex flex-wrap items-baseline gap-x-3">
-                <b className="flash-type text-[clamp(28px,3.6vw,40px)] text-blood">{cupos}</b>
-                <span className="text-[15px] uppercase tracking-[0.1em] text-bone">{cupos === 1 ? t.spots1 : t.spots}</span>
-              </p>
-              <p className="mt-3 max-w-[52ch] text-[13.5px] leading-relaxed text-faint">{t.spotsNote}</p>
-            </div>
-          )}
+          {/* Los cupos del mes. Mismo número que la portada, y calculado
+              en el navegador para que no se congele en la fecha del
+              despliegue. Ver components/CuposAudit.tsx. */}
+          <CuposAudit uno={t.spots1} varios={t.spots} nota={t.spotsNote} />
 
           <p className="mt-12 max-w-[58ch] text-[14.5px] leading-relaxed text-muted">{a.cierre}</p>
         </div>

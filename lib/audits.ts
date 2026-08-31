@@ -77,6 +77,17 @@ export type Audit = {
   /** El regalo con dientes: una respuesta suya que hoy no está dando. */
   dm: { t: string; when: string; bad: string; good: string; why: string };
   plan: { k: string; d: string }[];
+  /** Los primeros 90 días, en las cuatro fases de la web.
+      Va después del plan y antes del cierre, porque es donde se decide:
+      el plan dice qué se instala y esto dice cuándo pasa cada cosa. Un
+      artista que ya lo tiene casi todo bien —y los hay— no compra por
+      los tres arreglos gratis; compra porque ve el calendario.
+
+      Regla dura: aquí no se prometen cifras. Cada fase dice qué se hace
+      y qué se persigue, nunca cuánto se consigue. Una cifra inventada en
+      la sección que sostiene la decisión es la forma más cara de mentir.
+      Opcional — si no está, la sección no existe. */
+  dias90?: { d: string; t: string; items: string[] }[];
   /** El enlace de pago de este artista, cuando el general no sirve.
       El precio de un estudio en Bogotá y el de uno en Utah no son el
       mismo número, y tampoco la misma moneda: mandar a un colombiano a
@@ -112,6 +123,9 @@ export const auditUi = {
     planTag: "What we'd build",
     planTitle: "The system we'd install in your case.",
     planNote: "Every piece below exists because of a leak we found above — not because it's on a menu.",
+    d90Tag: "The first 90 days",
+    d90Title: "What happens, and when.",
+    d90Note: "Not a promise of numbers — a calendar of work. Each phase has one job, and the next one only starts because the previous one produced something to act on.",
     costTag: "What it costs you",
     costTitle: "We're not going to invent your numbers. Put yours in.",
     costNote: "This is arithmetic, not a promise. Move the sliders until they look like your month.",
@@ -183,6 +197,9 @@ export const auditUi = {
     planTag: "Lo que montaríamos",
     planTitle: "El sistema que instalaríamos en tu caso.",
     planNote: "Cada pieza está por una fuga de las de arriba, no porque venga en un menú.",
+    d90Tag: "Los primeros 90 días",
+    d90Title: "Qué pasa, y cuándo.",
+    d90Note: "No es una promesa de cifras: es un calendario de trabajo. Cada fase tiene un solo trabajo, y la siguiente empieza porque la anterior dejó algo sobre lo que decidir.",
     costTag: "Lo que te cuesta",
     costTitle: "No vamos a inventar tus números. Pon los tuyos.",
     costNote: "Esto es aritmética, no una promesa. Mueve las barras hasta que se parezcan a tu mes.",
@@ -234,6 +251,154 @@ export const auditUi = {
 /* ── Las auditorías ───────────────────────────────────────────────── */
 
 export const AUDITS: Record<string, Audit> = {
+  "xime-lizarazu": {
+    slug: "xime-lizarazu",
+    lang: "es",
+    handle: "@xime.lizarazutattoo",
+    name: "Xime Lizarazú",
+    studio: "Línea fina · microrealismo · @sagrada.tattooestudio",
+    city: "Bogotá",
+    profile: "https://www.instagram.com/xime.lizarazutattoo/",
+    reviewed: "2026-08-30",
+    expira: "2026-09-06T23:59:00-05:00",
+    planUrl: "https://buy.stripe.com/14AdR1fMe8fyg6od1b53O02",
+    stats: [
+      { k: "Seguidores", v: "24.009" },
+      { k: "Publicaciones", v: "541" },
+      { k: "Mejor reel", v: "6.112" },
+      { k: "Reel típico", v: "2.102" },
+    ],
+    bio: [
+      "@sagrada.tattooestudio",
+      "6 años tatuando",
+      "Bogotá 🇨🇴",
+      "Agenda Abierta",
+      "Cotizaciones Link 👇🏻  ·  wa.me/573007125601",
+    ],
+
+    verdict: {
+      line: "24.009 personas te dijeron que sí. Hoy te ven 2.100.",
+      body: [
+        "Esta auditoría va a ser distinta a las que solemos escribir, y conviene decirlo de entrada: tu perfil está bien hecho. De los doce puntos que revisamos, seis están resueltos y solo dos son fuga. Eso no nos había pasado. Cuenta verificada, seis años tatuando, 541 publicaciones, el estilo dicho en tu propio nombre, el estudio etiquetado, la ciudad visible, los tres fijados usados y cinco destacadas que se llaman CICATRIZADOS, DISEÑOS, ¿CÓMO AGENDAR?, COTIZACIONES y AGENDA. Esas dos últimas casi nadie las tiene. Y el enlace de tu bio va directo a WhatsApp, sin pasar por un Linktree que te cobre un toque de peaje.",
+        "Por eso el problema no está donde suele estar. Medimos tus últimos 15 reels: 42.963 vistas entre todos. El mejor llegó a 6.112 y el de en medio a 2.102. Tienes 24.009 seguidores. Es decir: tu mejor pieza reciente la vio uno de cada cuatro de los que ya te siguen, y la normal la ve menos de uno de cada diez.",
+        "Ese número al revés es el hallazgo. En los perfiles que auditamos el alcance suele ir por encima de la audiencia —Instagram les trae desconocidos gratis y ellos no tienen dónde recibirlos—. En el tuyo pasa lo contrario: tienes 24.009 personas que en algún momento levantaron la mano y hoy la mayoría ni se entera de que publicaste. No te falta gente. Te falta que la gente que ya es tuya vuelva a verte, y que la que aparece tenga a dónde caer.",
+        "Y cuando cae, cae en un chat vacío. Tu enlace abre WhatsApp sin una sola palabra escrita: la clienta que venía decidida se encuentra un cursor parpadeando y tiene que inventarse cómo empezar. Con 24.009 seguidores y la agenda abierta, esa pantalla en blanco no te cuesta una consulta al mes. Te cuesta todos los días.",
+        "Ese es el resumen honesto. Lo que se arregla con consejos de perfil ya lo tienes. Lo que te falta no se arregla en una tarde: se instala y se mide. Por eso, en tu caso, lo que hay que mirar no son los tres arreglos de abajo. Son los 90 días.",
+      ],
+    },
+
+    puntos: [
+      { k: "Un enlace en la bio", s: "bien",
+        note: "Uno solo y va directo a WhatsApp: wa.me/573007125601. Esto está mejor resuelto que en la mayoría de perfiles que revisamos, donde el enlace lleva a un Linktree que cobra un toque de más y encima promociona a otros creadores. Aquí quien toca, llega." },
+      { k: "Un camino para reservar", s: "media",
+        note: "Existe, y hasta tienes una destacada que se llama ¿CÓMO AGENDAR? Lo que falla es el último metro: el enlace abre el chat en blanco, sin mensaje precargado. La que venía decidida tiene que redactar desde cero, y ese es el momento exacto donde se cae la que dudaba." },
+      { k: "Una señal de precio", s: "media",
+        note: "Tienes una destacada COTIZACIONES, que es más de lo que hace casi nadie. Pero desde fuera —bio y enlace, que es todo lo que ve alguien en los primeros diez segundos— no aparece ningún rango. Para saber si le alcanza hay que tocar una historia, y la que asume que no le alcanza no toca nada." },
+      { k: "El depósito", s: "media",
+        note: "No se menciona en la bio ni en el enlace. Puede que esté dentro de AGENDA y no lo veamos desde fuera; si es así, sácalo afuera. Un depósito nombrado antes de preguntar filtra a la que no iba a aparecer y tranquiliza a la que sí." },
+      { k: "Cuándo respondes", s: "fuga",
+        note: "Nada dice cuánto tardas. Con 24.009 seguidores te llegan mensajes a cualquier hora, y para la que espera tu silencio y un «no me interesa» se ven igual. A las 24 horas ya está mirando otro perfil de Bogotá, y hay muchos." },
+      { k: "Destacadas", s: "bien",
+        note: "Cinco y las correctas: CICATRIZADOS, DISEÑOS, ¿CÓMO AGENDAR?, COTIZACIONES, AGENDA. «Cicatrizados» enseña el trabajo curado, que es lo que de verdad separa a quien sabe de quien tiene buena cámara. Este bloque está mejor pensado que el de la mayoría de estudios." },
+      { k: "Fijados", s: "bien",
+        note: "Los tres usados, y bien elegidos: retrato de mascota, línea fina y microrealismo. Alguien que entra por primera vez ve en dos segundos exactamente lo que sabes hacer." },
+      { k: "Diseños contra piel", s: "bien",
+        note: "Casi toda la cuadrícula es tinta en piel real, no bocetos en papel. Es lo que hace que una desconocida se imagine el suyo. Y tienes la destacada DISEÑOS aparte para lo que está libre." },
+      { k: "Reels", s: "fuga",
+        note: "15 reels medidos, 42.963 vistas entre todos: el mejor en 6.112, el de en medio en 2.102, el más bajo en 928. Contra 24.009 seguidores, eso significa que tu propia audiencia dejó de verte. Aquí no falta talento ni constancia: falta intención detrás de qué se graba, qué se dice al final y a dónde se manda a la gente." },
+      { k: "Dónde estás", s: "bien",
+        note: "«Bogotá» en la bio y el estudio etiquetado, @sagrada.tattooestudio. Cualquiera sabe en dos segundos si puede llegar a tu camilla, y además hereda la confianza que da un estudio con nombre." },
+      { k: "Qué le pides que haga", s: "media",
+        note: "«Cotizaciones Link 👇🏻» dice a dónde ir, y eso ya es más que las tres flechas sueltas que vemos siempre. Lo que no dice es qué va a pasar después: cuánto tarda, qué le van a preguntar, si sale con fecha o con un número. Decirlo sube la cantidad de gente que toca." },
+      { k: "Se entiende qué tatúas", s: "bien",
+        note: "«Xime Lizarazú – Línea Fina y Microrealismo». Está en el nombre, no escondido en la bio, así que aparece hasta en los resultados de búsqueda. Y la cuadrícula lo sostiene. Esto es lo más difícil de construir y ya lo tienes." },
+    ],
+
+    market: [
+      { t: "Tu problema es de los caros de tener y de los baratos de arreglar",
+        body: "Construir 24.009 seguidores con trabajo real y cuenta verificada cuesta años. Volver a poner esa audiencia delante de tu trabajo cuesta un sistema de contenido y pauta con intención, y eso se monta en semanas. Estás en el lado bueno del problema: lo que ya está hecho es lo que no se puede comprar." },
+      { t: "Agenda abierta es una promesa que hay que poder sostener",
+        body: "Tu bio dice «Agenda Abierta». Eso es una invitación, y también una prueba: la que escribe espera respuesta rápida y fecha concreta. Si el mensaje se queda cuatro horas en visto porque estabas tatuando, la promesa juega en tu contra. No es un problema de actitud; es que nadie puede tatuar y responder a la vez." },
+      { t: "Bogotá tiene demanda y tiene competencia",
+        body: "Que haya muchos artistas en tu ciudad significa que hay gente buscando. La diferencia entre el que llena y el que no rara vez es el trabajo: es quién contesta primero, quién pregunta bien y quién hace seguimiento. Tú ya ganaste la parte del trabajo." },
+    ],
+
+    arreglos: [
+      { n: "01",
+        t: "Que tu WhatsApp se abra escrito, no en blanco",
+        body: "Es el arreglo con mejor relación entre lo que cuesta —dos minutos— y lo que mueve. Hoy tu enlace abre un chat vacío. WhatsApp permite precargar el mensaje: cambias el enlace de la bio por este y la conversación empieza con las palabras ya puestas.",
+        copy: "https://wa.me/573007125601?text=Hola%20Xime!%20Quiero%20cotizar%20un%20tatuaje.%20Idea%3A%20___%20%C2%B7%20Zona%3A%20___%20%C2%B7%20Tama%C3%B1o%20aprox%3A%20___%20cm%20%C2%B7%20Ciudad%3A%20___",
+        copyNote: "Se abre así: «Hola Xime! Quiero cotizar un tatuaje. Idea: ___ · Zona: ___ · Tamaño aprox: ___ cm · Ciudad: ___». Le quitas la página en blanco y te llegan en el primer mensaje las cuatro cosas que necesitas para cotizar, sin tener que pedirlas una por una." },
+      { n: "02",
+        t: "Saca el rango y el depósito de las destacadas a la bio",
+        body: "Tienes COTIZACIONES y AGENDA hechas, pero viven detrás de un toque. La que está decidiendo si le alcanza no toca: asume y se va. Poner el número afuera no te quita clientas, te quita conversaciones que no iban a ningún lado. Aquí está la bio reescrita, lista para pegar:",
+        copy: "Línea fina y microrealismo · 6 años\n@sagrada.tattooestudio · Bogotá 🇨🇴\nDesde $___ · el depósito aparta tu fecha\nRespondo cotizaciones en el día ↓",
+        copyNote: "Pon tu cifra mínima real donde va el espacio. Fíjate en lo que se movió: aparece desde cuánto, aparece el depósito antes de que nadie pregunte, y la última línea promete algo concreto en vez de señalar un enlace." },
+      { n: "03",
+        t: "Di cuánto tardas, y cúmplelo",
+        body: "«Agenda Abierta» promete disponibilidad; nada promete respuesta. Escribe tu ventana real —la que puedes cumplir tatuando— en la bio y en el primer mensaje automático de WhatsApp. No hace falta que sea rápida: hace falta que exista. El silencio sin plazo se lee como desinterés; el silencio con plazo se lee como agenda llena, y eso juega a tu favor.",
+        copy: "Respondo cotizaciones de lunes a sábado, antes de las 8pm.",
+        copyNote: "Ajusta el horario al tuyo. Lo que convierte no es la velocidad: es que la clienta sepa cuándo dejar de mirar el teléfono." },
+    ],
+
+    dm: {
+      t: "Y la respuesta que revive a las que preguntaron y nunca volvieron",
+      when: "Para las conversaciones de hace uno o dos meses que se quedaron en «déjame lo pienso» o directamente sin respuesta. Con tu volumen, esa lista es la pila de dinero más grande que tienes hoy, y no la está tocando nadie",
+      bad: "Holaa! Sigues interesada en tu tatuaje? 😊",
+      good: "hola ___, te escribo por lo que hablamos hace un tiempo del ___ en ___. no vengo a insistirte: estoy organizando la agenda de las próximas semanas y me quedaron dos espacios. si todavía lo tienes en la cabeza, te aparto uno y te paso el diseño; si ya no va, dime y cierro tu caso sin problema — así dejo de aparecer en tu chat.",
+      why: "La primera es la pregunta que todo el mundo manda y que nadie contesta, porque pide un favor sin dar nada. La segunda hace tres cosas a la vez: recuerda el detalle concreto de lo que ella quería —eso sola ya sube la respuesta—, le da una razón para que le escribas hoy y no ayer, y le ofrece una salida limpia. Y la salida limpia es la clave: le quitas la culpa de decir que no, así que la que iba a ignorarte te responde igual. Las que dicen «ya no» te devuelven tu tiempo; las que dicen «sí» son citas que ya estaban perdidas.\n\nCambia los espacios en blanco por su nombre y por el diseño que ella pidió. Un mensaje de estos sin el detalle personal es exactamente el mensaje malo." },
+
+    plan: [
+      { k: "El último metro de la puerta",
+        d: "WhatsApp que abre escrito, las preguntas correctas en el primer mensaje, rango y depósito visibles antes de preguntar. Lo de arriba, cerrado bien y no tapado." },
+      { k: "Alguien contestando por ti",
+        d: "Tus mensajes respondidos en minutos, con tu voz y tus precios, mientras tú estás con la aguja en la mano. Es lo único que hace que «Agenda Abierta» sea verdad todos los días." },
+      { k: "Tus 24.009, reactivados",
+        d: "Contenido con intención para que la audiencia que ya te dijo que sí vuelva a verte, y pauta local para que Bogotá te descubra. No más seguidores: los mismos, mirando." },
+      { k: "El seguimiento y el histórico",
+        d: "Las que preguntaron y se callaron, recuperadas una por una con el guion de arriba. En una cuenta de tu tamaño, esta es la parte que paga todo lo demás en el primer mes." },
+      { k: "Medición de verdad",
+        d: "Hoy no sabes cuánta gente toca tu enlace, cuántas escriben, cuántas cotizan ni cuántas aparecen. Sin eso, cada decisión es una corazonada. Con eso, sabes qué repetir." },
+    ],
+
+    dias90: [
+      { d: "Días 1–15", t: "Fundación",
+        items: [
+          "Revisión de tus 541 publicaciones para saber qué estilo trae cotización y cuál solo trae likes",
+          "Rango de precio y depósito definidos contigo",
+          "Guiones de respuesta escritos con tu voz, aprobados por ti",
+          "Medición instalada: cuántas tocan el enlace, cuántas escriben, cuántas agendan",
+          "Preparación de campañas para Bogotá",
+        ] },
+      { d: "Días 15–30", t: "Lanzamiento",
+        items: [
+          "Campañas activas",
+          "Setter respondiendo tus mensajes en minutos",
+          "Reactivación del histórico: las que preguntaron y no volvieron",
+          "Primeras conversaciones calificadas",
+          "Primeros datos reales de qué diseño y qué zona convierten",
+        ] },
+      { d: "Días 30–60", t: "Optimización",
+        items: [
+          "Bajar el costo por cotización",
+          "Subir la calidad de la que escribe",
+          "Afinar las preguntas de calificación",
+          "Reforzar el seguimiento de la que no cerró",
+          "Identificar los estilos que ganan y empujarlos",
+        ] },
+      { d: "Días 60–90", t: "Predictibilidad",
+        items: [
+          "Escalar lo que ya demostró funcionar",
+          "Agenda visible con semanas de anticipación",
+          "Mejor conversión de cotización a depósito",
+          "Menos días vacíos entre sesiones",
+          "Un tablero donde ves el mes antes de que pase",
+        ] },
+    ],
+
+    cierre:
+      "Si nos sentamos y no vemos una oportunidad clara en tu caso, te lo decimos en la misma llamada. Pasa, y es mejor para las dos que descubrirlo dentro de tres meses.",
+  },
   "nathy-kolyn": {
     slug: "nathy-kolyn",
     lang: "es",
