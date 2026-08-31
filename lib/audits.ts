@@ -77,6 +77,13 @@ export type Audit = {
   /** El regalo con dientes: una respuesta suya que hoy no está dando. */
   dm: { t: string; when: string; bad: string; good: string; why: string };
   plan: { k: string; d: string }[];
+  /** Las dos bandas rojas que cortan la lectura, cuando las genéricas
+      no sirven. Y muchas veces no sirven: la banda es donde se repite la
+      tesis de la auditoría, así que decirle lo mismo a alguien con 443
+      seguidores y a alguien con 24.009 es desperdiciar el único sitio
+      donde el argumento se dice en grande. Opcional — sin esto se usan
+      las de auditUi. */
+  bands?: { line: string; cta: string }[];
   /** Los primeros 90 días, en las cuatro fases de la web.
       Va después del plan y antes del cierre, porque es donde se decide:
       el plan dice qué se instala y esto dice cuándo pasa cada cosa. Un
@@ -140,13 +147,13 @@ export const auditUi = {
     costTitle: "We're not going to invent your numbers. Put yours in.",
     costNote: "Straight multiplication of your own three numbers. Nothing here is our estimate — check it on your phone. Move the sliders until they look like your month.",
     costA: "What an average piece brings in",
-    costB: "Inquiries you get in a week",
-    costC: "Of those, how many book",
+    costB: "Inquiries you get a month",
+    costC: "Of those, how many you book",
     costNow: "What it brings you today",
     costTable: "What's on the table",
     costRate: "of everyone who writes you",
     costMonth: "a month",
-    costGap: "conversations a month already reach you and never book. Nobody closes all of them — closing one more each week is",
+    costGap: "conversations a month already reach you and never book. Nobody closes all of them — but every single one you do close is",
     costZero: "With those numbers nothing is leaking — every inquiry you get ends in a chair. Move the sliders until they look like a real month.",
     ctaTitle: "Stop leaking bookings.",
     ctaBody: "Everything above is what your profile does today. Below is the day we change it. We only take a handful of artists a month because one of us actually answers your DMs.",
@@ -220,13 +227,13 @@ export const auditUi = {
     costTitle: "No vamos a inventar tus números. Pon los tuyos.",
     costNote: "Es una multiplicación de tus propios tres números. Aquí no hay ninguna estimación nuestra — compruébala con la calculadora del teléfono. Mueve las barras hasta que se parezcan a tu mes.",
     costA: "Lo que deja una pieza promedio",
-    costB: "Consultas que recibes en una semana",
-    costC: "De esas, cuántas agendan",
+    costB: "Consultas que recibes al mes",
+    costC: "De esas, cuántas agendas",
     costNow: "Lo que te deja hoy",
     costTable: "Lo que hay sobre la mesa",
     costRate: "de las que te escriben",
     costMonth: "al mes",
-    costGap: "conversaciones al mes ya te llegan y no terminan en cita. Nadie cierra todas — cerrar una más cada semana son",
+    costGap: "conversaciones al mes ya te llegan y no terminan en cita. Nadie cierra todas — pero cada una que cierres son",
     costZero: "Con esos números no se te está cayendo ninguna: todas las que te escriben terminan en la camilla. Mueve las barras hasta que se parezcan a un mes de verdad.",
     ctaTitle: "Deja de perder reservas.",
     ctaBody: "Todo lo de arriba es lo que hace tu perfil hoy. Lo de abajo es el día en que eso cambia. Tomamos pocos artistas al mes porque tus mensajes los contesta alguien de verdad.",
@@ -283,6 +290,14 @@ export const AUDITS: Record<string, Audit> = {
     expira: "2026-09-07T23:59:00-05:00",
     moneda: "COP",
     planUrl: "https://buy.stripe.com/14AdR1fMe8fyg6od1b53O02",
+
+    /* Su tesis, no la genérica: veinticuatro mil personas y una agenda
+       que no se llena sola. Las bandas son el único sitio donde eso se
+       dice a tamaño de titular. */
+    bands: [
+      { line: "24.009 personas te siguen y tu agenda no se llena sola. Eso no es un problema de talento.", cta: "Empezar el sistema" },
+      { line: "Con lo de arriba vuelven las conversaciones. Llenar la agenda todos los meses es otro trabajo, y ese no se hace en una tarde.", cta: "Empezar el sistema" },
+    ],
     stats: [
       { k: "Seguidores", v: "24.009" },
       { k: "Tu depósito, desde 2023", v: "$50.000" },
@@ -301,7 +316,8 @@ export const AUDITS: Record<string, Audit> = {
       line: "«Junio — últimos cupos». Eso dice tu agenda hoy, y es de 2023.",
       body: [
         "Empecemos por lo que no vamos a discutir: tu trabajo. Microrealismo de mascotas con la mirada resuelta, línea fina limpia, seis años, cuenta verificada y 24.009 personas que dijeron que sí. Eso no se compra, y no es lo que vinimos a arreglar.",
-        "Vinimos a mirar lo que decide si una desconocida te escribe o se va. Y ahí tienes algo que casi nadie tiene: cinco destacadas, y tres de ellas son exactamente las correctas — ¿CÓMO AGENDAR?, COTIZACIONES y AGENDA. Alguien se sentó a pensar tu proceso comercial y lo montó bien. Abrimos las tres.",
+        "Y por eso la pregunta de esta auditoría es una sola: si 24.009 personas te siguen y tu trabajo es el que es, ¿por qué hay que llenar la agenda cada mes en vez de tener lista de espera? Lo que sigue es lo que encontramos al buscar esa respuesta.",
+        "Miramos lo que decide si una desconocida te escribe o se va. Y ahí tienes algo que casi nadie tiene: cinco destacadas, y tres de ellas son exactamente las correctas — ¿CÓMO AGENDAR?, COTIZACIONES y AGENDA. Alguien se sentó a pensar tu proceso comercial y lo montó bien. Abrimos las tres.",
         "Las tres tienen una sola historia. Las tres son del mismo día: 29 de mayo de 2023. Hace tres años y tres meses.",
         "«Agenda» dice, literalmente: «JUNIO — Últimos cupos. JULIO — Apertura 20 de junio». Una clienta que entra hoy a ver si tienes espacio lee que se acaban los cupos de un junio de hace tres años, mientras tu bio le dice «Agenda Abierta». Las dos cosas no pueden ser ciertas, y ella no sabe cuál creer.",
         "«¿Cómo agendar?» pide un abono de $50.000 por consignación o transferencia, y que le mandes el comprobante para agendar. Ese depósito lleva tres años sin moverse. En microrealismo, $50.000 no aparta nada: es tan poco que a la clienta le sale barato no aparecer, y cada hueco que se cae es una hora de camilla que no vuelve. Y el proceso —consignar, hacer captura, mandarla, esperar— tiene cuatro pasos manuales donde hoy debería haber un enlace.",

@@ -143,6 +143,12 @@ export default async function AuditPage({
      llamada. Nunca a un botón muerto. */
   const accion = a.planUrl || plan.url || site.call;
 
+  /* Las bandas de esta auditoría. La tesis cambia de un artista a otro,
+     y la banda es el único sitio donde esa tesis se dice a tamaño de
+     titular: usar la genérica ahí es tirar el mejor espacio de la
+     página. */
+  const bandas = a.bands ?? t.bands;
+
   /* Cupos libres del mes, del mismo sitio que la portada. */
 
   return (
@@ -274,7 +280,7 @@ export default async function AuditPage({
         </ol>
       </section>
 
-      <Banda line={t.bands[0].line} cta={t.bands[0].cta} href={accion} />
+      <Banda line={bandas[0].line} cta={bandas[0].cta} href={accion} />
 
       {/* ── 03 · el mercado ────────────────────────────────────── */}
       <section className="sec relative mx-auto max-w-[1180px] px-6 py-24 sm:px-10">
@@ -414,7 +420,7 @@ export default async function AuditPage({
         </div>
       </section>
 
-      <Banda line={t.bands[1].line} cta={t.bands[1].cta} href={accion} />
+      <Banda line={bandas[1].line} cta={bandas[1].cta} href={accion} />
 
       {/* ── 06 · lo que montaríamos ────────────────────────────── */}
       <section className="sec relative mx-auto max-w-[1180px] px-6 py-24 sm:px-10">

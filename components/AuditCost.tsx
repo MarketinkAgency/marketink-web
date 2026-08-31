@@ -46,9 +46,6 @@ const ESCALAS: Record<Moneda, { min: number; max: number; step: number; inicial:
   COP: { min: 150_000, max: 4_000_000, step: 50_000, inicial: 600_000 },
 };
 
-/** Semanas por mes. 52/12, no 4: usar 4 se come casi un mes al año. */
-const SEMANAS_MES = 52 / 12;
-
 export default function AuditCost({
   lang,
   moneda = "USD",
@@ -60,8 +57,8 @@ export default function AuditCost({
 }) {
   const escala = ESCALAS[moneda];
   const [ticket, setTicket] = useState(escala.inicial);
-  const [dms, setDms] = useState(12);
-  const [books, setBooks] = useState(2);
+  const [dms, setDms] = useState(40);
+  const [books, setBooks] = useState(10);
 
   const es = lang === "es";
 
@@ -80,32 +77,31 @@ export default function AuditCost({
      entera se apagaba de golpe. Se recorta aquí, en el cálculo. */
   const agendadas = Math.min(books, dms);
 
-  /* Las que ya le escriben y no terminan en camilla. Sale de sus dos
-     deslizadores, no de un supuesto nuestro. */
-  const perdidasSemana = Math.max(0, dms - agendadas);
-  const perdidasMes = perdidasSemana * SEMANAS_MES;
+  /* Las que ya le escriben y no terminan en camilla. */
+  const perdidas = Math.max(0, dms - agendadas);
 
-  /* Las tres cifras que importan, y las tres son multiplicación pura de
-     lo que él mismo puso. Ninguna es un supuesto nuestro.
+  /* TODO EN MESES, y esto no es un detalle de formato.
 
-     `hoy` es lo que ya se lleva de las conversaciones que recibe.
-     `mesa` es lo que habría si las cerrara todas — el techo, no una
-     meta: nadie cierra el 100%, y el texto lo dice. La diferencia entre
-     las dos es la sección entera.
+     Antes se preguntaba por semana y se respondía por mes, con un ×4,33
+     invisible en medio. El que ponía «20 agendadas» pensando en su mes
+     veía un resultado cuatro veces mayor que el que sacaba él de cabeza,
+     y a partir de ahí ya no se creía nada. Una calculadora que no
+     coincide con la cuenta mental de quien la usa no es conservadora ni
+     optimista: está rota.
 
-     Enseñar solo la pérdida era el error: un número grande de dinero
-     perdido, sin nada al lado, no se puede juzgar. Puesto junto a lo que
-     ya gana, cualquiera ve de un vistazo el tamaño del hueco. */
-  const agendadasMes = agendadas * SEMANAS_MES;
-  const hoy = agendadasMes * ticket;
-  const mesa = dms * SEMANAS_MES * ticket;
+     Ahora entra en meses y sale en meses. `hoy` es literalmente lo que
+     él agenda por lo que cobra. `mesa` es lo mismo si cerrara todas las
+     que le escriben — el techo, no una meta, y el pie lo dice. */
+  const hoy = agendadas * ticket;
+  const mesa = dms * ticket;
 
   /** Qué porcentaje de los que le escriben termina en la camilla. */
   const tasa = dms > 0 ? (agendadas / dms) * 100 : 0;
 
-  /* El aterrizaje: una sola cita más por semana. Es la unidad más
-     pequeña que se puede pedir y convierte el hueco en una tarea. */
-  const unaMas = SEMANAS_MES * ticket;
+  /* El aterrizaje: lo que vale UNA sola cita más. Es su propio precio,
+     sin ningún coeficiente, y convierte el hueco en algo que se cuenta
+     con los dedos. */
+  const unaMas = ticket;
 
   const barra = (
     v: number, min: number, max: number, set: (n: number) => void,
@@ -135,7 +131,7 @@ export default function AuditCost({
         {barra(ticket, escala.min, escala.max, setTicket, labels.a, fmt(ticket), escala.step)}
         {/* Al bajar las consultas, las agendadas bajan con ellas: si no,
             quedaban 14 agendadas de 5 consultas, que no existe. */}
-        {barra(dms, 1, 80, (n) => { setDms(n); if (books > n) setBooks(n); }, labels.b, String(dms))}
+        {barra(dms, 1, 200, (n) => { setDms(n); if (books > n) setBooks(n); }, labels.b, String(dms))}
         {/* El techo de «cuántas agendan» es cuántas llegan: agendar más
             de las que te escriben no existe, y dejarlo suelto permitía
             llegar a un estado imposible. */}
@@ -156,7 +152,7 @@ export default function AuditCost({
           </p>
         </div>
 
-        {perdidasSemana === 0 ? (
+        {perdidas === 0 ? (
           <p className="max-w-[34ch] border-t border-white/[0.09] pt-7 text-[15px] leading-[1.7] text-muted">
             {labels.zero}
           </p>
@@ -172,10 +168,10 @@ export default function AuditCost({
             </div>
 
             <p className="text-[14px] leading-[1.7] text-muted">
-              <b className="tabular-nums text-bone">{Math.round(perdidasMes)}</b>{" "}
+              <b className="tabular-nums text-bone">{perdidas}</b>{" "}
               {labels.gap}{" "}
-              <b className="whitespace-nowrap text-bone">+{fmt(unaMas)}</b>{" "}
-              {es ? "al mes." : "a month."}
+              <b className="whitespace-nowrap text-bone">{fmt(unaMas)}</b>
+              {es ? " más." : " more."}
             </p>
           </>
         )}
