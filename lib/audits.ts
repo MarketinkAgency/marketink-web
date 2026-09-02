@@ -278,6 +278,166 @@ export const auditUi = {
 /* ── Las auditorías ───────────────────────────────────────────────── */
 
 export const AUDITS: Record<string, Audit> = {
+  "christian-tibabuzo": {
+    slug: "christian-tibabuzo",
+    lang: "es",
+    handle: "@tiba.ink",
+    name: "Christian Tibabuzo",
+    studio: "Blackwork · geek · microrealismo · @ct.tattoostudio",
+    city: "Bogotá",
+    profile: "https://www.instagram.com/tiba.ink/",
+    reviewed: "2026-09-02",
+    expira: "2026-09-09T23:59:00-05:00",
+    moneda: "COP",
+    planUrl: "https://buy.stripe.com/14AdR1fMe8fyg6od1b53O02",
+
+    /* Su tesis: el trabajo está probado y el mostrador no existe. Nada
+       que ver con la de Xime, y por eso las bandas no pueden ser las
+       mismas. */
+    bands: [
+      { line: "Catorce destacadas enseñan lo que sabes hacer. Ninguna dice cuánto cuesta.", cta: "Empezar el sistema" },
+      { line: "Los arreglos de arriba te ponen el mostrador. Llenar la agenda todos los meses es otro trabajo, y ese no se hace en una tarde.", cta: "Empezar el sistema" },
+    ],
+
+    stats: [
+      { k: "Seguidores", v: "2.076" },
+      { k: "Destacadas", v: "14" },
+      { k: "De ellas, sobre precio o agenda", v: "0" },
+      { k: "Publicaciones fijadas", v: "0" },
+    ],
+    bio: [
+      "🖋️ Tattoo Artist",
+      "⚫️ BlackWork / Geek / Microrealismo / Fine Line",
+      "🏠 @ct.tattoostudio | Chico Norte",
+      "📍 Bogotá, Col 🇨🇴",
+      "⬇️ Citas y Cotizaciones  ·  wa.me/message/F362MQFTL35KO1",
+    ],
+
+    verdict: {
+      line: "El 31 de agosto ganaste un premio. Tu perfil todavía no sabe cobrarlo.",
+      body: [
+        "Entramos a tu perfil como entra un desconocido con una idea en la cabeza y con qué pagarla. Y lo primero que hay que decir es que tu perfil está trabajado de verdad. Cuatro estilos dichos en la bio y sostenidos por catorce destacadas: Scar Cover-Up, Geek, Color, Perfos, Brazaletes, Siluetas, Fine Line, Lettering, Process, Diseños Disponibles, Minimalistas, Covers/Retoques, Competencias e Ilustrativo. No es un montón de historias viejas: «Process» llega hasta el 3 de agosto y «Fine Line» hasta el 22. Están vivas y se nota que las mantienes.",
+        "Publicas seguido —31, 24 y 15 de agosto— y el 31 subiste el segundo puesto de la categoría Nuevo Talento del Tattoo Fest Z4. Eso es autoridad real, fechada y comprobable, y la mayoría de los tatuadores que revisamos no tiene nada parecido.",
+        "Ahora la parte incómoda, y es una sola cosa dicha de cuatro formas: todo tu perfil demuestra que sabes tatuar, y nada explica cómo contratarte.",
+        "De las catorce destacadas, catorce son de estilo o de proceso. Ninguna dice cuánto cuesta, ninguna dice cómo se reserva, ninguna dice cuándo tienes agenda. La única vez que tu perfil menciona el dinero es dentro de «Diseños Disponibles», y dice literalmente: «está disponible a muy buen precio». Sin cifra. Eso obliga a preguntar, y el que tiene que preguntar el precio muchas veces prefiere no preguntar.",
+        "Tampoco hay depósito en ninguna parte, ni una palabra sobre cuánto tardas en contestar. Y no tienes ni una publicación fijada: con 83 posts y un premio de hace dos días, el que entra por primera vez ve lo último que subiste, no lo mejor que haces. Ese premio debería ser lo primero que ve todo el mundo y hoy está enterrado entre otras ochenta y dos.",
+        "Tus reels lo confirman desde el otro lado. Medimos dieciocho: 14.791 vistas entre todos, el mejor en 2.010 y el normal alrededor de 730, contra 2.076 seguidores. Tienes gente mirando cada semana. Lo que no tienes es dónde se pone el dedo cuando esa gente decide.",
+        "Ese es el diagnóstico: no te falta trabajo, ni constancia, ni pruebas. Te falta el mostrador. Tienes catorce vitrinas montadas y ninguna caja registradora.",
+      ],
+    },
+
+    puntos: [
+      { k: "Un enlace en la bio", s: "bien",
+        note: "Uno solo, a WhatsApp, y con la línea de arriba diciendo para qué es: «⬇️ Citas y Cotizaciones». Eso es mejor de lo que hace la mayoría, que pone tres flechas y ya. Quien toca sabe a dónde va y para qué." },
+      { k: "Un camino para reservar", s: "media",
+        note: "El enlace existe y está bien etiquetado, pero todo lo que pasa después vive solo en tu cabeza: no hay ni una instrucción pública de qué ocurre cuando alguien escribe. Ni qué le vas a preguntar, ni cuántos pasos son, ni si sale de ahí con un precio o con una fecha." },
+      { k: "Una señal de precio", s: "fuga",
+        note: "La única mención de dinero en todo tu perfil está dentro de «Diseños Disponibles» y dice «está disponible a muy buen precio». Sin cifra, sin rango, sin desde. Con blackwork y microrealismo la gente asume que es caro, y la que asume no pregunta: se va al perfil del que sí lo dice." },
+      { k: "El depósito", s: "fuga",
+        note: "No aparece en ningún sitio: ni bio, ni enlace, ni ninguna de las catorce destacadas. Sin depósito, una cita es una intención, y las intenciones no se presentan el sábado por la mañana. Cada hueco que se cae es una sesión que ya no vuelve." },
+      { k: "Cuándo respondes", s: "fuga",
+        note: "Nada dice cuánto tardas. Para el que espera, tu silencio y un «no me interesa» se ven exactamente igual, y a las 24 horas ya está mirando a otro. En Bogotá hay muchos, y algunos contestan en cinco minutos." },
+      { k: "Destacadas", s: "media",
+        note: "Catorce, ordenadas por estilo y —esto es lo importante— vivas: «Process» llega al 3 de agosto de 2026 y «Fine Line» al 22. Casi todos los perfiles que revisamos las tienen abandonadas desde hace años; tú no. El problema no es el mantenimiento, es que las catorce enseñan trabajo y ninguna explica cómo comprarlo. Te falta la número quince." },
+      { k: "Fijados", s: "fuga",
+        note: "Cero. Los tres huecos están vacíos. Tienes 83 publicaciones y un segundo puesto de hace dos días, y quien entra por primera vez ve lo último que subiste en vez de lo mejor que has hecho. Es el espacio más valioso del perfil y está sin usar." },
+      { k: "Diseños contra piel", s: "bien",
+        note: "Casi toda la cuadrícula es tinta en piel real. Y con tu trabajo eso importa el doble: en geek y microrealismo la diferencia entre un buen dibujo y un buen tatuaje es enorme, y tú estás enseñando la segunda." },
+      { k: "Constancia", s: "bien",
+        note: "31, 24 y 15 de agosto. Publicas cada semana o cada dos, y eso le da a Instagram razones para seguir enseñándote. Es una de las cosas más difíciles de sostener y la tienes resuelta sin ayuda de nadie." },
+      { k: "Dónde estás", s: "bien",
+        note: "«Bogotá» y además «@ct.tattoostudio | Chico Norte». No solo la ciudad: el barrio y el estudio etiquetado. Cualquiera sabe en dos segundos si le queda cerca, y de paso hereda la confianza de un estudio con nombre." },
+      { k: "Qué le pides que haga", s: "media",
+        note: "«⬇️ Citas y Cotizaciones» dice para qué sirve el enlace, y eso ya te pone por delante. Lo que no dice es qué va a pasar al otro lado: cuánto tardas, qué necesitas saber, si sale con número o con fecha. Decirlo sube la cantidad de gente que se atreve a tocar." },
+      { k: "Se entiende qué tatúas", s: "bien",
+        note: "«BlackWork / Geek / Microrealismo / Fine Line» en la bio, y catorce destacadas que lo demuestran una por una. Nadie llega a tu perfil sin entender qué haces. Esto es lo más difícil de construir y ya lo tienes." },
+    ],
+
+    market: [
+      { t: "Un premio dura dos semanas si nadie lo sostiene",
+        body: "El segundo puesto del Tattoo Fest Z4 es la mejor prueba que tienes y ahora mismo es una publicación más que va a bajar por la cuadrícula. Sin un fijado que lo sostenga, sin una destacada que lo guarde y sin una oferta detrás, en un mes no queda nada de él. La autoridad no se acumula sola: se coloca donde la gente decide." },
+      { t: "Geek y anime es un nicho que busca por nombre",
+        body: "Quien quiere un tatuaje de Dragon Ball no busca «tatuador en Bogotá»: busca a alguien que ya haya hecho ese personaje. Tú tienes esas piezas y tienes las destacadas que las agrupan. Es de los pocos nichos donde el trabajo se vende solo si lo encuentran, y por eso el buscador y la pauta local rinden tanto." },
+      { t: "«Muy buen precio» es la frase que más caro te sale",
+        body: "No es un problema de redacción. Un rango publicado filtra a quien no puede pagar antes de gastarte una conversación, y tranquiliza a quien sí puede y no se atreve a preguntar. Sin cifra, las dos personas hacen lo mismo: nada." },
+    ],
+
+    arreglos: [
+      { n: "01",
+        t: "Fija el premio. Hoy, y tarda un minuto.",
+        body: "Tienes los tres huecos de fijados vacíos y un segundo puesto del 31 de agosto enterrado en la cuadrícula. Abre la publicación, toca los tres puntos y dale a «Fijar en tu perfil».\n\nY mientras estás ahí: tu destacada «Competencias» tiene dos historias y la última es del 27 de mayo. El premio de esta semana todavía no está dentro. Súbelo también.",
+        copy: "Fijados: 1) el premio del Tattoo Fest Z4 · 2) tu mejor pieza geek · 3) un cover o cicatriz antes/después",
+        copyNote: "Esos tres cubren las tres razones por las que alguien te contrata: eres bueno, haces lo que busco, y arreglas lo que otro hizo mal. El que entra por primera vez decide en esos tres cuadros." },
+      { n: "02",
+        t: "Pon la destacada número quince",
+        body: "Tienes catorce destacadas de estilo y ninguna de proceso comercial. Falta la que cobra. Graba cuatro historias, guárdalas en una destacada nueva llamada «Cómo agendar» y ponla la primera de la fila.\n\nEste es el guion, una frase por pantalla:",
+        copy: "1 · Escríbeme por WhatsApp con tu idea, la zona y el tamaño en cm\n2 · Te paso un rango de precio el mismo día\n3 · El depósito de $___ aparta tu fecha y se descuenta del total\n4 · Te mando el diseño antes de la cita",
+        copyNote: "Pon tu depósito donde va el espacio. Lo de «se descuenta del total» no sobra: mucha gente cree que el depósito es un cargo extra. Y ponla primera en la fila de destacadas — la que está en el puesto catorce no la ve nadie." },
+      { n: "03",
+        t: "Cámbiale «muy buen precio» un número",
+        body: "Tu destacada «Diseños Disponibles» tiene un solo diseño y dice «está disponible a muy buen precio». Ese diseño es lo más fácil de vender que tienes: ya está dibujado, no hay que consultar nada y quien lo quiere lo quiere ya.\n\nSúbelo otra vez con el precio puesto, y aprovecha para meter tres o cuatro diseños más:",
+        copy: "DISPONIBLE · $___\nTamaño aprox: ___ cm · Zona sugerida: ___\nUna sola vez. Escríbeme y es tuyo.",
+        copyNote: "«Una sola vez» es lo que convierte un dibujo en una pieza única, y es verdad: un flash tatuado dos veces deja de serlo. Con cuatro o cinco diseños con precio tienes una tienda dentro del perfil, sin web y sin nada que montar." },
+    ],
+
+    dm: {
+      t: "Y la respuesta que convierte «¿cuánto vale?» en una cita",
+      when: "Cuando alguien abre con «¿cuánto me cobras por algo así?» — que con tus estilos es como empieza casi todo",
+      bad: "Depende del diseño 🙏 mándame la idea y te digo",
+      good: "el tamaño y la zona mueven el precio mucho más que el diseño. ¿en qué parte te lo pondrías y de qué tamaño lo estás pensando? con eso te paso un número real hoy mismo, no un rango. y si es algo geek mándame la referencia, que ahí me emociono.",
+      why: "La primera le devuelve el trabajo a él y termina la conversación con educación. La segunda pide las dos cosas que de verdad necesitas para cotizar, promete algo concreto a cambio —un número real, hoy— y en la última línea suena a ti y no a un formulario. Casi todo el mundo la contesta, y el que no la contesta no iba a reservar.\n\nCámbiale las palabras hasta que suene a como hablas tú. Un guion que no suena tuyo se nota más que no tener guion." },
+
+    plan: [
+      { k: "El mostrador que falta",
+        d: "Destacada de «cómo agendar», rango de precio publicado, depósito con enlace de pago y flash con cifra. Todo lo que tu perfil demuestra que sabes hacer, por fin con una forma de comprarlo." },
+      { k: "Alguien contestando por ti",
+        d: "Tus mensajes respondidos en minutos, con tu voz y tus precios, mientras tú estás con la máquina en la mano. Que tatuar deje de costarte el siguiente tatuaje." },
+      { k: "El premio, convertido en clientes",
+        d: "Fijado, guardado en destacadas, empujado con pauta local y usado como argumento en las conversaciones. Un segundo puesto es una prueba: sirve para cerrar, no solo para celebrar." },
+      { k: "El nicho geek, buscado a propósito",
+        d: "Tu estilo lo busca gente por nombre de personaje. Etiquetas, contenido y pauta dirigidos a esa búsqueda, para que las 2.076 personas que ya te siguen no sean el techo de quién te encuentra." },
+      { k: "El seguimiento",
+        d: "El que pregunta y se calla es la pila de dinero más grande de cualquier perfil, y nadie la está tocando. Es la parte que se paga sola." },
+    ],
+
+    dias90: [
+      { d: "Días 1–15", t: "Fundación",
+        items: [
+          "Fijados puestos y destacada de «cómo agendar» grabada",
+          "Rango de precio y depósito definidos contigo y publicados",
+          "Flash disponible con precio, listo para vender",
+          "Guiones de respuesta escritos con tu voz, aprobados por ti",
+          "Medición instalada: cuántos tocan el enlace, escriben y agendan",
+        ] },
+      { d: "Días 15–30", t: "Lanzamiento",
+        items: [
+          "Campañas activas en Bogotá, apuntando a tu nicho",
+          "Setter respondiendo tus mensajes en minutos",
+          "El premio empujado como prueba, no como celebración",
+          "Primeras conversaciones calificadas",
+          "Primeros datos de qué estilo y qué zona convierten",
+        ] },
+      { d: "Días 30–60", t: "Optimización",
+        items: [
+          "Bajar el costo por cotización",
+          "Subir la calidad del que escribe",
+          "Afinar las preguntas de calificación",
+          "Reforzar el seguimiento del que no cerró",
+          "Identificar los estilos que ganan y empujarlos",
+        ] },
+      { d: "Días 60–90", t: "Predictibilidad",
+        items: [
+          "Escalar lo que ya demostró funcionar",
+          "Agenda visible con semanas de anticipación",
+          "Mejor conversión de cotización a depósito",
+          "Menos días vacíos entre sesiones",
+          "Un tablero donde ves el mes antes de que pase",
+        ] },
+    ],
+
+    cierre:
+      "Nada de lo que dice esta página es opinión nuestra: entra a tu perfil, cuenta tus destacadas y busca en cuál dice el precio. Si nos sentamos y no vemos una oportunidad clara en tu caso, te lo decimos en la misma llamada. Pasa, y es mejor para los dos que descubrirlo dentro de tres meses.",
+  },
   "xime-lizarazu": {
     slug: "xime-lizarazu",
     lang: "es",
