@@ -278,6 +278,171 @@ export const auditUi = {
 /* ── Las auditorías ───────────────────────────────────────────────── */
 
 export const AUDITS: Record<string, Audit> = {
+  "wilford-smith": {
+    slug: "wilford-smith",
+    lang: "es",
+    handle: "@wild_inktattoo",
+    name: "Wilford Smith",
+    studio: "Black work · puntillismo · fine line · Wild Studio Ink",
+    city: "Salt Lake City, Utah",
+    profile: "https://www.instagram.com/wild_inktattoo/",
+    reviewed: "2026-09-30",
+    expira: "2026-10-07T23:59:00-06:00",
+
+    /* Su tesis no es la de Christian. A él le faltaba mostrador teniendo
+       poco público; a Wilford le sobra público y le falta puerta. Las
+       bandas tienen que decir eso y no lo genérico. */
+    bands: [
+      { line: "71.600 personas vieron un tatuaje tuyo. Ninguna encontró el precio.", cta: "Empezar el sistema" },
+      { line: "Ya te llevaste las fáciles. Lo que no se arregla en una tarde es contestar en cinco minutos a las 13.200 de la próxima vez.", cta: "Empezar el sistema" },
+    ],
+
+    stats: [
+      { k: "Seguidores", v: "1.707" },
+      { k: "Reproducciones, últimos 18 reels", v: "149.227" },
+      { k: "Tu mejor reel", v: "71.600" },
+      { k: "Destacadas llamadas «Destacada»", v: "5 de 8" },
+    ],
+    bio: [
+      "Estudio de tatuajes y piercings",
+      "Speciality: Black Work & Drag Pointillism",
+      "📍 UT 🇺🇸",
+      "@13wilford",
+      "Cotizaciones y citas Texto +1 385 418 5222",
+      "WhatsApp ⬇️  ·  wa.me/13854185222",
+      "Web Side  ·  www.wildstudioink.com",
+    ],
+
+    verdict: {
+      line: "Publicaste «agenda abierta». Lo vieron 13.200 personas. Tu perfil no les dijo cuánto cuesta.",
+      body: [
+        "Entramos a tu perfil como entra un desconocido de Salt Lake City con una idea en la cabeza y con qué pagarla. Y lo primero hay que decirlo sin adornos: el problema no es tu trabajo, y tampoco es tu alcance.",
+        "Medimos tus dieciocho reels visibles: 149.227 reproducciones entre todos. Tienes 1.707 seguidores. Uno solo de esos videos llegó a 71.600 personas, cuarenta y dos veces tu número de seguidores; otros tres pasaron de doce mil. Cuatro de dieciocho concentran el 84% de todo lo que te han visto. Eso no le pasa a un perfil que no interesa: te está pasando porque el trabajo se defiende solo cuando lo ven.",
+        "Y no lo decimos nosotros. El 27 de mayo de 2025 una clienta subió un reel contigo etiquetado, por su cuenta y sin que se lo pidieras: «such fine lines, so detailed and STUNNING». Ese es el tipo de prueba que no se compra.",
+        "Ahora la parte incómoda. El 20 de septiembre subiste un reel que decía, con todas las letras, «Agenda abierta en Salt Lake City. Reserva tu cita por mensaje directo». Lo reprodujeron 13.200 veces. Dejó 43 me gusta y un comentario, y ese comentario es de una cuenta que solo escribió «Send me this post».",
+        "Trece mil doscientas personas se enteraron de que tienes hueco. Vamos a mirar qué encontraron cuando fueron a averiguar cómo entrar.",
+        "Encontraron tres puertas distintas. La bio dice «Cotizaciones y citas Texto +1 385 418 5222» y debajo pone WhatsApp. El reel fijado de 71.600 vistas dice «Citas por DM». El del 20 de septiembre dice «por mensaje directo». Tu perfil nunca pide dos veces lo mismo, y el que no sabe por dónde entrar no entra por ninguna.",
+        "No encontraron ningún precio. Ni una cifra, ni un rango, ni un «desde», en ningún sitio: ni en la bio, ni en los fijados, ni en el nombre de una sola destacada. Tampoco encontraron depósito, ni una palabra sobre cuánto tardas en contestar.",
+        "Y los que probaron el único enlace que no es WhatsApp —el que dice «Web Side», escrito así— llegaron a wildstudioink.com y vieron una pantalla en blanco. Lo cargamos dos veces, con recarga forzada: la página se queda colgada en el cargador y nunca pinta nada. Cero texto, cero imágenes, cero enlaces. El dominio existe, el sitio no llega a aparecer.",
+        "Tus ocho destacadas terminan de contarlo. Cinco se llaman literalmente «Destacada» — el nombre que Instagram pone solo cuando nadie escribe uno. Las otras tres son «Ink salt lake», «Tattoo» y «Caligrafia»: estilo, estilo y estilo. Ninguna dice precio, ninguna dice cómo se reserva, ninguna dice cuándo tienes agenda. Las abrimos una por una: hay 17 historias en total y solo 3 son de 2026. «Caligrafia» es del 27 de abril de 2022. Lleva cuatro años y cinco meses ahí arriba.",
+        "Y aquí está el dato que nos hizo entender que esto no es falta de conocimiento: en tu cuenta personal, @13wilford, tienes catorce destacadas y trece tienen nombre propio — SLC, Hiking, Idaho, Snowboard, Bear lake, Trading, NBA. Sabes hacerlo perfectamente. Simplemente no lo hiciste en la cuenta que te da de comer.",
+        "Ese es el diagnóstico completo: no te falta talento, no te falta alcance y no te falta prueba social. Te falta que las 13.200 personas que ya te vieron sepan cuánto cuesta y por dónde se entra. Tienes el escaparate lleno y la puerta sin letrero.",
+      ],
+    },
+
+    puntos: [
+      { k: "Un enlace en la bio", s: "media",
+        note: "Tienes dos. El de WhatsApp funciona y eso ya te pone por delante de la mayoría. El segundo dice «Web Side» —escrito así, con d— y lleva a wildstudioink.com, que carga una pantalla en blanco: lo probamos dos veces con recarga forzada y el cuerpo de la página queda vacío, sin texto, sin imágenes y sin enlaces. Un enlace roto en la bio no es neutro: el que lo toca no vuelve a tocar el otro." },
+      { k: "Un camino para reservar", s: "fuga",
+        note: "Hay tres caminos distintos y nunca coinciden. La bio manda a un SMS al +1 385 418 5222 y además ofrece WhatsApp. Tu reel fijado más visto dice «Citas por DM». El último reel dice «Reserva tu cita por mensaje directo». Son tres puertas para la misma casa, y el que duda entre tres no elige ninguna." },
+      { k: "Una señal de precio", s: "fuga",
+        note: "No hay ni una cifra en todo tu perfil. Revisamos la bio, los tres fijados y los nombres de las ocho destacadas: ni un número, ni un rango, ni un «desde». Con black work y mangas completas la gente asume que es caro, y la que asume no pregunta: se va al perfil del que sí lo dice." },
+      { k: "El depósito", s: "fuga",
+        note: "No aparece en ningún sitio. Sin depósito una cita es una intención, y las intenciones no se presentan el sábado a las diez. Cada hueco que se cae es una sesión que no vuelve, y en tu caso duele más porque son piezas grandes: no se rellenan con un walk-in de media hora." },
+      { k: "Cuándo respondes", s: "fuga",
+        note: "Nada dice cuánto tardas. Para el que escribió y espera, tu silencio y un «no me interesa» se ven exactamente igual. En Salt Lake City hay más estudios, y basta con que uno conteste en cinco minutos." },
+      { k: "Destacadas", s: "fuga",
+        note: "Ocho, y cinco se llaman «Destacada»: el nombre por defecto de Instagram, el que aparece cuando nadie escribe uno. Las abrimos todas. Hay 17 historias y solo 3 son de 2026; las demás son de 2025, 2024, 2023 y una de abril de 2022. Ninguna de las ocho habla de precio, depósito, agenda ni proceso. Lo llamativo es que en @13wilford tienes catorce destacadas y trece con nombre propio: el problema no es que no sepas, es dónde pusiste el cuidado." },
+      { k: "Fijados", s: "media",
+        note: "Usas los tres huecos, y eso está bien hecho. El problema es qué hay dentro. El primero es tu reel de 71.600 vistas, del 15 de julio, y ese sí trabaja. El segundo es del 23 de enero de 2025 —hace veinte meses—, está en inglés, anuncia «amazing discounts you don't want to miss» que ya no existen y no tiene ni un comentario. El tercero es el testimonio de tu clienta, buenísimo, pero vive en la cuenta de ella, es de mayo de 2025 y no lleva a ninguna parte." },
+      { k: "Diseños contra piel", s: "bien",
+        note: "Casi toda la cuadrícula es tinta en piel real: mangas, antebrazos, piernas, cicatrices cubiertas. Nada de dibujos en papel haciendo bulto. En black work eso importa el doble, porque la diferencia entre un buen diseño y un buen tatuaje es exactamente la que se ve aquí." },
+      { k: "Constancia", s: "bien",
+        note: "Abrimos publicaciones del 15 de julio, del 12 de agosto y del 21 de septiembre, y entre medias hay varias más. Publicas cada semana o cada diez días sin fallar, y eso es lo más difícil de sostener de toda esta lista. Instagram te está premiando por ello: por eso tienes reels de 71.600 y 28.100 reproducciones con 1.707 seguidores." },
+      { k: "Dónde estás", s: "media",
+        note: "Tu bio dice «📍UT🇺🇸». Utah entero mide 340 kilómetros de ancho. Tus publicaciones sí etiquetan «Downtown Salt Lake City» y tus textos lo dicen, pero la bio es lo único que lee el que llega de un reel y no baja. Poner la ciudad y el barrio en la bio cuesta ocho caracteres." },
+      { k: "Qué le pides que haga", s: "media",
+        note: "«Cotizaciones y citas» sí explica para qué sirve el teléfono, y eso está bien pensado. Lo que no dice es qué pasa después: cuánto tardas, qué necesitas saber para cotizar, si sale de ahí con un número o con una fecha. Y compite con el «Citas por DM» de tus fijados, que pide otra cosa distinta." },
+      { k: "Se entiende qué tatúas", s: "bien",
+        note: "«Black Work» está dicho en la bio y demostrado en cada cuadro de la cuadrícula. Nadie llega a tu perfil sin entender qué haces, y eso es lo más caro de construir. Un matiz: «Drag Pointillism» no es un término que nadie escriba en un buscador. Tu estilo está clarísimo en las fotos; el nombre que le pusiste no te está trayendo a nadie." },
+    ],
+
+    market: [
+      { t: "Tu alcance ya está resuelto, y eso es raro",
+        body: "149.227 reproducciones en dieciocho videos con 1.707 seguidores no es normal: lo normal es lo contrario, mucho seguidor y poco alcance. Tú tienes el problema bueno. Cuando el cuello de botella está en el alcance hay que trabajar meses para moverlo; cuando está en el mostrador, se arregla en semanas. Tú estás en el segundo caso." },
+      { t: "Una web en blanco cuesta más que no tener web",
+        body: "El que no ve enlace escribe por WhatsApp. El que ve un enlace que promete un estudio, lo toca y encuentra una pantalla vacía, concluye otra cosa: que el negocio está a medias. Y esa conclusión se la lleva también al WhatsApp que ya no va a abrir. Mientras el sitio no cargue, quitar el enlace te suma." },
+      { t: "Los reels que revientan no son los bonitos: son los que dicen algo",
+        body: "Tu reel de 71.600 vistas se llama «8 razones para elegir mi trabajo» y tiene una promesa en la primera línea. El del 12 de agosto dice «Cover up» y cinco etiquetas, y se quedó en 2.129. La diferencia no es el tatuaje: es que uno le da al que mira una razón para quedarse y el otro no. Eso se puede repetir a propósito." },
+    ],
+
+    arreglos: [
+      { n: "01",
+        t: "Una sola puerta, y con el letrero puesto",
+        body: "Hoy tu perfil ofrece tres formas de escribirte y ninguna gana. Elige una —WhatsApp, que es la que ya tienes enlazada— y que todo apunte ahí.\n\nY quita el enlace «Web Side» hasta que la página cargue. Ahora mismo abre en blanco, y un enlace muerto en la bio le cuesta credibilidad a todo lo demás.\n\nEsta es la bio completa, lista para pegar:",
+        copy: "WILD.ink · Black work & fine line\n📍 Downtown Salt Lake City, UT\n💬 Cotizaciones y citas por WhatsApp\n⏱️ Te contesto el mismo día\n⬇️ Escríbeme y te paso precio hoy",
+        copyNote: "Fíjate en lo que cambia: dice la ciudad y no solo el estado, promete un plazo y promete un resultado concreto —precio hoy— en vez de pedir un mensaje a cambio de nada. Y deja un solo enlace, el de WhatsApp." },
+      { n: "02",
+        t: "Ponles nombre a las cinco, y crea la que cobra",
+        body: "Cinco de tus ocho destacadas se llaman «Destacada». En tu cuenta personal tienes trece con nombre propio, así que esto te va a tomar cuatro minutos: entra en cada una, «Editar destacada», y escribe qué hay dentro.\n\nPero lo importante es la que falta. Ninguna de las ocho explica cómo se te contrata. Graba cuatro historias, guárdalas en una destacada nueva llamada «Cómo agendar» y ponla la primera de la fila.\n\nEste es el guion, una frase por pantalla:",
+        copy: "1 · Escríbeme por WhatsApp con tu idea, la zona y el tamaño en pulgadas\n2 · Te paso un rango de precio el mismo día\n3 · El depósito de $___ aparta tu fecha y se descuenta del total\n4 · Te mando el diseño antes de la cita",
+        copyNote: "Pon tu depósito donde va el espacio. Lo de «se descuenta del total» no sobra: mucha gente cree que el depósito es un cargo extra encima del precio. Y ponla la primera — la destacada número ocho no la ve nadie." },
+      { n: "03",
+        t: "Cambia el fijado de enero de 2025",
+        body: "Tu segundo fijado tiene veinte meses, está en inglés, ofrece descuentos que ya no existen y no tiene un solo comentario. Está ocupando uno de los tres cuadros más valiosos de tu perfil.\n\nQuítalo y fija en su lugar una pieza tuya reciente con este texto. Es lo único que tienes que escribir para que el que llega de un reel sepa, en dos líneas, cuánto cuesta y qué hacer:",
+        copy: "Black work en Salt Lake City.\nManga completa desde $___ · Piezas medianas desde $___\nDepósito de $___ aparta tu fecha.\nEscríbeme por WhatsApp y te paso precio hoy mismo.",
+        copyNote: "Un rango publicado hace dos cosas a la vez: filtra al que no puede pagarte antes de gastarte una conversación, y tranquiliza al que sí puede y no se atrevía a preguntar. Hoy los dos hacen exactamente lo mismo: nada." },
+    ],
+
+    dm: {
+      t: "Y la respuesta que convierte «¿cuánto vale?» en una cita",
+      when: "Cuando alguien abre con «¿cuánto me cobras por algo así?» — que con mangas y black work es como empieza casi todo",
+      bad: "Depende del diseño 🙏 mándame la idea y te digo",
+      good: "el tamaño y la zona mueven el precio mucho más que el diseño. ¿en qué parte te lo pondrías y qué tan grande lo estás pensando, en pulgadas más o menos? con eso te paso un número real hoy, no un «depende». y si tienes una referencia mándamela, que con black work la referencia me ahorra media conversación.",
+      why: "La primera le devuelve el trabajo a él y cierra la conversación con educación. La segunda pide las dos cosas que de verdad necesitas para cotizar, promete algo concreto a cambio —un número real, hoy— y termina sonando a ti y no a un formulario. Casi todo el mundo la contesta, y el que no la contesta no iba a reservar.\n\nTen la misma en inglés y pegada en las respuestas rápidas de WhatsApp. En Salt Lake City te van a escribir en los dos idiomas, y la versión que tardas diez minutos en traducir es la que pierdes." },
+
+    plan: [
+      { k: "El mostrador que falta",
+        d: "Rango de precio publicado, depósito con enlace de pago, destacada de «cómo agendar» y una sola puerta de entrada. Todo lo que tus 149.227 reproducciones ya demostraron que quieren ver, por fin visible." },
+      { k: "Alguien contestando por ti, en dos idiomas",
+        d: "Tus mensajes respondidos en minutos, con tu voz y tus precios, en español y en inglés, mientras tú estás con la máquina en la mano. Que tatuar deje de costarte el siguiente tatuaje." },
+      { k: "La web, o fuera o funcionando",
+        d: "Una página que carga, dice el precio, muestra el trabajo y tiene un botón de reserva con depósito. Si no va a existir, el enlace se quita hoy: en blanco te está restando." },
+      { k: "Repetir los reels que sí funcionan",
+        d: "Cuatro de tus dieciocho videos concentran el 84% del alcance, y tienen algo en común que se puede copiar a propósito. Eso deja de ser suerte y pasa a ser calendario." },
+      { k: "El seguimiento",
+        d: "El que pregunta y se calla es la pila de dinero más grande de cualquier perfil, y nadie la está tocando. Con tu alcance, en tu caso es la más grande que hemos visto este mes." },
+    ],
+
+    dias90: [
+      { d: "Días 1–15", t: "Fundación",
+        items: [
+          "Bio reescrita con ciudad, plazo y una sola puerta",
+          "Rango de precio y depósito definidos contigo y publicados",
+          "Destacadas renombradas y «Cómo agendar» grabada y puesta primera",
+          "Fijados renovados: fuera el de enero de 2025",
+          "Guiones de respuesta en español y en inglés, aprobados por ti",
+          "Medición instalada: cuántos tocan, escriben y agendan",
+        ] },
+      { d: "Días 15–30", t: "Lanzamiento",
+        items: [
+          "Setter respondiendo tus mensajes en minutos, los dos idiomas",
+          "Campañas activas en Salt Lake City y el condado",
+          "El testimonio de tu clienta convertido en argumento de venta",
+          "Primeras conversaciones calificadas con precio y zona",
+          "Primeros datos de qué pieza y qué zona convierten",
+        ] },
+      { d: "Días 30–60", t: "Optimización",
+        items: [
+          "Bajar el costo por cotización",
+          "Subir la calidad del que escribe",
+          "Replicar a propósito la estructura de tus reels que revientan",
+          "Reforzar el seguimiento del que preguntó y no cerró",
+          "Empujar los estilos que ganan",
+        ] },
+      { d: "Días 60–90", t: "Predictibilidad",
+        items: [
+          "Escalar lo que ya demostró funcionar",
+          "Agenda visible con semanas de anticipación",
+          "Mejor conversión de cotización a depósito",
+          "Menos días vacíos entre sesiones grandes",
+          "Un tablero donde ves el mes antes de que pase",
+        ] },
+    ],
+
+    cierre:
+      "Nada de lo que dice esta página es opinión nuestra: entra a tu perfil, cuenta cuántas destacadas se llaman «Destacada» y toca el enlace de tu web. Si nos sentamos y no vemos una oportunidad clara en tu caso, te lo decimos en la misma llamada. Pasa, y es mejor para los dos que descubrirlo dentro de tres meses.",
+  },
   "christian-tibabuzo": {
     slug: "christian-tibabuzo",
     lang: "es",
