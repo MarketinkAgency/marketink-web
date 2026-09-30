@@ -19,7 +19,18 @@ export const copy = {
       title: "MarketINK · Sistema de reservas para tatuadores",
       desc: "Convertimos consultas de Instagram en consultas agendadas y depósitos. Adquisición, calificación y seguimiento creados exclusivamente para tatuadores y estudios.",
     },
-    nav: { system: "El sistema", results: "Resultados", process: "90 días", faq: "Preguntas", cta: "Auditoría gratis" },
+    nav: { system: "El sistema", results: "Resultados", process: "90 días", faq: "Preguntas", webs: "Webs", cta: "Auditoría gratis" },
+
+    /* El puente a /webs. Va en la portada porque el que llega buscando
+       «agencia para tatuadores» muchas veces lo que necesita primero es
+       tener dónde mandar a la gente, no una campaña. */
+    websTeaser: {
+      tag: "También",
+      title: "¿Todavía mandas a la gente a tu Instagram?",
+      body: "Montamos el sitio que publica tus precios, te aparta la fecha y te cobra el depósito. En línea en cinco días.",
+      price: "Desde $590",
+      cta: "Ver los paquetes",
+    },
 
     hero: {
       eyebrow: "Reservas para tatuadores y estudios",
@@ -371,7 +382,15 @@ export const copy = {
       title: "MarketINK · Tattoo booking systems",
       desc: "We turn Instagram inquiries into booked consultations and deposits. Acquisition, qualification and follow-up built exclusively for tattoo artists and studios.",
     },
-    nav: { system: "The system", results: "Results", process: "90 days", faq: "FAQ", cta: "Free audit" },
+    nav: { system: "The system", results: "Results", process: "90 days", faq: "FAQ", webs: "Websites", cta: "Free audit" },
+
+    websTeaser: {
+      tag: "Also",
+      title: "Still sending people to your Instagram?",
+      body: "We build the site that publishes your prices, holds the date and takes the deposit. Live in five days.",
+      price: "From $590",
+      cta: "See the packages",
+    },
 
     hero: {
       eyebrow: "Booking systems for tattoo artists and studios",

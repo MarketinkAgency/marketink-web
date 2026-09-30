@@ -120,6 +120,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             { href: "#system", label: t.nav.system },
             { href: "#results", label: t.nav.results },
             { href: "#process", label: t.nav.process },
+            { href: `/${lang}/webs`, label: t.nav.webs },
             { href: "#book", label: t.book.eyebrow },
             { href: "#faq", label: t.nav.faq },
           ]}
@@ -347,6 +348,27 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                   </ul>
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ───────── PUENTE A LAS WEBS ─────────
+            No es una sección numerada a propósito: es una salida lateral.
+            El que llega a esta página buscando campañas muchas veces
+            todavía no tiene dónde mandar a la gente, y mandarlo a su
+            propio Instagram es justo el problema que venimos a resolver. */}
+        <section className="border-y border-white/[0.08] px-6 py-14 sm:py-20">
+          <div className="reveal mx-auto flex max-w-6xl flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <p className="mb-4 flash-sub text-[10.5px] tracking-[0.2em] text-blood">{t.websTeaser.tag}</p>
+              <h2 className="max-w-[22ch] flash-type text-[clamp(1.5rem,3.4vw,2.5rem)]">{t.websTeaser.title}</h2>
+              <p className="mt-4 max-w-[54ch] text-[15px] leading-relaxed text-muted">{t.websTeaser.body}</p>
+            </div>
+            <div className="flex flex-none items-center gap-5">
+              <span className="flash-sub text-[11px] tracking-[0.16em] text-faint">{t.websTeaser.price}</span>
+              <Link href={`/${lang}/webs`} className="btn">
+                {t.websTeaser.cta}
+              </Link>
             </div>
           </div>
         </section>

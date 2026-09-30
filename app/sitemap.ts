@@ -22,6 +22,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     alternates: alt(""),
   }));
 
+  /* La página de webs es un producto con búsqueda propia —«web para
+     tatuadores con agenda»— así que va en el mapa con prioridad alta,
+     justo por debajo de la portada. */
+  const productos = LOCALES.map((l) => ({
+    url: `${SITE_URL}/${l}/webs`,
+    changeFrequency: "weekly" as const,
+    priority: 0.9,
+    alternates: alt("/webs"),
+  }));
+
   const legal = LOCALES.flatMap((l) =>
     LEGAL_SLUGS.map((slug) => ({
       url: `${SITE_URL}/${l}/legal/${slug}`,
@@ -31,5 +41,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }))
   );
 
-  return [...home, ...legal];
+  return [...home, ...productos, ...legal];
 }
