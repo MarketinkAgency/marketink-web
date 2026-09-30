@@ -141,6 +141,7 @@ availability: "https://schema.org/InStock",
           items={[
             { href: "#problema", label: t.problema.tag },
             { href: "#planes", label: t.planes.tag },
+            { href: "#ventajas", label: t.ventajasSec.tag },
             { href: "#pasos", label: t.pasos.tag },
             { href: "#faq", label: t.faq.tag },
           ]}
@@ -241,8 +242,8 @@ availability: "https://schema.org/InStock",
                         {t.planes.unico}
                       </span>
                     </p>
-                    <p className="mt-2 text-[14px] text-muted">
-                      <b className="tabular-nums text-bone">{p.monthly}</b> {t.planes.mes}
+                    <p className="mt-2.5 text-[14.5px] leading-snug text-muted">
+                      {t.planes.luego} <b className="tabular-nums text-bone">{p.monthly}</b> {t.planes.mes}
                     </p>
                   </div>
 
@@ -258,7 +259,10 @@ availability: "https://schema.org/InStock",
 
                   {p.note && <p className="mt-6 text-[12.5px] leading-relaxed text-faint">{p.note}</p>}
 
-                  <div className="mt-9 pt-1 [margin-top:auto]">
+                  {/* Dos salidas, y el orden importa. El que ya se decidió
+                      no tiene que leer nada más; el que duda no se queda
+                      sin sitio a donde ir, que es cuando se va del todo. */}
+                  <div className="mt-9 flex flex-col gap-3.5 pt-1 [margin-top:auto]">
                     <a
                       href={p.url}
                       target="_blank"
@@ -266,6 +270,69 @@ availability: "https://schema.org/InStock",
                       className={`btn w-full justify-center ${p.best ? "" : "!bg-transparent !text-bone ring-1 ring-white/20"}`}
                     >
                       {t.planes.cta}
+                    </a>
+                    <a
+                      href={`#v-${p.id}`}
+                      className="text-center text-[13px] text-muted underline decoration-white/25 underline-offset-[6px] transition hover:text-bone"
+                    >
+                      {t.planes.ver}
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ───────── 03 · LAS VENTAJAS ─────────
+            La sección que faltaba. Las tarjetas de arriba listan lo que
+            entra en la caja, que sirve para comparar pero no convence:
+            «formulario de solicitud» no le dice nada a quien todavía no
+            ha sufrido el problema. Aquí cada cosa se cuenta por su
+            consecuencia —qué deja de pasarle— y cada paquete termina en
+            su propio botón, porque el que baja hasta aquí es el que está
+            decidiendo. */}
+        <section id="ventajas" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-32">
+          <div className="relative mx-auto max-w-6xl">
+            <Ghost n="03" />
+            <Tag n="03">{t.ventajasSec.tag}</Tag>
+            <Split
+              as="h2"
+              text={t.ventajasSec.title}
+              className="max-w-[22ch] flash-type text-[clamp(1.9rem,4.4vw,3.4rem)]"
+            />
+            <p className="reveal mt-6 max-w-[58ch] text-[15.5px] leading-relaxed text-muted">{t.ventajasSec.sub}</p>
+
+            <div className="mt-16 space-y-20 sm:space-y-28">
+              {t.paquetes.map((p) => (
+                <div key={p.id} id={`v-${p.id}`} className="scroll-mt-[90px]">
+                  <div className="reveal flex flex-wrap items-baseline gap-x-7 gap-y-2 border-b border-white/[0.12] pb-6">
+                    <h3 className="flash-type text-[clamp(1.8rem,4vw,2.8rem)]">{p.name}</h3>
+                    <p className="text-[14px] leading-snug text-muted">
+                      <b className="text-bone">{p.price}</b> {t.planes.unico} · {t.ventajasSec.luego}{" "}
+                      <b className="text-bone">{p.monthly}</b> {t.planes.mes}
+                    </p>
+                  </div>
+
+                  <p className="reveal mt-6 max-w-[54ch] text-[15px] leading-relaxed text-muted">{p.who}</p>
+
+                  <div className="mt-11 grid gap-x-14 gap-y-9 lg:grid-cols-2">
+                    {p.ventajas.map((v, i) => (
+                      <div key={v.t} className="reveal">
+                        <p className="flash-sub text-[11px] tracking-[0.2em] text-blood">
+                          {String(i + 1).padStart(2, "0")}
+                        </p>
+                        <h4 className="mt-3 max-w-[38ch] text-[17px] font-bold leading-snug text-bone">{v.t}</h4>
+                        <p className="mt-2.5 max-w-[50ch] text-[14.5px] leading-relaxed text-muted">{v.d}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  {p.note && <p className="reveal mt-9 text-[13px] leading-relaxed text-faint">{p.note}</p>}
+
+                  <div className="reveal mt-10">
+                    <a href={p.url} target="_blank" rel="noopener" className="btn">
+                      {t.ventajasSec.cta} {p.name}
                     </a>
                   </div>
                 </div>
@@ -276,11 +343,11 @@ availability: "https://schema.org/InStock",
 
         <Banda line={t.problema.cierre} cta={t.hero.alt} href={site.call} lang={lang} />
 
-        {/* ───────── 03 · CÓMO FUNCIONA ───────── */}
+        {/* ───────── 04 · CÓMO FUNCIONA ───────── */}
         <section id="pasos" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-32">
           <div className="relative mx-auto max-w-6xl">
-            <Ghost n="03" />
-            <Tag n="03">{t.pasos.tag}</Tag>
+            <Ghost n="04" />
+            <Tag n="04">{t.pasos.tag}</Tag>
             <Split
               as="h2"
               text={t.pasos.title}
@@ -301,11 +368,11 @@ availability: "https://schema.org/InStock",
           </div>
         </section>
 
-        {/* ───────── 04 · EL MANTENIMIENTO ───────── */}
+        {/* ───────── 05 · EL MANTENIMIENTO ───────── */}
         <section className="sec overflow-hidden px-6 py-16 sm:py-32">
           <div className="relative mx-auto max-w-6xl">
-            <Ghost n="04" />
-            <Tag n="04">{t.manten.tag}</Tag>
+            <Ghost n="05" />
+            <Tag n="05">{t.manten.tag}</Tag>
             <Split
               as="h2"
               text={t.manten.title}
@@ -328,11 +395,11 @@ availability: "https://schema.org/InStock",
           </div>
         </section>
 
-        {/* ───────── 05 · PREGUNTAS ───────── */}
+        {/* ───────── 06 · PREGUNTAS ───────── */}
         <section id="faq" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-32">
           <div className="relative mx-auto max-w-6xl">
-            <Ghost n="05" />
-            <Tag n="05">{t.faq.tag}</Tag>
+            <Ghost n="06" />
+            <Tag n="06">{t.faq.tag}</Tag>
             <Split
               as="h2"
               text={t.faq.title}
@@ -361,7 +428,7 @@ availability: "https://schema.org/InStock",
         {/* ───────── CIERRE ───────── */}
         <section className="scroll-mt-24 border-t border-white/[0.07] px-6 py-16 sm:py-32">
           <div className="mx-auto max-w-6xl">
-            <Tag n="06">{t.cierre.tag}</Tag>
+            <Tag n="07">{t.cierre.tag}</Tag>
             <Split
               as="h2"
               text={t.cierre.title}

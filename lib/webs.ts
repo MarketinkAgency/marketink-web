@@ -16,17 +16,31 @@ import { site } from "@/lib/copy";
  * no hay forma de reservar. La auditoría diagnostica que falta el
  * mostrador. Este producto es el mostrador.
  *
- * Por eso la página no se escribe como «te hacemos una web bonita».
- * Ningún tatuador se despierta queriendo una página. Se despierta
- * queriendo que le escriban y que aparezcan el sábado.
+ * DOS LISTAS POR PAQUETE, Y LA SEGUNDA ES LA QUE VENDE
+ *
+ * `items` es el inventario: lo que entra en la caja. Sirve para comparar
+ * los tres de un vistazo y para que nadie se sienta engañado después.
+ * Pero una lista de características no convence a nadie: «formulario de
+ * solicitud» no le dice nada a quien no ha sufrido el problema.
+ *
+ * `ventajas` es la consecuencia: qué cambia en su semana. Cada una dice
+ * qué se lleva y, sobre todo, qué deja de pasarle. Eso es lo que se lee
+ * cuando alguien está decidiendo si gastarse mil dólares, y por eso vive
+ * en su propia sección con su propio botón.
  *
  * REGLA DURA
  *
  * Aquí no se promete ningún número: ni citas, ni conversión, ni
- * ingresos. Se promete lo que se entrega —un sitio que publica precios,
- * cobra el depósito y avisa— y nada más. Es la misma regla de las
- * auditorías, y es lo que nos deja mirar a la cara al que paga.
+ * ingresos. Se promete lo que se entrega y nada más. Es la misma regla
+ * de las auditorías, y es lo que nos deja mirar a la cara al que paga.
  */
+
+export type Ventaja = {
+  /** Qué se lleva, en pocas palabras. */
+  t: string;
+  /** Qué cambia por llevárselo. Nunca una cifra. */
+  d: string;
+};
 
 export type Paquete = {
   id: string;
@@ -38,8 +52,10 @@ export type Paquete = {
   price: string;
   /** Mantenimiento mensual. */
   monthly: string;
-  /** Lo que se lleva. El orden importa: primero lo que cobra. */
+  /** El inventario, para comparar los tres. */
   items: string[];
+  /** El argumento, para decidirse. */
+  ventajas: Ventaja[];
   /** El paquete que queremos vender lleva marca. */
   best?: boolean;
   /** Nota al pie del paquete, cuando hace falta. */
@@ -99,11 +115,22 @@ export const webs = {
       title: "Tres formas de montarlo. Un solo pago y un mantenimiento.",
       sub: "El precio es el mismo en cualquier país. La entrada se paga una vez; el mantenimiento mantiene el sitio vivo, actualizado y midiendo.",
       unico: "una vez",
+      luego: "y luego solo",
       mes: "al mes",
       incluye: "Qué se lleva",
       cta: "Empezar",
-      ctaAlt: "Preguntar primero",
+      ver: "Ver ventajas",
       best: "El que más se llevan",
+    },
+
+    /* 03 — las ventajas, que es donde se decide */
+    ventajasSec: {
+      tag: "Las ventajas",
+      title: "Qué cambia en tu semana, paquete por paquete.",
+      sub: "Arriba está lo que entra en la caja. Aquí está para qué sirve cada cosa — y qué deja de pasarte cuando la tienes.",
+      desde: "Desde",
+      luego: "y luego",
+      cta: "Empezar con",
     },
 
     paquetes: [
@@ -126,6 +153,26 @@ export const webs = {
           "Base de SEO local y ficha de Google",
           "En línea en 5 días hábiles",
         ],
+        ventajas: [
+          { t: "Tu precio, publicado",
+            d: "Un rango visible filtra al que no te va a pagar antes de gastarte una conversación, y tranquiliza al que sí puede y no se atrevía a preguntar. Hoy los dos hacen lo mismo: nada." },
+          { t: "El depósito, explicado antes de que lo pidas",
+            d: "Cuánto es y que se descuenta del total. Mucha gente cree que el depósito es un cargo extra encima del precio; decirlo por escrito mata esa objeción antes de que nazca." },
+          { t: "Un formulario que pregunta lo que tú preguntarías",
+            d: "Zona, tamaño, estilo, referencia y fechas. Dejas de escribir «mándame más info» quince veces al día: la conversación te llega empezada por el paso tres." },
+          { t: "Un solo botón, con el mensaje ya escrito",
+            d: "El que entra no tiene que redactar nada ni decidir por dónde escribirte. Esa fricción de diez segundos es la que separa al que te escribe del que se queda mirando." },
+          { t: "Tu trabajo, ordenado por estilo",
+            d: "El que quiere blackwork ve blackwork, no lo último que subiste. En la cuadrícula de Instagram eso no se puede hacer; aquí es lo primero que ve." },
+          { t: "Las respuestas que das diez veces por semana, escritas una",
+            d: "Cuidados, retoques, cancelaciones, si duele, cuánto tarda en curar. Cada pregunta que la web contesta es un mensaje que no tienes que contestar tú." },
+          { t: "Tu dominio, a tu nombre",
+            d: "tunombre.com, tuyo desde el primer día y el día que te vayas. No un perfil prestado en una plataforma que puede cambiar las reglas mañana." },
+          { t: "Que te encuentren buscando, no solo desplazándose",
+            d: "Ficha de Google, datos estructurados y tu ciudad donde toca. Tu Instagram no sale cuando alguien busca «tatuador en tu ciudad». Una web sí puede." },
+          { t: "Cinco días, no tres meses",
+            d: "Nos mandas fotos y precios el lunes y el viernes está en línea. Sin reuniones de seguimiento y sin que tú dejes la máquina." },
+        ],
       },
       {
         id: "booked",
@@ -144,6 +191,22 @@ export const webs = {
           "Una página por estilo, para que te encuentren por lo que tatúas",
           "3 cambios al mes incluidos",
         ],
+        ventajas: [
+          { t: "Todo lo de SHOWCASE, y encima esto",
+            d: "El precio, el depósito explicado, el portafolio y el dominio siguen ahí. Lo que cambia es que a partir de aquí la web deja de informar y empieza a cobrar." },
+          { t: "Tu agenda abierta sin que tú la abras",
+            d: "La persona ve tus huecos reales y elige uno. Se acaba el «¿qué días tienes?» contestado treinta veces por semana, y se acaba la cita que se cae porque tardaste dos días en responder." },
+          { t: "El depósito cobrado en el momento, no prometido",
+            d: "La fecha no queda apartada hasta que está pagada. Esa es toda la diferencia entre una agenda llena y una agenda llena de gente que igual aparece." },
+          { t: "Recordatorios que salen solos",
+            d: "Casi nadie falta por decidirlo: falta porque se le olvidó. Un recordatorio automático recupera esas horas sin que tú escribas un mensaje." },
+          { t: "Te avisa apenas entra alguien",
+            d: "Cada solicitud te llega al teléfono en el momento. Contestar en cinco minutos deja de depender de que te acuerdes de mirar entre sesión y sesión." },
+          { t: "Una página por cada estilo que tatúas",
+            d: "Google no manda gente a «un tatuador»: la manda a «blackwork en tu ciudad». Una página por estilo es lo que te pone dentro de esa búsqueda en vez de fuera." },
+          { t: "Tres cambios al mes, sin presupuestos",
+            d: "Subes precio, cierras dos semanas, añades las piezas nuevas. Lo pides y se hace. Una web que no se puede cambiar deja de ser verdad en dos meses." },
+        ],
         note: "¿Ya tienes SHOWCASE? Subes pagando la diferencia y se te enciende la agenda.",
       },
       {
@@ -160,11 +223,25 @@ export const webs = {
           "Reparto de depósitos por artista",
           "6 cambios al mes incluidos",
         ],
+        ventajas: [
+          { t: "Todo lo de BOOKED, para cada artista",
+            d: "Cada uno con su agenda, su depósito y sus avisos. No es un sitio del estudio con una lista de nombres: son tres mostradores funcionando a la vez." },
+          { t: "Cada artista, encontrable por su nombre",
+            d: "El cliente reserva con quien quiere, no con «el estudio». Y cada artista aparece por su propio estilo, que es como la gente busca de verdad." },
+          { t: "Todas las solicitudes en un solo tablero",
+            d: "Quién pidió qué, con quién y si pagó. Se acaba el estudio que vive repartido en cinco teléfonos y nadie sabe qué prometió el otro." },
+          { t: "Los depósitos, repartidos solos",
+            d: "Cada depósito queda asignado a quien va a tatuar. Deja de ser una cuenta a mano a fin de mes y una discusión incómoda cada tanto." },
+          { t: "Seis cambios al mes",
+            d: "Un estudio se mueve el doble: entra gente, sale gente, cambian precios y turnos. El doble de cambios incluidos porque hace falta el doble." },
+          { t: "Crece sin rehacer nada",
+            d: "Artista nuevo: su página y su agenda por $390 y $39 al mes. No hay que volver a montar el sitio ni renegociar el paquete." },
+        ],
         note: "Artista adicional: $390 de entrada y $39 al mes.",
       },
     ] as Paquete[],
 
-    /* 03 — cómo funciona */
+    /* 04 — cómo funciona */
     pasos: {
       tag: "Cómo funciona",
       title: "Cuatro pasos y cinco días.",
@@ -176,7 +253,7 @@ export const webs = {
       ],
     },
 
-    /* 04 — el mantenimiento, que es donde se pierde o se gana la renovación */
+    /* 05 — el mantenimiento, que es donde se pierde o se gana la renovación */
     manten: {
       tag: "El mantenimiento",
       title: "No estás pagando hosting.",
@@ -248,11 +325,21 @@ export const webs = {
       title: "Three ways to set it up. One payment and one monthly.",
       sub: "Same price in every country. The setup is paid once; the monthly keeps the site alive, current and measured.",
       unico: "once",
+      luego: "then just",
       mes: "a month",
       incluye: "What you get",
       cta: "Start",
-      ctaAlt: "Ask first",
+      ver: "See the upside",
       best: "Most artists take this one",
+    },
+
+    ventajasSec: {
+      tag: "The upside",
+      title: "What changes in your week, package by package.",
+      sub: "Above is what's in the box. Here's what each piece is for — and what stops happening to you once you have it.",
+      desde: "From",
+      luego: "then",
+      cta: "Start with",
     },
 
     paquetes: [
@@ -275,6 +362,26 @@ export const webs = {
           "Local SEO base and Google Business listing",
           "Live in 5 business days",
         ],
+        ventajas: [
+          { t: "Your price, published",
+            d: "A visible range filters out the people who were never going to pay you before they cost you a conversation, and reassures the ones who can but didn't dare ask. Right now both of them do the same thing: nothing." },
+          { t: "The deposit, explained before you ask for it",
+            d: "How much it is and that it comes off the total. Plenty of people think a deposit is an extra charge on top; saying it in writing kills that objection before it exists." },
+          { t: "A form that asks what you'd ask",
+            d: "Placement, size, style, reference and dates. You stop typing «send me more info» fifteen times a day: the conversation reaches you already at step three." },
+          { t: "One button, with the message already written",
+            d: "Whoever lands there doesn't have to compose anything or decide which channel to use. That ten seconds of friction is what separates the person who writes from the person who just looks." },
+          { t: "Your work, sorted by style",
+            d: "Someone who wants blackwork sees blackwork, not whatever you posted last. You can't do that in an Instagram grid; here it's the first thing they see." },
+          { t: "The answers you give ten times a week, written once",
+            d: "Aftercare, touch-ups, cancellations, does it hurt, how long it takes to heal. Every question the site answers is a message you don't have to answer yourself." },
+          { t: "Your domain, in your name",
+            d: "yourname.com, yours from day one and on the day you leave. Not a borrowed profile on a platform that can change the rules tomorrow." },
+          { t: "Found by searching, not only by scrolling",
+            d: "Google listing, structured data and your city where it belongs. Your Instagram doesn't come up when someone searches «tattoo artist in your city». A website can." },
+          { t: "Five days, not three months",
+            d: "You send photos and prices on Monday and it's live on Friday. No status meetings and no putting the machine down." },
+        ],
       },
       {
         id: "booked",
@@ -293,6 +400,22 @@ export const webs = {
           "A page per style, so people find you by what you tattoo",
           "3 changes a month included",
         ],
+        ventajas: [
+          { t: "Everything in SHOWCASE, plus this",
+            d: "The price, the explained deposit, the portfolio and the domain are all still there. What changes is that from here the site stops informing and starts collecting." },
+          { t: "Your calendar open without you opening it",
+            d: "People see your real gaps and pick one. No more «what days do you have?» answered thirty times a week, and no more appointment lost because you took two days to reply." },
+          { t: "The deposit taken then and there, not promised",
+            d: "The date isn't held until it's paid. That's the whole difference between a full calendar and a calendar full of people who might show up." },
+          { t: "Reminders that send themselves",
+            d: "Almost nobody no-shows on purpose: they forget. An automatic reminder wins those hours back without you writing a single message." },
+          { t: "It pings you the second someone asks",
+            d: "Every request hits your phone as it arrives. Replying in five minutes stops depending on you remembering to check between sessions." },
+          { t: "A page for every style you tattoo",
+            d: "Google doesn't send people to «a tattoo artist»: it sends them to «blackwork in your city». A page per style is what puts you inside that search instead of outside it." },
+          { t: "Three changes a month, no quotes",
+            d: "Raise a price, close two weeks, add the new pieces. You ask and it's done. A site you can't change stops being true within two months." },
+        ],
         note: "Already on SHOWCASE? Pay the difference and the booking turns on.",
       },
       {
@@ -308,6 +431,20 @@ export const webs = {
           "Studio dashboard with every request in one place",
           "Deposits split per artist",
           "6 changes a month included",
+        ],
+        ventajas: [
+          { t: "Everything in BOOKED, for each artist",
+            d: "Each one with their own calendar, deposit and alerts. It isn't a studio site with a list of names: it's three counters running at once." },
+          { t: "Each artist findable by their own name",
+            d: "Clients book with the person they want, not with «the studio». And each artist shows up for their own style, which is how people actually search." },
+          { t: "Every request on one board",
+            d: "Who asked for what, with whom, and whether they paid. No more studio living across five phones with nobody knowing what the others promised." },
+          { t: "Deposits split on their own",
+            d: "Every deposit lands assigned to whoever is doing the work. It stops being a hand-written tally at month end and an awkward conversation now and then." },
+          { t: "Six changes a month",
+            d: "A studio moves twice as much: people join, people leave, prices and shifts change. Twice the changes included because you need twice as many." },
+          { t: "Grows without rebuilding anything",
+            d: "New artist: their page and their calendar for $390 and $39 a month. No rebuilding the site and no renegotiating the package." },
         ],
         note: "Additional artist: $390 setup and $39 a month.",
       },
