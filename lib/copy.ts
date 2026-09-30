@@ -342,10 +342,16 @@ export const copy = {
       remaining1: "cupo disponible",
       filled: "ocupado",
       open: "libre",
-      days: "Cierra en {d} días.",
-      days1: "Cierra mañana.",
-      closedT: "Entrada de {mes} cerrada",
-      closedS: "Escríbenos y entras a la lista de {sig}.",
+      /* La entrada ya no cierra por calendario, cierra cuando se llenan
+         los cupos: el recuento no se reinicia el día 1, solo cuando se
+         ocupan todos. Por eso aquí no puede ir una cuenta atrás de días
+         del mes — sería una fecha límite que no existe, y la única parte
+         de esta página que no se puede comprobar. El mes del rótulo sí
+         avanza solo, porque sale del reloj de quien mira. */
+      days: "Cierra al llenarse.",
+      days1: "Cierra al llenarse.",
+      closedT: "Entrada cerrada",
+      closedS: "Escríbenos y entras a la lista de espera.",
     },
     final: {
       title: "Tu próximo cliente podría estar ahora mismo dentro de tus mensajes.",
@@ -682,10 +688,10 @@ export const copy = {
       remaining1: "spot remaining",
       filled: "filled",
       open: "open",
-      days: "Closes in {d} days.",
-      days1: "Closes tomorrow.",
-      closedT: "{month} intake closed",
-      closedS: "Message us and we'll add you to the {nextm} list.",
+      days: "Closes when it fills.",
+      days1: "Closes when it fills.",
+      closedT: "Intake closed",
+      closedS: "Message us and we'll add you to the waiting list.",
     },
     final: {
       title: "Your next tattoo client may already be inside your DMs.",
