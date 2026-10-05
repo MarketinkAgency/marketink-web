@@ -83,6 +83,28 @@ export type Month = {
   asks?: { tag: string; title: string; items: string[] };
 };
 
+/** La oferta con la que cierra el reporte. */
+export type Offer = {
+  tag: string;
+  kicker: string;
+  title: string;
+  body: string[];
+  price: string;
+  per: string;
+  bullets: string[];
+  cta: string;
+  url: string;
+  note: string;
+};
+
+/* El enlace de pago sale de una variable de entorno, igual que el resto:
+   se cambia desde Vercel sin tocar código, y si un día se retira el
+   servicio se borra la variable y el bloque deja de ofrecer un botón
+   muerto. */
+const BOOST_URL =
+  (process.env.NEXT_PUBLIC_BOOST_URL ?? "").trim() ||
+  "https://buy.stripe.com/dRm28jdE6anGdYg0ep53O08";
+
 export type Client = {
   slug: string;
   name: string;
@@ -99,6 +121,8 @@ export type Client = {
   };
   /** Su economía, declarada por ella. Alimenta la calculadora. */
   economics: { ticket: number; hourly: number; capacity: string; goal: string };
+  /** Con qué cierra la página. Opcional: sin esto, cierra con el correo. */
+  offer?: Offer;
   roi: {
     tag: string;
     title: string;
@@ -118,6 +142,26 @@ export type Client = {
 export const CLIENTS: Record<string, Client> = {
   kat: {
     slug: "kat",
+    offer: {
+      tag: "One more thing",
+      kicker: "Add-on · optional",
+      title: "The ads bring people. This brings the audience they land on.",
+      body: [
+        "Every person who taps your ad ends up on the same profile. Right now that profile is the quietest part of the whole system — and it is the part doing the convincing after we hand them over.",
+        "Boost Followers is a separate monthly service that grows your organic following so the account those 72 people land on looks like the account of someone who is busy. It runs alongside the ads; it does not replace them and it does not touch your ad budget.",
+      ],
+      price: "$89",
+      per: "per month",
+      bullets: [
+        "800 to 1,000 new organic followers a month",
+        "Organic growth, not bought followers",
+        "Runs in the background — nothing extra for you to do",
+        "Cancel whenever you want",
+      ],
+      cta: "Add Boost Followers",
+      url: BOOST_URL,
+      note: "Billed separately from your ad spend and from this service. You can start it and stop it on your own at any time.",
+    },
     name: "Kat Wilde",
     handle: "@bubl.kat",
     city: "Dacula, Georgia",
@@ -129,10 +173,10 @@ export const CLIENTS: Record<string, Client> = {
       sub: "Your own words from the content diagnosis, so the comparison is honest and not something we made up later.",
       items: [
         { k: "245 followers", d: "That was the account on the day we sat down. We are not going to pretend it was anything else." },
-        { k: "Boosting posts, getting nothing", d: "You told us boosted content brought «likes and comments but no bookings». The attention existed. The path to a booking did not." },
+        { k: "Boosting posts, getting nothing", d: "You told us boosted content brought \u201clikes and comments but no bookings\u201d. The attention existed. The path to a booking did not." },
         { k: "No call to action anywhere", d: "Your content made people browse. Nothing in the profile asked them to do something next." },
         { k: "No price, no process, no way to book", d: "Three questions every person asks before they message a tattoo artist, and the profile answered none of them." },
-        { k: "A profile that attracted anyone", d: "«Anyone for now. Accepting anything.» Your words. Great work, no filter — so the wrong people wrote and the right ones could not tell this was for them." },
+        { k: "A profile that attracted anyone", d: "\u201cAnyone for now. Accepting anything.\u201d Your words. Great work, no filter — so the wrong people wrote and the right ones could not tell this was for them." },
       ],
     },
 
@@ -209,12 +253,12 @@ export const CLIENTS: Record<string, Client> = {
             { name: "Video 09/28", spend: "$4.57", reach: "94", conv: 3, cpc: "$1.52",
               note: "The refresh we put up at the end of the month. Cheapest conversations of the whole month — small sample, but it is the reason October started well." },
             { name: "Video feed 09/21", spend: "$22.87", reach: "525", conv: 3, cpc: "$7.62" },
-            { name: "Instagram post · «Add a little whimsy…»", spend: "$1.57", reach: "140", conv: 2, cpc: "$0.79",
+            { name: "Instagram post · \u201cAdd a little whimsy…\u201d", spend: "$1.57", reach: "140", conv: 2, cpc: "$0.79",
               note: "An organic post we put money behind. Two conversations for a dollar fifty-seven. Worth repeating." },
             { name: "Video daytona", spend: "$18.07", reach: "948", conv: 2, cpc: "$9.04",
               note: "Testing the Florida audience early, ahead of the October trip." },
             { name: "9 other tests", spend: "$23.99", reach: "1,037", conv: 2, cpc: "$12.00",
-              note: "Stencil, healed, «how long», voice-over, feed variants. All switched off. Together they cost $24 — that is what it cost to find out they were not it." },
+              note: "Stencil, healed, \u201chow long\u201d, voice-over, feed variants. All switched off. Together they cost $24 — that is what it cost to find out they were not it." },
           ],
           read: "Two things to take from this table. The first is that the winner is you talking to the camera about availability — not a tattoo close-up, not a process video. People book a person, not a portfolio. The second is that nine failed tests cost a total of $24. Testing is not expensive. Not testing is.",
         },
@@ -226,7 +270,7 @@ export const CLIENTS: Record<string, Client> = {
             { k: "Lead quality is still the weak spot", d: "On September 2nd you rated the seriousness of the people writing at a 2 out of 10, and most were asking for fine line — which is not the work you want to be doing. The volume is there. The filter is not yet." },
             { k: "Your price is stopping conversations", d: "You flagged it yourself on the 17th: price is a stopper. Nothing in the ads or the profile sets the expectation before they message, so the number lands cold in the DM and the conversation ends there." },
             { k: "Nobody is following up", d: "Also your own answer on the 17th: follow-ups, none. Of 72 conversations this month, the ones that went quiet are still sitting there. That is the cheapest pile of money in this entire report, and nobody has touched it." },
-            { k: "One creative doing 82% of the work", d: "«Video september» brought 59 of 72 conversations. That is a great video and a fragile setup: when it fatigues, the whole month fatigues with it — which is exactly what week four looked like." },
+            { k: "One creative doing 82% of the work", d: "\u201cVideo september\u201d brought 59 of 72 conversations. That is a great video and a fragile setup: when it fatigues, the whole month fatigues with it — which is exactly what week four looked like." },
           ],
         },
 
@@ -237,7 +281,7 @@ export const CLIENTS: Record<string, Client> = {
           items: [
             { k: "A new video every 15 days, no exceptions", d: "Week four is the proof. We stop waiting for a creative to die before replacing it. Two new videos from you per month is what keeps the cost per conversation where it is now." },
             { k: "More of you on camera", d: "The winner was you speaking. The next two scripts lean all the way into that instead of the polished process footage." },
-            { k: "Price on screen, before the DM", d: "A «this costs X and takes Y hours» video. It answers the question that is currently killing conversations and it filters out the people who were never going to pay $450." },
+            { k: "Price on screen, before the DM", d: "A \u201cthis costs X and takes Y hours\u201d video. It answers the question that is currently killing conversations and it filters out the people who were never going to pay $450." },
             { k: "A follow-up routine", d: "Every conversation that goes quiet gets one message after 48 hours and one after a week. This is the highest-return thing on this list and it costs nothing in ad spend." },
             { k: "Daytona, Florida · Oct 15–18", d: "We tested that audience in September for $18 to see if it responds before we spend real money on it. Ads pause from the 18th to the 22nd while you travel back." },
             { k: "Style-based testing", d: "Three short videos — floral, character, colour realism — to find out which work Dacula actually wants. Right now we are guessing, and this is the cheapest way to stop guessing." },
@@ -249,7 +293,7 @@ export const CLIENTS: Record<string, Client> = {
           title: "Three things, and October runs itself.",
           items: [
             "Two new videos by the 20th — you on camera, vertical, 10 to 20 seconds, finished tattoo in the first two seconds.",
-            "One «this costs X and takes Y hours» video. This is the one we expect to move the needle most.",
+            "One \u201cthis costs X and takes Y hours\u201d video. This is the one we expect to move the needle most.",
             "Reply to the quiet conversations from September. We'll send the templates; you send the messages.",
           ],
         },

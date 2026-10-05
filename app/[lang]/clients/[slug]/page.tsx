@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CLIENTS, CLIENT_SLUGS } from "@/lib/clients";
-import { site } from "@/lib/copy";
 import { entity } from "@/lib/legal";
 import Ink from "@/components/Ink";
 import Glow from "@/components/Glow";
@@ -117,7 +116,7 @@ export default async function ClientReport({
 
             <div className="mt-14 grid gap-px overflow-hidden rounded-[18px] bg-white/[0.09] sm:grid-cols-2 lg:grid-cols-4">
               {m.stats.map((s) => (
-                <div key={s.k} className="reveal bg-void px-7 py-8">
+                <div key={s.k} className="bg-void px-7 py-8">
                   <p className="flash-sub text-[10.5px] tracking-[0.18em] text-faint">{s.k}</p>
                   <p className="flash-type mt-2.5 text-[clamp(1.9rem,4vw,2.6rem)] text-bone">{s.v}</p>
                   {s.note && <p className="mt-1.5 text-[12.5px] text-muted">{s.note}</p>}
@@ -152,7 +151,7 @@ export default async function ClientReport({
                 {m.deltas.items.map((d) => (
                   <div
                     key={d.k}
-                    className="spot reveal grid gap-5 border-b border-white/[0.1] py-9 lg:grid-cols-[minmax(0,0.85fr)_auto_minmax(0,1.1fr)] lg:items-center lg:gap-10"
+                    className="spot grid gap-5 border-b border-white/[0.1] py-9 lg:grid-cols-[minmax(0,0.85fr)_auto_minmax(0,1.1fr)] lg:items-center lg:gap-10"
                   >
                     <h3 className="text-[17px] font-bold leading-snug text-bone">{d.k}</h3>
 
@@ -200,7 +199,7 @@ export default async function ClientReport({
                 {m.weeks.items.map((w) => (
                   <div
                     key={w.label}
-                    className="reveal grid items-center gap-x-5 gap-y-2 sm:grid-cols-[110px_minmax(0,1fr)_auto]"
+                    className="grid items-center gap-x-5 gap-y-2 sm:grid-cols-[110px_minmax(0,1fr)_auto]"
                   >
                     <span className="text-[13px] tabular-nums text-muted">{w.label}</span>
                     <div className="flex items-center gap-3">
@@ -411,27 +410,72 @@ export default async function ClientReport({
                 text={m.asks.title}
                 className="max-w-[20ch] flash-type text-[clamp(1.9rem,4.4vw,3.2rem)]"
               />
-              <ol className="mt-12 grid gap-x-12 gap-y-6 sm:grid-cols-2">
+              {/* Tres puntos en tres columnas. En dos, la vista baja por la
+                  izquierda —01, 03— y se salta el 02 del todo. */}
+              <ol className="mt-12 grid gap-x-10 gap-y-7 sm:grid-cols-3">
                 {m.asks.items.map((x, i) => (
-                  <li key={x} className="reveal flex gap-4">
+                  <li key={x} className="flex gap-4">
                     <span className="mt-[3px] shrink-0 flash-sub text-[11px] tracking-[0.14em] text-blood">
                       {String(i + 1).padStart(2, "0")}
                     </span>
-                    <span className="max-w-[46ch] text-[15px] leading-relaxed text-muted">{x}</span>
+                    <span className="text-[15px] leading-relaxed text-muted">{x}</span>
                   </li>
                 ))}
               </ol>
+            </div>
+          </section>
+        )}
 
-              <div className="reveal mt-14 flex flex-wrap items-center gap-5">
-                <a href={site.call} target="_blank" rel="noopener" className="btn">
-                  Book our next call
-                </a>
+        {/* ───────── LA OFERTA ─────────
+            El reporte termina pidiéndole tres cosas. Cerrar además con
+            «agenda la próxima llamada» es una cuarta tarea, y la última
+            impresión de la página pasa a ser deber en vez de ganancia.
+            Aquí cierra con algo que suma, y la llamada vive en el correo
+            del pie, que es donde la busca quien la necesita. */}
+        {c.offer && (
+          <section className="rupture px-6 py-20 sm:py-28">
+            <div className="relative z-10 mx-auto grid max-w-6xl gap-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:items-center lg:gap-20">
+              <div>
+                <p className="mb-6 flash-sub text-[10.5px] tracking-[0.2em] text-white/70">{c.offer.kicker}</p>
+                <h2 className="max-w-[20ch] flash-type text-[clamp(1.8rem,4.2vw,3rem)] text-white">
+                  {c.offer.title}
+                </h2>
+                <div className="mt-7 space-y-4">
+                  {c.offer.body.map((p) => (
+                    <p key={p.slice(0, 20)} className="max-w-[56ch] text-[15px] leading-[1.75] text-white/80">
+                      {p}
+                    </p>
+                  ))}
+                </div>
+              </div>
+
+              <div className="rounded-[22px] bg-void/70 p-8 ring-1 ring-white/20 sm:p-10">
+                <p className="flash-sub text-[10.5px] tracking-[0.2em] text-faint">{c.offer.tag}</p>
+                <p className="mt-3 flash-type text-[clamp(2.6rem,6vw,3.6rem)] text-bone">
+                  {c.offer.price}
+                  <span className="ml-2 align-middle text-[13px] font-normal tracking-normal text-muted">
+                    {c.offer.per}
+                  </span>
+                </p>
+
+                <ul className="mt-8 space-y-3">
+                  {c.offer.bullets.map((x) => (
+                    <li key={x} className="flex gap-3 text-[14.5px] leading-relaxed text-muted">
+                      <i aria-hidden className="mt-[8px] size-1 shrink-0 rounded-full bg-blood" />
+                      <span>{x}</span>
+                    </li>
+                  ))}
+                </ul>
+
                 <a
-                  href={`mailto:${entity.email}`}
-                  className="text-[14px] text-muted underline decoration-white/25 underline-offset-[6px] transition hover:text-bone"
+                  href={c.offer.url}
+                  target="_blank"
+                  rel="noopener"
+                  className="btn mt-9 w-full justify-center"
                 >
-                  {entity.email}
+                  {c.offer.cta}
                 </a>
+                <p className="mt-5 text-[12.5px] leading-relaxed text-faint">{c.offer.note}</p>
               </div>
             </div>
           </section>
@@ -459,7 +503,16 @@ export default async function ClientReport({
         <footer className="border-t border-white/[0.06] px-6 py-12">
           <div className="mx-auto max-w-6xl">
             <Wordmark className="text-[16px]" />
-            <p className="mt-4 max-w-[62ch] text-[12.5px] leading-relaxed text-faint">
+            <p className="mt-5 text-[14px] text-muted">
+              Questions about any number on this page?{" "}
+              <a
+                href={`mailto:${entity.email}`}
+                className="text-bone underline decoration-white/25 underline-offset-[5px] transition hover:decoration-white/60"
+              >
+                {entity.email}
+              </a>
+            </p>
+            <p className="mt-6 max-w-[62ch] text-[12.5px] leading-relaxed text-faint">
               Prepared for {c.name} ({c.handle}). Every figure is pulled from the Meta Ads API for the dates
               shown, or quoted from what you told us in our meetings. This page is private: it is not indexed,
               not linked from anywhere and not shared with anyone else. Working together since {c.since}.
