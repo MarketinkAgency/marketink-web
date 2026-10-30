@@ -1301,19 +1301,19 @@ export const AUDITS: Record<string, Audit> = {
     arreglos: [
       { n: "01",
         t: "Una sola puerta, y con el letrero puesto",
-        body: "Hoy tu perfil ofrece tres formas de escribirte y ninguna dice qué pasa después. Elige una —WhatsApp, que ya tienes en la web y es donde contestas desde el teléfono— y que todo apunte ahí: la bio, los reels y el botón de la web.\n\nEsta es la bio completa, lista para pegar. Es la misma de hoy con tres cosas que faltaban: un plazo, una señal de precio y una razón para escribir ahora.",
+        body: "Hoy tu perfil ofrece tres formas de escribirte y ninguna dice qué pasa después. Elige una —el mensaje directo de Instagram, que es donde ya te llega casi todo— y que todo apunte ahí: la bio, los reels y la web.\n\nTu web se queda en la bio. Es tu carta de presentación y te da peso frente a cualquier otro artista de Orlando; lo que cambia es a dónde mandas a la gente a escribir.\n\nEsta es la bio completa, lista para pegar. Es la misma de hoy con tres cosas que faltaban: un plazo, una señal de precio y una razón para escribir ahora.",
         before: "Artista\n🇨🇴 🇺🇸\nLocal Artist\n📍 Orlando, Fl\nRealism Black and Grey / Neotradicional\nContact at:(407)6809160\njuanmelotattoos.com",
-        copy: "Juan Melo · Realism black & grey 🇨🇴🇺🇸\n📍 Orlando, FL · Booking now\n💵 Pieces from $___ · $___ deposit holds your date\n💬 WhatsApp me your idea, placement & size\n⏱️ Same-day reply · wa.me/14076809160",
-        copyNote: "Fíjate en lo que cambia: dice cuánto cuesta entrar, promete un plazo y dice exactamente qué mandarte. Pon tu precio de entrada y tu depósito donde van los espacios. Y el enlace de la bio pasa a ser WhatsApp; la web se queda en el botón de la web." },
+        copy: "Juan Melo · Realism black & grey 🇨🇴🇺🇸\n📍 Orlando, FL · Booking now\n💵 Pieces from $___ · $___ deposit holds your date\n💬 DM me your idea, placement & size\n⏱️ Same-day reply\njuanmelotattoos.com",
+        copyNote: "Fíjate en lo que cambia: dice cuánto cuesta entrar, promete un plazo y dice exactamente qué mandarte. Pon tu precio de entrada y tu depósito donde van los espacios. El enlace sigue siendo tu web, que está bien hecha y te da peso; el verbo pasa a ser «DM me», porque es donde ya te escriben." },
       { n: "02",
         t: "Cambia la frase de la web y recorta el formulario",
         body: "Tu web está bien hecha y abre con BOOKING NOW. El problema son dos cosas que están debajo: un formulario de diez campos, con fecha de nacimiento y dos fotos obligatorias, y la frase «I'll contact you through message within a week».\n\nDeja cuatro campos —nombre, teléfono, idea y zona— y que las fotos sean opcionales. Y cambia la frase de abajo por esta:",
-        copy: "Thanks! I reply the same day with a price range and my next open dates.\nWant it faster? WhatsApp me at (407) 680-9160.",
-        copyNote: "Un formulario corto con una promesa concreta recibe más mensajes que uno largo con una promesa de una semana. Y el enlace de WhatsApp debajo rescata al que no quería rellenar nada. Es lo único de la web que hay que tocar hoy." },
+        copy: "Thanks! I reply the same day with a price range and my next open dates.\nWant it faster? DM me on Instagram: @juanmelotattoos",
+        copyNote: "Un formulario corto con una promesa concreta recibe más mensajes que uno largo con una promesa de una semana. Y el enlace al DM debajo rescata al que no quería rellenar nada. Es lo único de la web que hay que tocar hoy." },
       { n: "03",
         t: "La destacada que cobra, y el fijado que dice el precio",
         body: "Tus dos destacadas enseñan lo que sabes hacer. Falta la que explica cómo se te contrata. Graba cuatro historias, guárdalas en una destacada nueva llamada «Booking» y ponla la primera de la fila. Una frase por pantalla:",
-        copy: "1 · WhatsApp me your idea, placement and size in inches\n2 · I send you a price range the same day\n3 · A $___ deposit holds your date — it comes off the total\n4 · You see the design before your appointment\n\nY en el texto de tu fijado de treinta horas, añade esto al final:\nRealism in Orlando · Pieces from $___ · $___ deposit holds your date · WhatsApp (407) 680-9160",
+        copy: "1 · DM me your idea, placement and size in inches\n2 · I send you a price range the same day\n3 · A $___ deposit holds your date — it comes off the total\n4 · You see the design before your appointment\n\nY en el texto de tu fijado de treinta horas, añade esto al final:\nRealism in Orlando · Pieces from $___ · $___ deposit holds your date · DM to book",
         copyNote: "Pon tu depósito donde va el espacio. Lo de «it comes off the total» no sobra: mucha gente cree que el depósito es un cargo extra. Y el fijado de treinta horas es el cuadro más visto de tu perfil: con esa línea debajo, cada persona que lo abre sale sabiendo cuánto cuesta y qué hacer." },
     ],
 
@@ -1322,7 +1322,7 @@ export const AUDITS: Record<string, Audit> = {
       when: "Cuando alguien abre con «how much for something like this?» — que con realismo es como empieza casi todo",
       bad: "Depends on the design 🙏 send me the idea and I'll let you know",
       good: "size and placement move the price way more than the design does. where would you put it, and how big are you thinking, roughly in inches? with that I can give you a real number today, not a \"depends\". and if you have a reference, send it over — with realism the reference saves me half the conversation.",
-      why: "La primera le devuelve el trabajo a él y cierra la conversación con educación. La segunda pide las dos cosas que de verdad necesitas para cotizar, promete algo concreto a cambio —un número real, hoy— y termina sonando a ti y no a un formulario. Casi todo el mundo la contesta, y el que no la contesta no iba a reservar.\n\nTen la misma en español y pegada en las respuestas rápidas de WhatsApp. En Orlando te van a escribir en los dos idiomas, y la versión que tardas diez minutos en traducir es la que pierdes.",
+      why: "La primera le devuelve el trabajo a él y cierra la conversación con educación. La segunda pide las dos cosas que de verdad necesitas para cotizar, promete algo concreto a cambio —un número real, hoy— y termina sonando a ti y no a un formulario. Casi todo el mundo la contesta, y el que no la contesta no iba a reservar.\n\nTen la misma en español y guardada en las respuestas rápidas de Instagram. En Orlando te van a escribir en los dos idiomas, y la versión que tardas diez minutos en traducir es la que pierdes.",
     },
 
     plan: [
@@ -1385,7 +1385,7 @@ export const AUDITS: Record<string, Audit> = {
       sistema: [
         "El que llega de un reel ve el precio de entrada, el depósito y cómo reservar antes de escribirte.",
         "Cada mensaje tiene respuesta en minutos, en inglés o en español, con tu voz y tus precios, mientras tú tatúas.",
-        "La web pide cuatro datos y promete una respuesta hoy; el que prefiere WhatsApp tiene el botón al lado.",
+        "La web pide cuatro datos y promete una respuesta hoy; el que prefiere escribir directo tiene el DM al lado.",
         "Los que preguntaron y se callaron reciben seguimiento, y una parte de ellos vuelve con fecha.",
         "Tu agenda se ve con semanas de anticipación, y «bookings are filling up» deja de ser una frase para ser tu calendario.",
       ],
