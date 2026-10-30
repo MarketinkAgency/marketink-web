@@ -9,6 +9,7 @@ import Ink from "@/components/Ink";
 import AuditExpiry from "@/components/AuditExpiry";
 import AuditTicket from "@/components/AuditTicket";
 import CuposAudit from "@/components/CuposAudit";
+import CuposChip from "@/components/CuposChip";
 
 /**
  * LA ENTREGA DE LA AUDITORÍA
@@ -132,6 +133,32 @@ export default async function AuditPage({
   });
 
   const fugas = a.puntos.filter((p) => p.s === "fuga").length;
+  const medias = a.puntos.filter((p) => p.s === "media").length;
+  const bienes = a.puntos.filter((p) => p.s === "bien").length;
+
+  /* La fecha de caducidad, para la píldora de la cabecera. Se toma el
+     día tal cual está escrito en el dato y no del instante: «23:59 en
+     Orlando» es ya el día siguiente en UTC, y el servidor formatearía
+     la fecha equivocada. */
+  const fechaExp = new Date(a.expira.slice(0, 10) + "T12:00:00Z").toLocaleDateString(es ? "es-ES" : "en-US", {
+    day: "numeric",
+    month: "long",
+    timeZone: "UTC",
+  });
+
+  /* Los doce puntos, agrupados por estado y en este orden: primero lo
+     que ya tiene bien, después lo que está a medias, al final lo que le
+     cuesta citas. Empezar por lo que hace bien no es cortesía — es lo
+     que hace que llegue a leer lo otro sin ponerse a la defensiva. El
+     número de cada punto es el de la lista fija, para que dos
+     auditorías sigan hablando del mismo «punto 03». */
+  const grupos = (["bien", "media", "fuga"] as const)
+    .map((s) => ({
+      s,
+      title: s === "bien" ? t.groupBien : s === "media" ? t.groupMedia : t.groupFuga,
+      items: a.puntos.map((p, i) => ({ p, i })).filter((x) => x.p.s === s),
+    }))
+    .filter((g) => g.items.length > 0);
 
   /* El enlace de pago de esta auditoría, si tiene uno propio.
      Un tatuador en Bogotá y uno en Salt Lake City no pueden mandarse al
@@ -179,7 +206,15 @@ export default async function AuditPage({
           {t.kicker}
         </p>
 
-        <h1 className="flash-type mt-6 max-w-[19ch] text-[clamp(38px,7.2vw,86px)]">{a.verdict.line}</h1>
+        {/* Primero lo que ya tiene a favor, y solo después la fuga. */}
+        {a.verdict.lead && (
+          <p className="mt-7 max-w-[40ch] text-[clamp(17px,2.1vw,23px)] font-semibold leading-snug text-bone/85">
+            {a.verdict.lead}
+          </p>
+        )}
+        <h1 className={`flash-type ${a.verdict.lead ? "mt-4" : "mt-6"} max-w-[19ch] text-[clamp(38px,7.2vw,86px)]`}>
+          {a.verdict.line}
+        </h1>
 
         <p className="mt-8 text-[14px] text-muted">
           {t.prepared}{" "}
@@ -188,6 +223,17 @@ export default async function AuditPage({
           </a>{" "}
           · {a.name} · {a.studio}, {a.city}
         </p>
+
+        {/* Tres píldoras: que es para él, hasta cuándo, y cuántos
+            cupos quedan. La urgencia entera en la primera pantalla, antes
+            de que empiece a leer, y repetida en el cierre. */}
+        <ul className="mt-7 flex flex-wrap gap-2.5 text-[11.5px] font-bold uppercase tracking-[0.14em]">
+          <li className="rounded-full px-4 py-2 text-bone ring-1 ring-white/[0.14]">{t.chipHand}</li>
+          <li className="rounded-full px-4 py-2 text-blood ring-1 ring-blood/50">
+            {t.chipValid} {fechaExp}
+          </li>
+          <CuposChip label={t.chipSpots} label1={t.chipSpots1} />
+        </ul>
 
         <dl className="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-[18px] bg-white/[0.08] sm:grid-cols-4">
           {a.stats.map((s) => (
@@ -198,15 +244,25 @@ export default async function AuditPage({
           ))}
         </dl>
 
-        {/* El número que resume la página, antes de que empiece a leerla. */}
-        <p className="mt-6 flex flex-wrap items-baseline gap-x-4 gap-y-1 border-l-2 border-blood pl-6 text-[15.5px] text-muted">
-          <b className="flash-type text-[clamp(30px,4vw,44px)] text-blood">{fugas}</b>
-          <span className="max-w-[46ch] leading-relaxed">
-            {es
-              ? `de los ${a.puntos.length} puntos que revisamos están perdiendo reservas ahora mismo.`
-              : `of the ${a.puntos.length} checks are leaking bookings right now.`}
-          </span>
-        </p>
+        {/* Los tres números que resumen la página, antes de que empiece
+            a leerla. El rojo es el que cuesta; el hueso, el que ya tiene. */}
+        <div className="mt-6 grid gap-px overflow-hidden rounded-[18px] bg-white/[0.08] sm:grid-cols-3">
+          <p className="bg-void px-6 py-5">
+            <b className="flash-type block text-[clamp(30px,4vw,44px)] text-blood">{fugas}</b>
+            <span className="mt-1 block text-[13px] uppercase tracking-[0.12em] text-muted">
+              {es ? `de ${a.puntos.length} ` : `of ${a.puntos.length} `}
+              {t.sumFuga}
+            </span>
+          </p>
+          <p className="bg-void px-6 py-5">
+            <b className="flash-type block text-[clamp(30px,4vw,44px)] text-bone/70">{medias}</b>
+            <span className="mt-1 block text-[13px] uppercase tracking-[0.12em] text-muted">{t.sumMedia}</span>
+          </p>
+          <p className="bg-void px-6 py-5">
+            <b className="flash-type block text-[clamp(30px,4vw,44px)] text-bone">{bienes}</b>
+            <span className="mt-1 block text-[13px] uppercase tracking-[0.12em] text-muted">{t.sumBien}</span>
+          </p>
+        </div>
 
         <div className="mt-6 rounded-[18px] px-6 py-5 ring-1 ring-white/[0.09]">
           <p className="mb-3 text-[11px] uppercase tracking-[0.14em] text-faint">{t.profileSeen}</p>
@@ -263,21 +319,34 @@ export default async function AuditPage({
           </span>
         </p>
 
-        <ol className="mt-12 grid gap-px overflow-hidden rounded-[18px] bg-white/[0.08]">
-          {a.puntos.map((p, i) => (
-            <li key={p.k} className="spot flex gap-5 bg-void px-6 py-7 sm:gap-7 sm:px-9">
-              <span className="w-6 shrink-0 pt-[3px] text-[12px] font-bold tabular-nums text-faint">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <Marca s={p.s} />
-              <div className="min-w-0">
-                <h3 className="flash-sub text-[13px] text-bone">{p.k}</h3>
-                <p className="mt-1 text-[11px] uppercase tracking-[0.14em] text-faint">{estadoLabel(t, p.s)}</p>
-                <p className="mt-3 max-w-[64ch] text-[15px] leading-[1.7] text-muted">{p.note}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
+        {grupos.map((g) => (
+          <div key={g.s} className="mt-12">
+            <p className={`mb-4 flex items-center gap-3 text-[12px] font-bold uppercase tracking-[0.16em] ${g.s === "fuga" ? "text-blood" : "text-bone"}`}>
+              <i
+                aria-hidden
+                className={`size-2.5 rounded-full ${g.s === "fuga" ? "bg-blood" : g.s === "media" ? "ring-2 ring-blood/70" : "bg-bone"}`}
+              />
+              {g.title} · {g.items.length}
+            </p>
+            <ol className={`grid gap-px overflow-hidden rounded-[18px] ${g.s === "fuga" ? "bg-blood/30" : "bg-white/[0.08]"}`}>
+              {g.items.map(({ p, i }) => (
+                <li key={p.k} className="spot flex gap-5 bg-void px-6 py-7 sm:gap-7 sm:px-9">
+                  <span className="w-6 shrink-0 pt-[3px] text-[12px] font-bold tabular-nums text-faint">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <Marca s={p.s} />
+                  <div className="min-w-0">
+                    <h3 className="flash-sub text-[13px] text-bone">{p.k}</h3>
+                    <p className={`mt-1 text-[11px] uppercase tracking-[0.14em] ${p.s === "fuga" ? "text-blood" : "text-faint"}`}>
+                      {estadoLabel(t, p.s)}
+                    </p>
+                    <p className="mt-3 max-w-[64ch] text-[15px] leading-[1.7] text-muted">{p.note}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+        ))}
       </section>
 
       <Banda line={bandas[0].line} cta={bandas[0].cta} href={accion} />
@@ -323,8 +392,26 @@ export default async function AuditPage({
         <AuditCost
           lang={a.lang}
           moneda={a.moneda}
-          labels={{ a: t.costA, b: t.costB, c: t.costC, now: t.costNow, table: t.costTable, rate: t.costRate, month: t.costMonth, gap: t.costGap, note: t.costNote, zero: t.costZero }}
+          labels={{ a: t.costA, b: t.costB, c: t.costC, now: t.costNow, table: t.costTable, rate: t.costRate, month: t.costMonth, gap: t.costGap, note: t.costNote, zero: t.costZero, quarter: t.costQuarter }}
         />
+
+        {/* La salida justo donde más duele: acaba de ver su propia
+            cifra. Un botón y una alternativa blanda para el que todavía
+            no quiere pagar pero sí quiere hablar. */}
+        <div className="spot mt-10 flex flex-col gap-7 rounded-[22px] px-7 py-10 ring-1 ring-blood/30 sm:flex-row sm:items-center sm:justify-between sm:px-10">
+          <div>
+            <h3 className="flash-type max-w-[20ch] text-[clamp(22px,3vw,34px)]">{t.midTitle}</h3>
+            <p className="mt-3 max-w-[48ch] text-[14.5px] leading-relaxed text-muted">{t.midBody}</p>
+          </div>
+          <div className="flex flex-none flex-col items-start gap-3 sm:items-end">
+            <a href={accion} target="_blank" rel="noopener" className="btn">
+              {t.ctaPay}
+            </a>
+            <a href={site.instagram} target="_blank" rel="noopener" className="text-[13px] text-faint underline underline-offset-4 hover:text-bone">
+              {t.midAlt}
+            </a>
+          </div>
+        </div>
       </section>
 
       {/* ── 05 · los tres arreglos ─────────────────────────────── */}
@@ -350,7 +437,29 @@ export default async function AuditPage({
                 ))}
               </div>
 
-              {f.copy && (
+              {f.copy && f.before && (
+                /* Antes y después, lado a lado. Lo suyo tachado en rojo
+                   suave; lo nuevo con el anillo de la marca. */
+                <div className="mt-7">
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div className="rounded-[16px] bg-panel px-6 py-6 ring-1 ring-white/[0.06]">
+                      <p className="mb-3 text-[11px] uppercase tracking-[0.14em] text-faint">{t.before}</p>
+                      <pre className="whitespace-pre-wrap font-sans text-[14.5px] leading-[1.75] text-muted line-through decoration-blood/50">
+                        {f.before}
+                      </pre>
+                    </div>
+                    <div className="rounded-[16px] bg-panel px-6 py-6 ring-1 ring-blood/30">
+                      <p className="mb-3 text-[11px] uppercase tracking-[0.14em] text-blood">
+                        {t.after} · {t.copyLabel}
+                      </p>
+                      <pre className="whitespace-pre-wrap font-sans text-[14.5px] leading-[1.75] text-bone">{f.copy}</pre>
+                    </div>
+                  </div>
+                  {f.copyNote && <p className="mt-4 max-w-[64ch] text-[13.5px] leading-relaxed text-faint">{f.copyNote}</p>}
+                </div>
+              )}
+
+              {f.copy && !f.before && (
                 <div className="mt-7 max-w-[52ch]">
                   <p className="mb-3 text-[11px] uppercase tracking-[0.14em] text-faint">{t.copyLabel}</p>
                   <pre className="overflow-x-auto whitespace-pre-wrap rounded-[14px] bg-panel px-6 py-5 font-sans text-[14.5px] leading-[1.75] text-bone ring-1 ring-white/[0.07]">
@@ -471,6 +580,46 @@ export default async function AuditPage({
                 </ul>
               </div>
             ))}
+          </div>
+        </section>
+      )}
+
+      {/* ── 08 · las dos versiones ───────────────────────────────
+           Lo que se ve dentro de 90 días si no hace nada y si lo
+           arreglamos. Es la sección que más vende de la página y por
+           eso no lleva ni una cifra: solo lo que pasa. Opcional. */}
+      {a.futuro && (
+        <section className="sec relative mx-auto max-w-[1180px] px-6 pb-16 pt-20 sm:px-10">
+          <span className="sec-n" aria-hidden>08</span>
+          <Tag n="08">{t.futuroTag}</Tag>
+          <h2 className="flash-type max-w-[18ch] text-[clamp(28px,4.4vw,52px)]">{t.futuroTitle}</h2>
+
+          <div className="mt-12 grid gap-5 md:grid-cols-2">
+            <div className="rounded-[22px] px-7 py-9 ring-1 ring-white/[0.09] sm:px-9">
+              <p className="mb-6 text-[11.5px] font-bold uppercase tracking-[0.16em] text-faint">{t.futuroNada}</p>
+              <ul className="space-y-4">
+                {a.futuro.nada.map((x) => (
+                  <li key={x} className="flex gap-3 text-[15px] leading-[1.65] text-muted">
+                    <span className="mt-[9px] size-1.5 shrink-0 rounded-full bg-faint" aria-hidden />
+                    {x}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="spot rounded-[22px] px-7 py-9 ring-1 ring-blood/40 sm:px-9">
+              <p className="mb-6 flex items-center gap-2 text-[11.5px] font-bold uppercase tracking-[0.16em] text-blood">
+                <i className="dot-live size-1.5 rounded-full bg-blood" aria-hidden />
+                {t.futuroSistema}
+              </p>
+              <ul className="space-y-4">
+                {a.futuro.sistema.map((x) => (
+                  <li key={x} className="flex gap-3 text-[15px] leading-[1.65] text-bone">
+                    <span className="mt-[9px] size-1.5 shrink-0 rounded-full bg-blood" aria-hidden />
+                    {x}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </section>
       )}

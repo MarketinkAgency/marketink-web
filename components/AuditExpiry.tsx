@@ -93,7 +93,9 @@ export default function AuditExpiry({
             </span>
           ) : (
             <>
-              <span className="text-faint">{labels.tag}</span>{" "}
+              {/* En móvil no cabe el rótulo junto al botón: se queda el
+                  reloj solo, que es lo que importa. */}
+              <span className="hidden text-faint sm:inline">{labels.tag} </span>
               {/* Mientras no hay reloj todavía, un espacio del mismo ancho:
                   sin esto la barra da un salto en cuanto hidrata. */}
               <span className="tabular-nums text-bone" suppressHydrationWarning>

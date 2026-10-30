@@ -53,7 +53,7 @@ export default function AuditCost({
 }: {
   lang: Lang;
   moneda?: Moneda;
-  labels: { a: string; b: string; c: string; now: string; table: string; rate: string; month: string; gap: string; note: string; zero: string };
+  labels: { a: string; b: string; c: string; now: string; table: string; rate: string; month: string; gap: string; note: string; zero: string; quarter: string };
 }) {
   const escala = ESCALAS[moneda];
   const [ticket, setTicket] = useState(escala.inicial);
@@ -173,6 +173,14 @@ export default function AuditCost({
               <b className="whitespace-nowrap text-bone">{fmt(unaMas)}</b>
               {es ? " más." : " more."}
             </p>
+
+            {/* La misma cuenta, a tres meses. No es otra estimación: es
+                el mismo techo multiplicado por tres, y existe porque un
+                mes se deja pasar y un trimestre se siente. */}
+            <div className="border-t border-white/[0.09] pt-6">
+              <p className="text-[12.5px] uppercase tracking-[0.14em] text-faint">{labels.quarter}</p>
+              <p className="flash-type mt-1 text-[clamp(24px,3vw,34px)] text-bone">{fmt((mesa - hoy) * 3)}</p>
+            </div>
           </>
         )}
       </div>

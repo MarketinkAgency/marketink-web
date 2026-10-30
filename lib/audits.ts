@@ -48,6 +48,10 @@ export type Arreglo = {
   /** Texto listo para copiar y pegar. Sin esto, el consejo es una tarea. */
   copy?: string;
   copyNote?: string;
+  /** Lo que tiene hoy, tal cual, para ponerlo al lado de lo nuevo. Con
+      esto el arreglo deja de ser un consejo y pasa a ser un antes y un
+      después: el que lo ve lado a lado entiende el cambio sin leer. */
+  before?: string;
 };
 
 export type Audit = {
@@ -69,7 +73,11 @@ export type Audit = {
   expira: string;
   stats: { k: string; v: string }[];
   bio: string[];
-  verdict: { line: string; body: string[] };
+  /** `lead` va encima del titular y dice lo que ya tiene a favor. El
+      titular nombra la fuga. Ese orden no es cortesía: el que lee
+      primero un reconocimiento verdadero se queda a leer el problema;
+      el que lee primero el problema se pone a defenderse. */
+  verdict: { lead?: string; line: string; body: string[] };
   puntos: Punto[];
   /** El mercado local. Solo datos comprobables, con su fuente si hace falta. */
   market: { t: string; body: string }[];
@@ -112,6 +120,11 @@ export type Audit = {
   /** Solo para quien viene de otro oficio: compara lo que vale su hora
       aquí y allá. Opcional — si no está, la sección no existe. */
   ticket?: { tag: string; title: string; body: string };
+  /** Dos versiones de su perfil dentro de 90 días: si no hace nada y si
+      lo arreglamos. Es la sección que más vende de toda la página y por
+      eso tiene la regla más dura: nada de cifras. Describe qué se ve y
+      qué pasa, nunca cuánto se gana. Opcional — sin esto no existe. */
+  futuro?: { nada: string[]; sistema: string[] };
   cierre: string;
 };
 
@@ -125,15 +138,27 @@ export const auditUi = {
     profileSeen: "What your profile says right now",
     verdictTag: "The verdict",
     checksTag: "The twelve checks",
-    checksTitle: "Everything we looked at, and what we found.",
+    checksTitle: "What's already working for you — and what's costing you bookings.",
     checksNote:
-      "The same twelve points on every audit we run, so nothing gets graded on a hunch. Each one is something a stranger can see without asking you.",
-    legend: { fuga: "Leak", media: "Half there", bien: "Solid" },
+      "The same twelve points on every audit we run, so nothing gets graded on a hunch. Every one that fails has a fix, and the three most expensive ones are done for you further down.",
+    legend: { fuga: "Costing you bookings", media: "Half there", bien: "Already yours" },
+    groupBien: "What's already working for you",
+    groupMedia: "Almost there — one detail short",
+    groupFuga: "What's costing you bookings",
+    sumFuga: "are costing you bookings today",
+    sumMedia: "half there",
+    sumBien: "already working for you",
+    chipHand: "Prepared by hand for you",
+    chipValid: "Valid until",
+    chipSpots: "spots left this month",
+    chipSpots1: "spot left this month",
     marketTag: "Your market",
     fixTag: "Yours to keep",
     fixTitle: "Three fixes. Do them this week, with or without us.",
     fixNote: "No charge, no catch. These are the ones you can do alone.",
     copyLabel: "Copy this",
+    before: "What you have today",
+    after: "What goes in its place",
     dmTag: "One more, free",
     planTag: "What we'd build",
     planTitle: "The system we'd install in your case.",
@@ -144,8 +169,16 @@ export const auditUi = {
     d90TeaseCta: "See the 90 days",
     d90Note: "Not a promise of numbers — a calendar of work. Each phase has one job, and the next one only starts because the previous one produced something to act on.",
     costTag: "What it costs you",
-    costTitle: "We're not going to invent your numbers. Put yours in.",
+    costTitle: "What this is costing you every month. Your numbers, not ours.",
     costNote: "Straight multiplication of your own three numbers. Nothing here is our estimate — check it on your phone. Move the sliders until they look like your month.",
+    costQuarter: "In 90 days, if nothing changes",
+    midTitle: "This gets fixed in a week. With us, starting Monday.",
+    midBody: "You keep tattooing. We build the door, publish the price and put someone answering your DMs in minutes.",
+    midAlt: "Or DM us on Instagram first",
+    futuroTag: "90 days from now",
+    futuroTitle: "In 90 days there are two versions of your profile. You pick which one.",
+    futuroNada: "If nothing changes",
+    futuroSistema: "If we fix it now",
     costA: "What an average piece brings in",
     costB: "Inquiries you get a month",
     costC: "Of those, how many you book",
@@ -155,8 +188,8 @@ export const auditUi = {
     costMonth: "a month",
     costGap: "conversations a month already reach you and never book. Nobody closes all of them — but every single one you do close is",
     costZero: "With those numbers nothing is leaking — every inquiry you get ends in a chair. Move the sliders until they look like a real month.",
-    ctaTitle: "Stop leaking bookings.",
-    ctaBody: "Everything above is what your profile does today. Below is the day we change it. We only take a handful of artists a month because one of us actually answers your DMs.",
+    ctaTitle: "Your full calendar shouldn't depend on luck.",
+    ctaBody: "Everything above is what your profile does today. Below is the day it starts working for you. We only take a handful of artists a month because one of us actually answers your DMs — and this month's open spots are the ones you see here.",
     ctaPay: "Start the system",
     ctaPayNote: "We set it up this week. You keep tattooing.",
     ctaBook: "Book the 15 minutes",
@@ -185,8 +218,8 @@ export const auditUi = {
     ticketBHours: "How long you sit with it",
     ticketGap: "That's what one hour of tattooing is worth against one hour of cutting.",
     ticketNote: "Your numbers, your arithmetic. Nobody is telling you to close the barbershop — this is what each hour you move is worth.",
-    expTag: "This audit expires in",
-    expDone: "This audit expired",
+    expTag: "Your free fixes expire in",
+    expDone: "The free fixes expired",
     expUnits: { d: "d", h: "h", m: "m", s: "s" },
     lockTitle: "The free part expired.",
     lockBody:
@@ -205,15 +238,27 @@ export const auditUi = {
     profileSeen: "Lo que dice tu perfil ahora mismo",
     verdictTag: "El diagnóstico",
     checksTag: "Los doce puntos",
-    checksTitle: "Todo lo que miramos, y lo que encontramos.",
+    checksTitle: "Lo que ya tienes a favor, y lo que te está costando citas.",
     checksNote:
-      "Los mismos doce puntos en cada auditoría, para que nada se califique a ojo. Cada uno es algo que un desconocido puede ver sin preguntarte.",
-    legend: { fuga: "Fuga", media: "A medias", bien: "Bien" },
+      "Los mismos doce puntos en cada auditoría, para que nada se califique a ojo. Cada uno que falla tiene arreglo, y los tres más caros te los dejamos hechos más abajo.",
+    legend: { fuga: "Te está costando citas", media: "A medias", bien: "Ya lo tienes" },
+    groupBien: "Lo que ya tienes a favor",
+    groupMedia: "Casi — les falta un detalle",
+    groupFuga: "Lo que te está costando citas",
+    sumFuga: "te están costando citas hoy",
+    sumMedia: "a medias",
+    sumBien: "ya juegan a tu favor",
+    chipHand: "Preparada a mano para ti",
+    chipValid: "Válida hasta el",
+    chipSpots: "cupos libres este mes",
+    chipSpots1: "cupo libre este mes",
     marketTag: "Tu mercado",
     fixTag: "Tuyo, sin costo",
     fixTitle: "Tres arreglos. Hazlos esta semana, con nosotros o sin nosotros.",
     fixNote: "Sin cobro y sin truco. Son los que puedes hacer solo.",
     copyLabel: "Copia esto",
+    before: "Lo que tienes hoy",
+    after: "Lo que va en su lugar",
     dmTag: "Uno más, gratis",
     planTag: "Lo que montaríamos",
     planTitle: "El sistema que instalaríamos en tu caso.",
@@ -224,8 +269,16 @@ export const auditUi = {
     d90TeaseCta: "Ver los 90 días",
     d90Note: "No es una promesa de cifras: es un calendario de trabajo. Cada fase tiene un solo trabajo, y la siguiente empieza porque la anterior dejó algo sobre lo que decidir.",
     costTag: "Lo que te cuesta",
-    costTitle: "No vamos a inventar tus números. Pon los tuyos.",
+    costTitle: "Cuánto te está costando esto cada mes. Con tus números, no con los nuestros.",
     costNote: "Es una multiplicación de tus propios tres números. Aquí no hay ninguna estimación nuestra — compruébala con la calculadora del teléfono. Mueve las barras hasta que se parezcan a tu mes.",
+    costQuarter: "En 90 días, si nada cambia",
+    midTitle: "Esto se arregla en una semana. Con nosotros, desde el lunes.",
+    midBody: "Tú sigues tatuando. Nosotros montamos la puerta, publicamos el precio y ponemos a alguien contestando tus mensajes en minutos.",
+    midAlt: "O escríbenos primero por Instagram",
+    futuroTag: "Dentro de 90 días",
+    futuroTitle: "En 90 días hay dos versiones de tu perfil. Tú eliges cuál.",
+    futuroNada: "Si todo sigue igual",
+    futuroSistema: "Si lo arreglamos ahora",
     costA: "Lo que deja una pieza promedio",
     costB: "Consultas que recibes al mes",
     costC: "De esas, cuántas agendas",
@@ -235,8 +288,8 @@ export const auditUi = {
     costMonth: "al mes",
     costGap: "conversaciones al mes ya te llegan y no terminan en cita. Nadie cierra todas — pero cada una que cierres son",
     costZero: "Con esos números no se te está cayendo ninguna: todas las que te escriben terminan en la camilla. Mueve las barras hasta que se parezcan a un mes de verdad.",
-    ctaTitle: "Deja de perder reservas.",
-    ctaBody: "Todo lo de arriba es lo que hace tu perfil hoy. Lo de abajo es el día en que eso cambia. Tomamos pocos artistas al mes porque tus mensajes los contesta alguien de verdad.",
+    ctaTitle: "Tu agenda llena no debería depender de la suerte.",
+    ctaBody: "Todo lo de arriba es lo que hace tu perfil hoy. Lo de abajo es el día en que empieza a trabajar para ti. Tomamos pocos artistas al mes porque tus mensajes los contesta alguien de verdad — y los cupos de este mes son los que ves aquí.",
     ctaPay: "Empezar el sistema",
     ctaPayNote: "Lo montamos esta semana. Tú sigues tatuando.",
     ctaBook: "Agenda los 15 minutos",
@@ -260,8 +313,8 @@ export const auditUi = {
     ticketBHours: "Las horas que te sientas con él",
     ticketGap: "Eso es lo que vale una hora tatuando frente a una hora cortando.",
     ticketNote: "Tus números y tu cuenta. Nadie te está diciendo que cierres la barbería: esto es lo que vale cada hora que muevas.",
-    expTag: "Esta auditoría caduca en",
-    expDone: "Esta auditoría caducó",
+    expTag: "Tus arreglos gratis caducan en",
+    expDone: "Los arreglos gratis caducaron",
     expUnits: { d: "d", h: "h", m: "m", s: "s" },
     lockTitle: "La parte gratis caducó.",
     lockBody:
@@ -1159,6 +1212,187 @@ export const AUDITS: Record<string, Audit> = {
 
     cierre:
       "If we get on the call and we don't see a clear opportunity in your case, we'll tell you on the call. That happens, and it's a better outcome for both of us than the alternative.",
+  },
+  "juan-melo": {
+    slug: "juan-melo",
+    lang: "es",
+    handle: "@juanmelotattoos",
+    name: "Juan Melo",
+    studio: "Realismo black & grey · neotradicional",
+    city: "Orlando, Florida",
+    profile: "https://www.instagram.com/juanmelotattoos/",
+    reviewed: "2026-10-30",
+    expira: "2026-11-06T23:59:00-05:00",
+
+    /* Su tesis: el trabajo ya convence y la gente ya lo ve. Lo que no
+       existe es el mostrador — precio, depósito, plazo — y la única
+       promesa de tiempo que hay en todo su ecosistema es «te contesto en
+       una semana». Las bandas dicen eso, no lo genérico. */
+    bands: [
+      { line: "Más de 80.000 reproducciones. Ni una cifra de precio. Eso es lo único que te separa de la agenda llena.", cta: "Empezar el sistema" },
+      { line: "Ya te llevaste las fáciles. Lo que no se arregla en una tarde es contestar en cinco minutos a cada persona que te escribe, mientras tatúas.", cta: "Empezar el sistema" },
+    ],
+
+    stats: [
+      { k: "Seguidores", v: "858" },
+      { k: "Reproducciones, 27 reels visibles", v: "+80.000" },
+      { k: "Tu mejor reel", v: "13.900" },
+      { k: "Campos del formulario de tu web", v: "10" },
+    ],
+    bio: [
+      "Artista",
+      "🇨🇴 🇺🇸",
+      "Local Artist",
+      "📍 Orlando, Fl",
+      "Realism Black and Grey / Neotradicional",
+      "Contact at:(407)6809160",
+      "juanmelotattoos.com",
+    ],
+
+    verdict: {
+      lead: "Tu trabajo ya convence. Tu perfil todavía no cobra.",
+      line: "Más de 80.000 personas vieron tus reels. Ninguna encontró cuánto cuesta ni cómo reservar.",
+      body: [
+        "Entramos a tu perfil como entra alguien de Orlando con una idea en la cabeza y con qué pagarla. Y lo primero hay que decirlo claro: la parte difícil ya la tienes hecha.",
+        "Contamos tus veintisiete reels visibles: más de 80.000 reproducciones entre todos, con 858 seguidores. Uno solo llegó a 13.900 personas, dieciséis veces tu número de seguidores; otros tres pasaron de seis mil. Eso no le pasa a un perfil que no interesa. Te está pasando porque el realismo en black & grey que haces —las vírgenes, los querubines, el corazón, la pieza de treinta horas— se defiende solo cuando alguien lo ve.",
+        "Y la demanda ya se nota. El 17 de octubre escribiste: «Bookings are filling up quick, don't forget to text me». Publicas cada semana, contestas los comentarios, y tienes una web propia que abre con la palabra BOOKING NOW. Casi nadie de los que auditamos llega hasta ahí.",
+        "Ahora, lo que encontró esa gente cuando quiso reservar. En la bio hay un teléfono para escribir. En los reels dice «text me». En la web hay un formulario de diez campos, con fecha de nacimiento y dos fotos obligatorias, que termina con esta frase: «I'll contact you through message within a week». Una semana. Es la única promesa de tiempo que existe en todo tu perfil, y juega en tu contra.",
+        "Y no encontraron ningún precio. Ni una cifra, ni un rango, ni un «desde»: ni en la bio, ni en los tres fijados, ni en las dos destacadas, ni en la sección de servicios de la web. Tampoco encontraron depósito, ni horario, ni una palabra sobre qué pasa después de escribirte.",
+        "Ese es el diagnóstico completo, y es de los buenos: no te falta talento, no te falta alcance y no te falta constancia. Te falta que las 80.000 personas que ya te vieron sepan cuánto cuesta, cómo se entra y cuánto tardas en contestar. Tienes la vitrina llena y la puerta sin letrero. Y de todo lo que puede fallar en un perfil, eso es lo más rápido de arreglar.",
+      ],
+    },
+
+    puntos: [
+      { k: "Un enlace en la bio", s: "media",
+        note: "Tienes uno, juanmelotattoos.com, y carga bien: galería, servicios, tu logo. Eso ya te pone por delante de la mayoría. Lo que está detrás es lo que pierde: el único camino de la web es un formulario de diez campos con fecha de nacimiento y dos fotos obligatorias, y debajo dice que contestas «within a week». El que llega desde un reel con ganas no rellena diez campos para esperar una semana." },
+      { k: "Un camino para reservar", s: "fuga",
+        note: "Hay tres y ninguno gana. La bio dice «Contact at:(407)6809160». Los reels del 5 y del 17 de octubre dicen «text me». La web tiene el formulario y además un botón de WhatsApp al mismo número. Son tres puertas para la misma casa, y ninguna dice qué pasa después de entrar: ni precio, ni fecha, ni cuánto tardas." },
+      { k: "Una señal de precio", s: "fuga",
+        note: "No hay ni una cifra en todo tu ecosistema. Revisamos la bio, los tres fijados, los nombres de las dos destacadas y la sección de servicios de la web: ni un número, ni un rango, ni un «desde». Con realismo y piezas de treinta horas la gente asume que es caro, y la que asume no pregunta: se va al perfil del que sí lo dice." },
+      { k: "El depósito", s: "fuga",
+        note: "No aparece en ningún sitio, ni en Instagram ni en la web. Sin depósito una cita es una intención, y las intenciones no se presentan el sábado. En tu caso duele más porque son sesiones largas: un hueco de tres días no se rellena con un walk-in." },
+      { k: "Cuándo respondes", s: "fuga",
+        note: "La única promesa de tiempo de todo tu perfil está en la web y dice «within a week». Para el que escribió y espera, una semana de silencio y un «no me interesa» se ven exactamente igual. En Orlando basta con que otro conteste en cinco minutos." },
+      { k: "Destacadas", s: "media",
+        note: "Dos, y las dos con nombre propio: «Designs» y «Healed». Eso está bien hecho, y «Healed» en especial: enseñar cómo cura tu trabajo es la prueba que más tranquiliza. Lo que falta es la tercera, la que cobra: ninguna explica cómo se te contrata, cuánto cuesta ni qué hace falta mandarte." },
+      { k: "Fijados", s: "media",
+        note: "Usas los tres huecos. El primero es la pieza de treinta horas del 11 de septiembre, 80 me gusta, y es exactamente lo que hay que fijar. El texto dice «I hope to keep working on this soon» y nada más: el cuadro más visto de tu perfil no le dice al que llega cuánto cuesta ni qué hacer." },
+      { k: "Diseños contra piel", s: "bien",
+        note: "Toda la cuadrícula es tinta en piel real: brazos, antebrazos, piernas, piezas en proceso. Y tienes una destacada entera de trabajo curado. En realismo eso importa el doble, porque la diferencia entre un buen diseño y un buen tatuaje es exactamente la que se ve aquí." },
+      { k: "Constancia", s: "bien",
+        note: "Abrimos publicaciones del 5, del 9 y del 17 de octubre, y la fijada del 11 de septiembre. Publicas cada semana sin fallar, y eso es lo más difícil de sostener de toda esta lista. Instagram te lo está pagando: por eso tienes reels de 13.900 y de 7.300 reproducciones con 858 seguidores." },
+      { k: "Dónde estás", s: "bien",
+        note: "«📍 Orlando, Fl» en la bio y «Local Artist» debajo. El que llega de un reel sabe en dos segundos si puede ir a verte, y eso es lo que decide si sigue leyendo." },
+      { k: "Qué le pides que haga", s: "media",
+        note: "«Contact at» y «text me» sí dicen el verbo, y eso ya es más de lo que hace la mayoría. Lo que no dicen es qué mandarte —zona, tamaño, referencia— ni qué recibe a cambio: un precio, una fecha, una respuesta hoy. Pedir un mensaje a cambio de nada es la forma más educada de no recibirlo." },
+      { k: "Se entiende qué tatúas", s: "bien",
+        note: "«Realism Black and Grey / Neotradicional» está en la bio y demostrado en cada cuadro: vírgenes, Cristos, querubines, calaveras, lettering. Nadie llega a tu perfil sin entender qué haces, y eso es lo más caro de construir." },
+    ],
+
+    market: [
+      { t: "Tu alcance ya está resuelto, y eso es raro",
+        body: "Más de 80.000 reproducciones con 858 seguidores no es lo normal: lo normal es lo contrario, mucho seguidor y poco alcance. Tú tienes el problema bueno. Cuando el cuello de botella está en el alcance hay que trabajar meses para moverlo; cuando está en el mostrador, se arregla en semanas. Tú estás en el segundo caso." },
+      { t: "«Within a week» cuesta más que no tener web",
+        body: "El que no ve enlace te escribe por texto. El que entra a una web que dice BOOKING NOW, rellena diez campos y lee que le contestas en una semana, concluye otra cosa: que no tienes prisa por tatuarlo. Y esa conclusión se la lleva también al teléfono que ya no va a marcar. Cambiar esa frase cuesta diez segundos." },
+      { t: "Ya escribes «bookings are filling up». Ahora que lo vean",
+        body: "Tu texto del 17 de octubre dice que la agenda se llena rápido. Es verdad y es el mejor argumento de venta que tienes, pero vive dentro de un reel. Puesto en la bio, en un fijado y en una destacada con precio y depósito, deja de ser una frase y pasa a ser una razón para escribirte hoy y no el mes que viene." },
+    ],
+
+    arreglos: [
+      { n: "01",
+        t: "Una sola puerta, y con el letrero puesto",
+        body: "Hoy tu perfil ofrece tres formas de escribirte y ninguna dice qué pasa después. Elige una —WhatsApp, que ya tienes en la web y es donde contestas desde el teléfono— y que todo apunte ahí: la bio, los reels y el botón de la web.\n\nEsta es la bio completa, lista para pegar. Es la misma de hoy con tres cosas que faltaban: un plazo, una señal de precio y una razón para escribir ahora.",
+        before: "Artista\n🇨🇴 🇺🇸\nLocal Artist\n📍 Orlando, Fl\nRealism Black and Grey / Neotradicional\nContact at:(407)6809160\njuanmelotattoos.com",
+        copy: "Juan Melo · Realism black & grey 🇨🇴🇺🇸\n📍 Orlando, FL · Booking now\n💵 Pieces from $___ · $___ deposit holds your date\n💬 WhatsApp me your idea, placement & size\n⏱️ Same-day reply · wa.me/14076809160",
+        copyNote: "Fíjate en lo que cambia: dice cuánto cuesta entrar, promete un plazo y dice exactamente qué mandarte. Pon tu precio de entrada y tu depósito donde van los espacios. Y el enlace de la bio pasa a ser WhatsApp; la web se queda en el botón de la web." },
+      { n: "02",
+        t: "Cambia la frase de la web y recorta el formulario",
+        body: "Tu web está bien hecha y abre con BOOKING NOW. El problema son dos cosas que están debajo: un formulario de diez campos, con fecha de nacimiento y dos fotos obligatorias, y la frase «I'll contact you through message within a week».\n\nDeja cuatro campos —nombre, teléfono, idea y zona— y que las fotos sean opcionales. Y cambia la frase de abajo por esta:",
+        copy: "Thanks! I reply the same day with a price range and my next open dates.\nWant it faster? WhatsApp me at (407) 680-9160.",
+        copyNote: "Un formulario corto con una promesa concreta recibe más mensajes que uno largo con una promesa de una semana. Y el enlace de WhatsApp debajo rescata al que no quería rellenar nada. Es lo único de la web que hay que tocar hoy." },
+      { n: "03",
+        t: "La destacada que cobra, y el fijado que dice el precio",
+        body: "Tus dos destacadas enseñan lo que sabes hacer. Falta la que explica cómo se te contrata. Graba cuatro historias, guárdalas en una destacada nueva llamada «Booking» y ponla la primera de la fila. Una frase por pantalla:",
+        copy: "1 · WhatsApp me your idea, placement and size in inches\n2 · I send you a price range the same day\n3 · A $___ deposit holds your date — it comes off the total\n4 · You see the design before your appointment\n\nY en el texto de tu fijado de treinta horas, añade esto al final:\nRealism in Orlando · Pieces from $___ · $___ deposit holds your date · WhatsApp (407) 680-9160",
+        copyNote: "Pon tu depósito donde va el espacio. Lo de «it comes off the total» no sobra: mucha gente cree que el depósito es un cargo extra. Y el fijado de treinta horas es el cuadro más visto de tu perfil: con esa línea debajo, cada persona que lo abre sale sabiendo cuánto cuesta y qué hacer." },
+    ],
+
+    dm: {
+      t: "Y la respuesta que convierte «how much?» en una cita",
+      when: "Cuando alguien abre con «how much for something like this?» — que con realismo es como empieza casi todo",
+      bad: "Depends on the design 🙏 send me the idea and I'll let you know",
+      good: "size and placement move the price way more than the design does. where would you put it, and how big are you thinking, roughly in inches? with that I can give you a real number today, not a \"depends\". and if you have a reference, send it over — with realism the reference saves me half the conversation.",
+      why: "La primera le devuelve el trabajo a él y cierra la conversación con educación. La segunda pide las dos cosas que de verdad necesitas para cotizar, promete algo concreto a cambio —un número real, hoy— y termina sonando a ti y no a un formulario. Casi todo el mundo la contesta, y el que no la contesta no iba a reservar.\n\nTen la misma en español y pegada en las respuestas rápidas de WhatsApp. En Orlando te van a escribir en los dos idiomas, y la versión que tardas diez minutos en traducir es la que pierdes.",
+    },
+
+    plan: [
+      { k: "El mostrador que falta",
+        d: "Rango de precio publicado, depósito con enlace de pago, destacada «Booking» y una sola puerta de entrada. Todo lo que tus 80.000 reproducciones ya demostraron que quieren ver, por fin visible." },
+      { k: "Alguien contestando por ti, en dos idiomas",
+        d: "Tus mensajes respondidos en minutos, con tu voz y tus precios, en inglés y en español, mientras tú estás con la máquina en la mano. Que «within a week» pase a ser «hoy»." },
+      { k: "La web, trabajando",
+        d: "Formulario de cuatro campos, promesa de respuesta el mismo día, precio de entrada visible y un botón de reserva con depósito. La web ya existe; solo hay que ponerla a cobrar." },
+      { k: "Repetir los reels que sí funcionan",
+        d: "Cuatro de tus veintisiete videos concentran más de un tercio del alcance, y tienen algo en común que se puede copiar a propósito. Eso deja de ser suerte y pasa a ser calendario." },
+      { k: "El seguimiento",
+        d: "El que pregunta y se calla es la pila de dinero más grande de cualquier perfil, y nadie la está tocando. Cada «how much?» que no terminó en cita vuelve a la conversación, con tu voz." },
+    ],
+
+    dias90: [
+      { d: "Días 1–15", t: "Fundación",
+        items: [
+          "Bio reescrita con precio de entrada, plazo y una sola puerta",
+          "Rango de precio y depósito definidos contigo y publicados",
+          "Destacada «Booking» grabada y puesta primera",
+          "La web: formulario corto y respuesta el mismo día",
+          "Guiones de respuesta en inglés y en español, aprobados por ti",
+          "Medición instalada: cuántos tocan, escriben y agendan",
+        ] },
+      { d: "Días 15–30", t: "Lanzamiento",
+        items: [
+          "Setter respondiendo tus mensajes en minutos, los dos idiomas",
+          "Campañas activas en Orlando y el condado de Orange",
+          "Tu «Healed» convertido en argumento de venta",
+          "Primeras conversaciones calificadas con precio y zona",
+          "Primeros datos de qué pieza y qué zona convierten",
+        ] },
+      { d: "Días 30–60", t: "Optimización",
+        items: [
+          "Bajar el costo por cotización",
+          "Subir la calidad del que escribe",
+          "Replicar a propósito la estructura de tus reels que revientan",
+          "Reforzar el seguimiento del que preguntó y no cerró",
+          "Empujar los estilos que ganan",
+        ] },
+      { d: "Días 60–90", t: "Predictibilidad",
+        items: [
+          "Escalar lo que ya demostró funcionar",
+          "Agenda visible con semanas de anticipación",
+          "Mejor conversión de cotización a depósito",
+          "Menos días vacíos entre sesiones grandes",
+          "Un tablero donde ves el mes antes de que pase",
+        ] },
+    ],
+
+    futuro: {
+      nada: [
+        "Los reels siguen llegando a miles de personas, y ninguna sabe cuánto cuesta ni cómo entrar.",
+        "Cada «how much?» sigue dependiendo de que lo veas entre sesión y sesión, y el que no recibe respuesta el mismo día escribe a otro.",
+        "La web sigue prometiendo una semana, y el que la lee sigue cerrando la pestaña.",
+        "La agenda se llena a rachas: cuando sale un reel bueno hay movimiento, cuando no, silencio.",
+        "«Bookings are filling up quick» sigue siendo una frase dentro de un video, no una razón visible para reservar hoy.",
+      ],
+      sistema: [
+        "El que llega de un reel ve el precio de entrada, el depósito y cómo reservar antes de escribirte.",
+        "Cada mensaje tiene respuesta en minutos, en inglés o en español, con tu voz y tus precios, mientras tú tatúas.",
+        "La web pide cuatro datos y promete una respuesta hoy; el que prefiere WhatsApp tiene el botón al lado.",
+        "Los que preguntaron y se callaron reciben seguimiento, y una parte de ellos vuelve con fecha.",
+        "Tu agenda se ve con semanas de anticipación, y «bookings are filling up» deja de ser una frase para ser tu calendario.",
+      ],
+    },
+
+    cierre:
+      "Nada de lo que dice esta página es opinión nuestra: entra a tu perfil, busca una cifra de precio y abre el formulario de tu web hasta la última línea. Si nos sentamos y no vemos una oportunidad clara en tu caso, te lo decimos en la misma llamada. En el tuyo la vemos: el trabajo ya está hecho y la gente ya lo está viendo. Lo que falta es lo rápido.",
   },
 };
 
