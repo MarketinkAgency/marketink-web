@@ -92,7 +92,7 @@ Carga con `next/font` (`display: swap`).
 
 `prefers-reduced-motion`: todo quieto y visible.
 
-### 7.1 Capa «cartel punk» (2026-11-13)
+### 7.1 Capa «cartel punk» (2026-11-12)
 
 **Impresión desalineada (`.misprint`)**
 - Sombra roja desplazada 0.045em, como serigrafía fuera de registro.
@@ -143,6 +143,7 @@ Carga con `next/font` (`display: swap`).
 
 | Fecha | Decisión | Motivo |
 |---|---|---|
-| 2026-11-13 | Dirección «hoja de flash»; H1 «Tus DM son un cementerio» / «Your DMs are a graveyard» | Auditoría 2026-11-12 (web genérica, sin cultura del tatuaje) e investigación de copy |
-| 2026-11-13 | Idioma por país (`x-vercel-ip-country`) | Petición del dueño |
-| 2026-11-13 | Fuera de la portada: barra de resultados, franja de confianza, «Para quién» (pasa al FAQ) y la segunda banda | Duplicaban cifras y alargaban la página |
+| 2026-11-12 | Dirección «hoja de flash»; H1 «Tus DM son un cementerio» / «Your DMs are a graveyard» | Auditoría 2026-11-12 (web genérica, sin cultura del tatuaje) e investigación de copy |
+| 2026-11-12 | Idioma por país (`x-vercel-ip-country`) | Petición del dueño |
+| 2026-11-12 | Fuera de la portada: barra de resultados, franja de confianza, «Para quién» (pasa al FAQ) y la segunda banda | Duplicaban cifras y alargaban la página |
+| 2026-11-12 | Capa «cartel punk» (7.1) aprobada por el dueño en localhost | Pidió un estilo «más animado, más disruptivo» |
