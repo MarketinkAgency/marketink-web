@@ -1,15 +1,21 @@
 import type { Copy } from "@/lib/copy";
 
 /**
- * El recorrido, dibujado.
+ * El recorrido, dibujado como una cadena.
  *
- * El brief pedía dejar de explicar el mecanismo con texto y mostrarlo.
+ * En escritorio (≥ 1280 px) se lee de izquierda a derecha, como una tira:
+ * anuncio → DM → calificación → consulta → depósito. Una línea roja une los
+ * cinco nodos y se va llenando con el scroll; cada nodo se enciende cuando
+ * la línea llega a él. Debajo, una flecha de vuelta: lo que no cierra entra
+ * en seguimiento y regresa al DM.
+ *
+ * En móvil y tablet es la misma cadena en vertical.
+ *
  * Cada paso trae una miniinterfaz real —el anuncio, el DM, la ficha de
- * calificación, el calendario, el comprobante— porque una promesa que
- * se ve deja de ser una promesa y empieza a ser un producto.
- *
- * Todo es HTML y CSS: ni una imagen, ni un kilobyte de JavaScript.
- * Se lee con lector de pantalla y se ve nítido en cualquier densidad.
+ * calificación, el calendario, el comprobante— porque una promesa que se ve
+ * deja de ser una promesa. Todo es HTML y CSS: ni una imagen, ni JavaScript.
+ * Sin soporte de animaciones por scroll (o con reduced-motion) la cadena se
+ * ve completa y encendida desde el principio.
  */
 
 type Step = Copy["funnel"]["steps"][number];
@@ -18,7 +24,7 @@ type Step = Copy["funnel"]["steps"][number];
 
 function Chrome({ children, label }: { children: React.ReactNode; label: string }) {
   return (
-    <div className="w-full max-w-[330px] border border-white/[0.14] bg-[rgba(13,13,15,0.9)]">
+    <div className="w-full max-w-[360px] border border-white/[0.14] bg-[rgba(13,13,15,0.9)]">
       <div className="flex items-center gap-2 border-b border-white/[0.1] px-3.5 py-2.5">
         <span className="size-1.5 rounded-full bg-blood" aria-hidden />
         <span className="flash-sub text-[9px] tracking-[0.2em] text-faint">{label}</span>
@@ -65,7 +71,7 @@ function Ui({ s }: { s: Step }) {
           {ui.rows.map(([k, v]) => (
             <div key={k} className="flex items-baseline justify-between gap-4 py-2">
               <dt className="text-[10.5px] uppercase tracking-[0.14em] text-faint">{k}</dt>
-              <dd className="text-[12px] font-medium text-bone">{v}</dd>
+              <dd className="text-right text-[12px] font-medium text-bone">{v}</dd>
             </div>
           ))}
         </dl>
@@ -107,29 +113,35 @@ function Ui({ s }: { s: Step }) {
   );
 }
 
-/* ── el recorrido ───────────────────────────────────────────── */
+/* ── la cadena ──────────────────────────────────────────────── */
 
 export default function Funnel({ t }: { t: Copy["funnel"] }) {
   return (
-    <ol className="funnel">
-      {t.steps.map((s, i) => (
-        <li key={s.k} className="funnel-step reveal">
-          {/* la línea roja que baja y une los pasos */}
-          <span className="funnel-line" aria-hidden />
-          <span className="funnel-num" aria-hidden>
-            {String(i + 1).padStart(2, "0")}
-          </span>
+    <div className="flow">
+      <ol className="flow-track">
+        {t.steps.map((s, i) => (
+          <li key={s.k} className="flow-step reveal">
+            {/* el nodo numerado y el tramo de línea que lo une al siguiente */}
+            <div className="flow-head" aria-hidden>
+              <span className="flow-node">{String(i + 1).padStart(2, "0")}</span>
+              <span className="flow-bar" />
+            </div>
+            <h3 className="flow-title flash-type">{s.k}</h3>
+            <p className="flow-desc">{s.d}</p>
+            <div className="flow-ui">
+              <Ui s={s} />
+            </div>
+          </li>
+        ))}
+      </ol>
 
-          <div className="funnel-body">
-            <h3 className="flash-type text-[clamp(1.4rem,2.8vw,2.1rem)]">{s.k}</h3>
-            <p className="mt-3 max-w-[38ch] text-[14.5px] leading-relaxed text-muted">{s.d}</p>
-          </div>
-
-          <div className="funnel-ui">
-            <Ui s={s} />
-          </div>
-        </li>
-      ))}
-    </ol>
+      {/* lo que no cierra vuelve al DM: la flecha de regreso */}
+      <p className="flow-loop reveal">
+        <span className="flow-loop__icon" aria-hidden>
+          ↺
+        </span>
+        {t.follow}
+      </p>
+    </div>
   );
 }

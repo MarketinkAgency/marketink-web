@@ -20,7 +20,8 @@ import Analytics from "@/components/Analytics";
 
 /* Portada «hoja de flash» (2026-11): la foto real manda, Anton a escala de
    cartel en las frases que importan y tres fondos que marcan el ritmo
-   (negro, hueso y rojo). Sin manchas de tinta, números fantasma ni riel. */
+   (negro, hueso y rojo), alternándose de sección en sección. Todo va a lo
+   ancho de la pantalla (.wrap): nada encerrado en una columna estrecha. */
 
 /** marketINK• — el punto es la gota de tinta y el punto final de la frase. */
 function Wordmark({ className = "", live = true }: { className?: string; live?: boolean }) {
@@ -64,8 +65,41 @@ function Cta({ href, children, big = false }: { href: string; children: React.Re
   );
 }
 
-/* Titulares de sección: más grandes que antes, Anton tiene que sonar a cartel. */
-const H2 = "misprint flash-type text-[clamp(2.2rem,5.2vw,4.4rem)]";
+/* Titulares de sección a escala de cartel: con todo el ancho disponible,
+   Anton tiene que llenar la pantalla como el titular del hero. */
+const H2 = "misprint flash-type text-[clamp(2.4rem,6.4vw,6.6rem)]";
+
+/** Cabecera de sección: titular grande a la izquierda y la bajada abajo a la derecha. */
+function SecHead({
+  n,
+  tag,
+  title,
+  sub,
+  light = false,
+}: {
+  n: string;
+  tag: string;
+  title: string;
+  sub?: string;
+  /** sobre la hoja hueso, el texto secundario va en negro al 75 % */
+  light?: boolean;
+}) {
+  return (
+    <div className="grid gap-7 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,0.8fr)] lg:items-end lg:gap-16">
+      <div>
+        <Tag n={n}>{tag}</Tag>
+        <Split as="h2" text={title} className={H2} />
+      </div>
+      {sub && (
+        <p
+          className={`reveal max-w-[44ch] text-[15.5px] leading-relaxed lg:pb-3 ${light ? "text-void/75" : "text-muted"}`}
+        >
+          {sub}
+        </p>
+      )}
+    </div>
+  );
+}
 
 export default async function Home({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
@@ -75,6 +109,8 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
   /* la última palabra del titular va en rojo: CEMENTERIO / GRAVEYARD */
   const h1Words = t.hero.h1.split(" ");
   const h1Last = h1Words.pop();
+  /* en el diagnóstico, la palabra que importa va en rojo: CONVERSIÓN */
+  const [diagPre, diagPost] = t.problem.titleEm.split(t.problem.mark);
 
   return (
     <>
@@ -118,7 +154,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             <div className="hero-flash__shade absolute inset-0" />
           </div>
 
-          <div className="mx-auto w-full max-w-7xl px-6 pb-12 pt-32 sm:pb-16 lg:pb-20">
+          <div className="wrap pb-12 pt-32 sm:pb-16 lg:pb-20">
             <p className="lift mb-6 flex items-center gap-3 flash-sub text-[11px] tracking-[0.22em] text-bone">
               <i className="dot-live size-1.5 shrink-0 rounded-full bg-blood shadow-[0_0_10px_2px_rgba(225,6,0,0.8)]" aria-hidden />
               {t.hero.kicker}
@@ -173,8 +209,8 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         {/* ───────── EL CEMENTERIO — los DM de siempre, en lápidas ─────────
              Las lápidas se levantan del suelo con el scroll y el sello cae
              encima. Es ilustración: el mensaje lo cargan el titular y el texto. */}
-        <section aria-labelledby="grave-h" className="overflow-clip px-6 pb-16 pt-10 sm:pb-28 sm:pt-16">
-          <div className="mx-auto max-w-6xl">
+        <section aria-labelledby="grave-h" className="overflow-clip pb-16 pt-10 sm:pb-28 sm:pt-16">
+          <div className="wrap">
             <p className="reveal mb-8 flash-sub text-[11px] tracking-[0.22em] text-muted">{t.grave.tag}</p>
             <div className="grave-field" aria-hidden>
               {t.grave.stones.map((s) => (
@@ -184,29 +220,27 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
               ))}
               <span className="grave-stamp">{t.grave.rip}</span>
             </div>
-            <div className="mt-12 grid gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] lg:items-end lg:gap-16">
-              <h2 id="grave-h" className="misprint flash-type text-[clamp(2.4rem,6.4vw,5.6rem)]">
+            <div className="mt-12 grid gap-8 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,0.8fr)] lg:items-end lg:gap-16">
+              <h2 id="grave-h" className="misprint flash-type text-[clamp(2.4rem,6.4vw,6.6rem)]">
                 {t.grave.line} <span className="text-blood">{t.grave.lineEm}</span>
                 <Period />
               </h2>
-              <p className="reveal max-w-[46ch] text-[15.5px] leading-relaxed text-muted lg:pb-3">{t.grave.sub}</p>
+              <p className="reveal max-w-[44ch] text-[15.5px] leading-relaxed text-muted lg:pb-3">{t.grave.sub}</p>
             </div>
           </div>
         </section>
 
         {/* ───────── 01 · CASOS REALES — la prueba va primero ───────── */}
-        <section id="results" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-28">
-          <div className="relative mx-auto max-w-6xl">
-            <Tag n="01">{t.cases.eyebrow}</Tag>
-            <Split as="h2" text={t.cases.title} className={`max-w-[18ch] ${H2}`} />
-            <p className="reveal mt-6 max-w-[56ch] text-[15.5px] leading-relaxed text-muted">{t.cases.sub}</p>
+        <section id="results" className="sec scroll-mt-24 overflow-clip py-16 sm:py-28">
+          <div className="wrap">
+            <SecHead n="01" tag={t.cases.eyebrow} title={t.cases.title} sub={t.cases.sub} />
           </div>
 
           {/* cada caso ocupa su propio bloque, no una tarjeta */}
-          <div className="mt-14 space-y-20 sm:mt-20 sm:space-y-28">
+          <div className="mt-14 space-y-20 sm:mt-24 sm:space-y-32">
             {t.cases.items.map((c, i) => (
-              <article key={c.k} className="mx-auto max-w-6xl">
-                <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-16">
+              <article key={c.k} className="wrap">
+                <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_400px] lg:gap-20">
                   {/* izquierda: la historia */}
                   <div>
                     <p className="reveal mb-6 flex items-center gap-3 flash-sub text-[10.5px] tracking-[0.22em] text-muted">
@@ -214,13 +248,13 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                       {c.studio} · {c.city}
                     </p>
 
-                    <Split as="h3" text={c.name} className="flash-type text-[clamp(3.2rem,9vw,6.5rem)] leading-[0.9]" />
+                    <Split as="h3" text={c.name} className="flash-type text-[clamp(3.6rem,11vw,10rem)] leading-[0.9]" />
 
                     {/* la cifra manda */}
                     <div className="reveal mt-9 border-y border-white/[0.09] py-8">
                       <p className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-                        <span className="flash-type text-[clamp(2.8rem,7vw,5rem)] text-blood">{c.big}</span>
-                        <span className="flash-type text-[clamp(1.1rem,2.4vw,1.8rem)] text-bone">{c.unit}</span>
+                        <span className="flash-type text-[clamp(2.8rem,7vw,5.6rem)] text-blood">{c.big}</span>
+                        <span className="flash-type text-[clamp(1.1rem,2.4vw,1.9rem)] text-bone">{c.unit}</span>
                       </p>
                       <p className="mt-2.5 max-w-[34ch] text-[15px] leading-snug text-muted">{c.tail}</p>
                       <p className="mt-5 flash-sub text-[10.5px] tracking-[0.2em] text-faint">
@@ -252,7 +286,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                         <div className="mt-10 grid gap-px bg-white/[0.08] sm:grid-cols-4">
                           {c.figures.map((f) => (
                             <div key={f.k} className="spot reveal bg-void px-5 py-6">
-                              <p className="flash-type text-[clamp(1.5rem,2.6vw,2.1rem)] tabular-nums text-bone">
+                              <p className="flash-type text-[clamp(1.5rem,2.6vw,2.3rem)] tabular-nums text-bone">
                                 <Count value={f.v} />
                               </p>
                               <p className="mt-2 text-[12px] leading-snug text-muted">{f.k}</p>
@@ -276,7 +310,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                       alt={`${t.trust.seeAll} ${c.handle}`}
                       width={566}
                       height={1210}
-                      sizes="(max-width: 1024px) 100vw, 360px"
+                      sizes="(max-width: 1024px) 100vw, 400px"
                       className="w-full transition duration-700 group-hover:scale-[1.02]"
                     />
                     <span className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-3 bg-gradient-to-t from-void via-void/90 to-transparent px-5 pb-4 pt-12 text-[13px]">
@@ -289,15 +323,17 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             ))}
           </div>
 
-          <p className="reveal mx-auto mt-14 max-w-6xl text-[11.5px] leading-relaxed text-faint">{t.cases.note}</p>
+          <div className="wrap">
+            <p className="reveal mt-14 max-w-[90ch] text-[11.5px] leading-relaxed text-faint">{t.cases.note}</p>
+          </div>
         </section>
 
         {/* ───────── EL TRABAJO — la hoja de flash pegada a la pared ───────── */}
         <section aria-labelledby="work-h" className="work-strip border-y border-white/[0.08]">
-          <div className="mx-auto max-w-7xl px-6 py-14 sm:py-20">
+          <div className="wrap py-14 sm:py-20">
             <p className="reveal mb-5 flash-sub text-[11px] tracking-[0.22em] text-muted">{t.work.eyebrow}</p>
             <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-              <Split as="h2" text={t.work.title} className="flash-type text-[clamp(2.4rem,6.4vw,5.6rem)]" />
+              <Split as="h2" text={t.work.title} className="flash-type text-[clamp(2.4rem,6.4vw,6.6rem)]" />
               <p className="reveal max-w-[40ch] text-[14.5px] leading-relaxed text-muted lg:pb-3">{t.work.sub}</p>
             </div>
           </div>
@@ -316,55 +352,53 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           </div>
         </section>
 
-        {/* ───────── 02 · EL DIAGNÓSTICO ───────── */}
-        <section id="problem" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-28">
-          <div className="relative mx-auto grid max-w-6xl gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
-            <div className="lg:sticky lg:top-32 lg:self-start">
-              <Tag n="02">{t.problem.eyebrow}</Tag>
-              {/* columna estrecha y fija: aquí el titular no puede crecer como los demás o se mete bajo la barra */}
-              <h2 className="flash-type text-[clamp(2rem,3.6vw,3.2rem)]">
-                <Split as="span" text={t.problem.title} />
-                <Split as="span" text={t.problem.titleEm} delay={220} className="text-faint" />
-              </h2>
-              <p className="reveal mt-9 max-w-[40ch] text-[clamp(1.05rem,1.9vw,1.35rem)] font-semibold leading-snug tracking-[-0.02em]">
-                {t.problem.close} <span className="text-blood">{t.problem.closeEm}</span>
-              </p>
-            </div>
+        {/* ───────── 02 · EL DIAGNÓSTICO — en hueso ─────────
+             Las cuatro fugas como renglones de una hoja: número rojo gigante,
+             nombre y explicación. Con el ratón encima, el renglón se invierte
+             a negro, como una lámina que se arranca de la pared. */}
+        <section id="problem" className="sheet scroll-mt-24 py-24 sm:py-32">
+          <div className="wrap">
+            <Tag n="02">{t.problem.eyebrow}</Tag>
+            <h2 className="flash-type">
+              <span className="reveal diag-hollow block text-[clamp(1.9rem,4.6vw,4.8rem)]">{t.problem.title}</span>
+              <span className="reveal misprint mt-1 block text-[clamp(2.5rem,7.2vw,7.6rem)]">
+                {diagPre}
+                <span className="text-blood">{t.problem.mark}</span>
+                {diagPost}
+              </span>
+            </h2>
 
-            <ul className="rail">
+            <ol className="diag mt-14 sm:mt-24">
               {t.problem.items.map((it) => (
-                <li
-                  key={it.n}
-                  className="spot reveal relative rounded-[18px] border border-white/[0.09] p-7 lg:rounded-none lg:border-x-0 lg:border-t-0 lg:p-0 lg:py-9 lg:first:pt-0 lg:last:border-0 lg:last:pb-0"
-                >
-                  <span
-                    aria-hidden
-                    className="pointer-events-none absolute -top-2 right-3 select-none text-[80px] font-black leading-none tracking-tighter text-white/[0.05] lg:-top-1 lg:right-0"
-                  >
+                <li key={it.n} className="diag-row reveal">
+                  <span className="diag-n" aria-hidden>
                     {it.n}
                   </span>
-                  <h3 className="relative text-[clamp(1.2rem,2.2vw,1.55rem)] font-bold tracking-[-0.03em]">{it.t}</h3>
-                  <p className="relative mt-3 max-w-[52ch] text-[15px] leading-relaxed text-muted">{it.d}</p>
+                  <h3 className="diag-t flash-type">{it.t}</h3>
+                  <p className="diag-d">{it.d}</p>
                 </li>
               ))}
-            </ul>
-            <p className="mt-5 text-[12px] text-faint lg:hidden">{t.problem.swipe}</p>
+            </ol>
+
+            <p className="diag-close reveal flash-type">
+              {t.problem.close} <span className="text-blood">{t.problem.closeEm}</span>
+            </p>
           </div>
         </section>
 
-        {/* ───────── 03 · CALCULADORA ───────── */}
-        <section id="cost" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-28">
-          <div className="relative mx-auto max-w-6xl">
-            <Tag n="03">{t.calc.eyebrow}</Tag>
-            <Split as="h2" text={t.calc.title} className={`max-w-[18ch] ${H2}`} />
-            <p className="reveal mt-6 max-w-[46ch] text-[15.5px] text-muted">{t.calc.sub}</p>
+        {/* ───────── 03 · CALCULADORA — la cifra a escala de cartel ───────── */}
+        <section id="cost" className="sec scroll-mt-24 overflow-clip py-20 sm:py-32">
+          <div className="wrap">
+            <SecHead n="03" tag={t.calc.eyebrow} title={t.calc.title} sub={t.calc.sub} />
 
-            <div className="reveal mt-14">
+            <div className="reveal mt-14 sm:mt-20">
               <Calculator t={t.calc} lang={lang} />
             </div>
 
             <div className="reveal mt-12">
-              <Cta href="#book" big>{t.calc.cta}</Cta>
+              <Cta href="#book" big>
+                {t.calc.cta}
+              </Cta>
             </div>
           </div>
         </section>
@@ -384,39 +418,30 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           ))}
         </div>
 
-        {/* ───────── 04 · EL RECORRIDO ───────── */}
-        <section id="system" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-28">
-          <div className="relative mx-auto max-w-6xl">
-            <Tag n="04">{t.funnel.tag}</Tag>
-            <Split as="h2" text={t.funnel.title} className={`max-w-[18ch] ${H2}`} />
-            <p className="reveal mt-6 max-w-[52ch] text-[15.5px] leading-relaxed text-muted">{t.funnel.sub}</p>
-
-            <div className="mt-16">
+        {/* ───────── 04 · EL RECORRIDO — la cadena de izquierda a derecha ───────── */}
+        <section id="system" className="sec scroll-mt-24 overflow-clip py-20 sm:py-32">
+          <div className="wrap">
+            <SecHead n="04" tag={t.funnel.tag} title={t.funnel.title} sub={t.funnel.sub} />
+            <div className="mt-16 sm:mt-24">
               <Funnel t={t.funnel} />
             </div>
-
-            <p className="reveal mt-12 max-w-[54ch] border-l-2 border-blood pl-5 text-[15.5px] leading-relaxed text-bone">
-              {t.funnel.follow}
-            </p>
           </div>
         </section>
 
         {/* ───────── 05 · QUÉ SE INSTALA — la hoja, en hueso ─────────
-             El único cambio de papel de la página: las cinco piezas como
-             diseños numerados de una hoja de flash clavada en la pared. */}
-        <section id="assets" className="sheet scroll-mt-24 px-6 py-20 sm:py-28">
-          <div className="mx-auto max-w-6xl">
-            <Tag n="05">{t.assets.tag}</Tag>
-            <Split as="h2" text={t.assets.title} className={`max-w-[18ch] ${H2}`} />
-            <p className="reveal mt-6 max-w-[58ch] text-[15.5px] leading-relaxed text-void/75">{t.assets.sub}</p>
+             Las cinco piezas como diseños numerados de una hoja de flash
+             clavada en la pared. */}
+        <section id="assets" className="sheet scroll-mt-24 py-24 sm:py-32">
+          <div className="wrap">
+            <SecHead n="05" tag={t.assets.tag} title={t.assets.title} sub={t.assets.sub} light />
 
-            <ol className="mt-14 grid gap-5 md:grid-cols-6">
+            <ol className="mt-14 grid gap-5 sm:mt-20 md:grid-cols-6">
               {t.assets.items.map((a, i) => (
                 <li key={a.k} className={`sheet-cell reveal ${i < 2 ? "md:col-span-3" : "md:col-span-2"}`}>
                   <span className="sheet-num" aria-hidden>
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <h3 className="mt-3 flash-type text-[clamp(1.5rem,2.4vw,2rem)]">{a.k}</h3>
+                  <h3 className="mt-3 flash-type text-[clamp(1.5rem,2.4vw,2.3rem)]">{a.k}</h3>
                   <p className="mt-3 text-[15px] leading-relaxed text-void/80">{a.d}</p>
                   {/* las tareas, en pequeño: son el medio, no el producto */}
                   <ul className="mt-5 flex flex-wrap gap-x-3 gap-y-1.5 border-t border-void/15 pt-4">
@@ -443,73 +468,72 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             </div>
           </div>
 
-          <div className="relative mx-auto max-w-4xl">
-            <Split as="p" text={t.rupture.a} className="flash-type text-[clamp(1.7rem,4.6vw,3.4rem)] opacity-60" />
-            <Split as="p" text={t.rupture.b} className="mt-1.5 flash-type text-[clamp(2.2rem,6.4vw,5rem)]" delay={220} />
-            <Split as="p" text={t.rupture.c} className="mt-1.5 flash-type text-[clamp(1.7rem,4.6vw,3.4rem)] opacity-60" delay={460} />
+          <div className="relative mx-auto max-w-5xl">
+            <Split as="p" text={t.rupture.a} className="flash-type text-[clamp(1.7rem,4.6vw,3.6rem)] opacity-60" />
+            <Split as="p" text={t.rupture.b} className="mt-1.5 flash-type text-[clamp(2.2rem,6.6vw,5.6rem)]" delay={220} />
+            <Split as="p" text={t.rupture.c} className="mt-1.5 flash-type text-[clamp(1.7rem,4.6vw,3.6rem)] opacity-60" delay={460} />
             {/* blanco puro: al 75 % sobre el rojo daba ≈3,2:1, por debajo de AA */}
             <p className="reveal mx-auto mt-10 max-w-[52ch] text-[15.5px] leading-relaxed text-white">{t.rupture.d}</p>
           </div>
         </section>
 
-        {/* ───────── 06 · 90 DÍAS ───────── */}
-        <section id="process" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-28">
-          <div className="relative mx-auto max-w-6xl">
-            <Tag n="06">{t.process.eyebrow}</Tag>
-            <Split as="h2" text={t.process.title} className={`max-w-[20ch] ${H2}`} />
-            <p className="reveal mt-6 max-w-[54ch] text-[15.5px] leading-relaxed text-muted">{t.process.sub}</p>
+        {/* ───────── 06 · 90 DÍAS — en hueso, una regla de 90 días a escala ─────────
+             En escritorio cada fase ocupa el ancho de los días que dura
+             (15, 15, 30 y 30) y la regla de arriba se llena de rojo con el scroll. */}
+        <section id="process" className="sheet scroll-mt-24 py-24 sm:py-32">
+          <div className="wrap">
+            <SecHead n="06" tag={t.process.eyebrow} title={t.process.title} sub={t.process.sub} light />
 
-            <div className="mt-16 grid gap-px bg-white/[0.08] md:grid-cols-4">
-              {t.process.phases.map((p) => (
-                <div key={p.d} className="spot reveal bg-void p-8">
-                  <p className="flash-sub text-[10.5px] tracking-[0.18em] text-muted">{p.d}</p>
-                  <h3 className="mt-4 flash-type text-[clamp(1.3rem,2.2vw,1.7rem)]">{p.t}</h3>
-                  <ul className="mt-6 space-y-3">
-                    {p.items.map((x) => (
-                      <li key={x} className="flex gap-3 text-[13.5px] leading-snug text-muted">
-                        <span className="mt-[7px] size-1 shrink-0 rounded-full bg-blood" />
-                        {x}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
+            <div className="days mt-16 sm:mt-24">
+              <div className="days-ruler" aria-hidden />
+              <ol className="days-grid">
+                {t.process.phases.map((p) => (
+                  <li key={p.d} className="days-col reveal">
+                    <p className="days-d flash-type">{p.d}</p>
+                    <h3 className="mt-2 flash-type text-[clamp(1.5rem,2.2vw,2.2rem)]">{p.t}</h3>
+                    <ul className="mt-6 space-y-2.5">
+                      {p.items.map((x) => (
+                        <li key={x} className="flex gap-3 text-[14px] leading-snug text-void/75">
+                          <span className="mt-[6px] size-1.5 shrink-0 bg-blood" aria-hidden />
+                          {x}
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                ))}
+              </ol>
             </div>
 
-            <p className="reveal mt-12 max-w-[46ch] text-[clamp(1.1rem,2.1vw,1.5rem)] font-semibold leading-snug tracking-[-0.025em] text-muted">
-              {t.process.close} <span className="text-bone">{t.process.closeEm}</span>
-            </p>
-            <div className="reveal mt-9">
-              <Cta href="#book">{t.nav.cta}</Cta>
+            <div className="mt-16 flex flex-col gap-8 sm:mt-20 lg:flex-row lg:items-end lg:justify-between lg:gap-16">
+              <p className="reveal max-w-[46ch] text-[clamp(1.1rem,2.1vw,1.5rem)] font-semibold leading-snug tracking-[-0.025em] text-void/70">
+                {t.process.close} <span className="text-void">{t.process.closeEm}</span>
+              </p>
+              <div className="reveal flex-none">
+                <Cta href="#book">{t.nav.cta}</Cta>
+              </div>
             </div>
           </div>
         </section>
 
         {/* ───────── 07 · EQUIPO ───────── */}
-        <section id="team" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-28">
-          <div className="mx-auto max-w-6xl">
-            <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:gap-16">
-              <div>
-                <Tag n="07">{t.team.eyebrow}</Tag>
-                <Split as="h2" text={t.team.title} className={`max-w-[16ch] ${H2}`} />
-              </div>
-              <p className="reveal max-w-[52ch] self-end text-[15.5px] leading-relaxed text-muted">{t.team.sub}</p>
-            </div>
+        <section id="team" className="sec scroll-mt-24 overflow-clip py-20 sm:py-32">
+          <div className="wrap">
+            <SecHead n="07" tag={t.team.eyebrow} title={t.team.title} sub={t.team.sub} />
 
-            <div className="mt-14 grid gap-5 sm:grid-cols-2 sm:gap-6">
+            <div className="mt-14 grid gap-5 sm:mt-20 sm:grid-cols-2 sm:gap-6">
               {t.team.people.map((p) => (
-                <figure key={p.k} className="reveal group relative overflow-hidden border border-white/[0.1]">
+                <figure key={p.k} className="reveal group relative overflow-hidden">
                   <Image
                     src={p.img}
                     alt={p.name}
                     width={1000}
                     height={1250}
                     sizes="(max-width: 640px) 100vw, 50vw"
-                    className="w-full object-cover transition duration-[900ms] group-hover:scale-[1.03]"
+                    className="aspect-[4/4.4] w-full object-cover object-top transition duration-[900ms] group-hover:scale-[1.03]"
                   />
-                  <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-void via-void/92 to-transparent px-6 pb-6 pt-20">
-                    <p className="flash-type text-[clamp(1.8rem,3.4vw,2.6rem)]">{p.name}</p>
-                    <p className="mt-1.5 text-[14px] text-muted">{p.role}</p>
+                  <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-void via-void/92 to-transparent px-6 pb-7 pt-24 sm:px-8">
+                    <p className="flash-type text-[clamp(2.2rem,4.4vw,4.2rem)] leading-none">{p.name}</p>
+                    <p className="mt-2.5 text-[14.5px] text-muted">{p.role}</p>
                     <p className="mt-3 flash-sub text-[10.5px] tracking-[0.18em] text-bone">{p.cred}</p>
                   </figcaption>
                 </figure>
@@ -518,36 +542,40 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           </div>
         </section>
 
-        {/* ───────── 08 · LO QUE SÍ GARANTIZAMOS ───────── */}
-        <section id="guarantee" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-28">
-          <div className="relative mx-auto max-w-6xl">
-            <div className="grid gap-10 lg:grid-cols-[1fr_1.05fr] lg:gap-16">
-              <div>
-                <Tag n="08">{t.guarantee.tag}</Tag>
-                <Split as="h2" text={t.guarantee.title} className={`max-w-[16ch] ${H2}`} />
-                <p className="reveal mt-6 max-w-[46ch] text-[15.5px] leading-relaxed text-muted">{t.guarantee.sub}</p>
-              </div>
-
-              <ul className="reveal divide-y divide-white/[0.09] border-y border-white/[0.09]">
-                {t.guarantee.items.map((g) => (
-                  <li key={g} className="flex gap-4 py-5">
-                    <span className="mt-[7px] block h-px w-5 shrink-0 bg-blood" aria-hidden />
-                    <span className="text-[15px] leading-relaxed text-bone">{g}</span>
-                  </li>
-                ))}
-              </ul>
+        {/* ───────── 08 · LO QUE SÍ GARANTIZAMOS — en hueso, con sello ───────── */}
+        <section id="guarantee" className="sheet scroll-mt-24 py-24 sm:py-32">
+          <div className="wrap grid gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-20">
+            <div>
+              <Tag n="08">{t.guarantee.tag}</Tag>
+              <Split as="h2" text={t.guarantee.title} className={H2} />
+              <p className="reveal mt-7 max-w-[46ch] text-[15.5px] leading-relaxed text-void/75">{t.guarantee.sub}</p>
+              {/* el sello repite lo que dice el texto: es decoración */}
+              <p className="seal mt-10" aria-hidden>
+                {t.guarantee.stamp}
+              </p>
             </div>
+
+            <ol className="self-end border-y-2 border-void">
+              {t.guarantee.items.map((g, i) => (
+                <li key={g} className="reveal flex gap-6 border-b border-void/20 py-6 last:border-b-0">
+                  <span className="w-[2ch] flex-none flash-type text-[1.9rem] leading-none text-blood" aria-hidden>
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="text-[15.5px] leading-relaxed text-void">{g}</span>
+                </li>
+              ))}
+            </ol>
           </div>
         </section>
 
         {/* ───────── PUENTE A LAS WEBS ─────────
             No es una sección numerada a propósito: es una salida lateral
             para quien todavía no tiene dónde mandar a la gente. */}
-        <section className="border-y border-white/[0.08] px-6 py-14 sm:py-20">
-          <div className="reveal mx-auto flex max-w-6xl flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+        <section className="py-14 sm:py-20">
+          <div className="reveal wrap flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <p className="mb-4 flash-sub text-[10.5px] tracking-[0.2em] text-muted">{t.websTeaser.tag}</p>
-              <h2 className="max-w-[22ch] flash-type text-[clamp(1.6rem,3.6vw,2.7rem)]">{t.websTeaser.title}</h2>
+              <h2 className="max-w-[24ch] flash-type text-[clamp(1.8rem,4vw,3.4rem)]">{t.websTeaser.title}</h2>
               <p className="mt-4 max-w-[54ch] text-[15px] leading-relaxed text-muted">{t.websTeaser.body}</p>
             </div>
             <div className="flex flex-none items-center gap-5">
@@ -559,45 +587,56 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           </div>
         </section>
 
-        {/* ───────── 09 · FAQ ───────── */}
-        <section id="faq" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-28">
-          <div className="relative mx-auto max-w-3xl">
-            <Tag n="09">{t.faq.eyebrow}</Tag>
-            <Split as="h2" text={t.faq.title} className={`mb-12 max-w-[18ch] ${H2}`} />
-            <div className="divide-y divide-white/[0.07]">
-              {t.faq.items.map((f, i) => (
-                <details key={f.q} className="reveal group" open={i === 0}>
-                  <summary className="flex cursor-pointer list-none items-center justify-between gap-6 py-6 text-[16.5px] font-semibold tracking-[-0.024em] marker:hidden">
-                    {f.q}
-                    <span className="shrink-0 text-xl text-blood transition-transform duration-500 group-open:rotate-45" aria-hidden>
-                      +
-                    </span>
-                  </summary>
-                  <p className="max-w-[64ch] pb-7 text-[15px] leading-relaxed text-muted">{f.a}</p>
-                </details>
-              ))}
+        {/* ───────── 09 · FAQ — en hueso, título fijo a la izquierda ───────── */}
+        <section id="faq" className="sheet scroll-mt-24 py-24 sm:py-32">
+          <div className="wrap grid gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-20">
+            <div className="lg:sticky lg:top-28 lg:self-start">
+              <Tag n="09">{t.faq.eyebrow}</Tag>
+              <Split as="h2" text={t.faq.title} className={H2} />
+              <div className="reveal mt-10 hidden lg:block">
+                <Cta href="#book">{t.nav.cta}</Cta>
+              </div>
             </div>
-            <div className="reveal mt-12">
-              <Cta href="#book">{t.nav.cta}</Cta>
+
+            <div>
+              <div className="border-y-2 border-void">
+                {t.faq.items.map((f, i) => (
+                  <details key={f.q} className="reveal group border-b border-void/15 last:border-b-0" open={i === 0}>
+                    <summary className="flex cursor-pointer list-none items-center justify-between gap-6 py-6 text-[17px] font-semibold tracking-[-0.024em] text-void marker:hidden">
+                      {f.q}
+                      <span
+                        className="shrink-0 text-[30px] font-semibold leading-none text-blood transition-transform duration-500 group-open:rotate-45"
+                        aria-hidden
+                      >
+                        +
+                      </span>
+                    </summary>
+                    <p className="max-w-[64ch] pb-7 text-[15px] leading-relaxed text-void/75">{f.a}</p>
+                  </details>
+                ))}
+              </div>
+              <div className="reveal mt-10 lg:hidden">
+                <Cta href="#book">{t.nav.cta}</Cta>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* ───────── 10 · AGENDAR — CALENDARIO INCRUSTADO ───────── */}
-        <section id="book" className="scroll-mt-24 border-t border-white/[0.07] px-6 py-16 sm:py-28">
-          <div className="relative mx-auto max-w-5xl">
-            <Tag n="10">{t.audit.tag}</Tag>
+        {/* ───────── 10 · AGENDAR — la oferta a la izquierda, el calendario a la derecha ───────── */}
+        <section id="book" className="scroll-mt-24 py-20 sm:py-32">
+          <div className="wrap grid gap-14 xl:grid-cols-[minmax(0,1fr)_640px] xl:gap-16">
+            <div>
+              <Tag n="10">{t.audit.tag}</Tag>
 
-            <div className="grid gap-10 lg:grid-cols-[1.05fr_auto] lg:items-end">
-              <div>
-                {/* la oferta tiene nombre propio, no es «una llamada» */}
-                <p className="reveal mb-4 inline-block border border-blood/60 px-3.5 py-2 flash-sub text-[10.5px] tracking-[0.2em] text-bone">
-                  {t.audit.name}
-                </p>
-                <Split as="h2" text={t.audit.title} className={`max-w-[18ch] ${H2}`} />
-                <p className="reveal mt-6 max-w-[52ch] text-[16px] leading-relaxed text-bone">{t.audit.promise}</p>
+              {/* la oferta tiene nombre propio, no es «una llamada» */}
+              <p className="reveal mb-4 inline-block border border-blood/60 px-3.5 py-2 flash-sub text-[10.5px] tracking-[0.2em] text-bone">
+                {t.audit.name}
+              </p>
+              <Split as="h2" text={t.audit.title} className={H2} />
+              <p className="reveal mt-6 max-w-[52ch] text-[16px] leading-relaxed text-bone">{t.audit.promise}</p>
 
-                <p className="reveal mt-7 flex flex-wrap items-center gap-x-6 gap-y-2 text-[13px] text-muted">
+              <div className="reveal mt-7 flex flex-wrap items-center justify-between gap-x-8 gap-y-5">
+                <p className="flex flex-wrap items-center gap-x-6 gap-y-2 text-[13px] text-muted">
                   <span className="flex items-center gap-2">
                     <span className="size-1.5 rounded-full bg-signal" aria-hidden />
                     {t.audit.free}
@@ -607,45 +646,42 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                     {t.audit.dur}
                   </span>
                 </p>
-              </div>
-
-              <div className="reveal lg:pb-1">
                 <Spots lang={lang} labels={t.book} />
               </div>
+
+              {/* qué te llevas: la lista es la oferta */}
+              <div className="reveal mt-12 border-t border-white/[0.1] pt-9">
+                <p className="mb-7 flash-sub text-[10.5px] tracking-[0.2em] text-faint">{t.audit.getTitle}</p>
+                <ol className="grid gap-x-10 gap-y-5 sm:grid-cols-2 xl:grid-cols-1">
+                  {t.audit.get.map((g, i) => (
+                    <li key={g} className="flex gap-4">
+                      <span className="mt-[3px] shrink-0 flash-sub text-[11px] tracking-[0.14em] text-bone">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <span className="max-w-[52ch] text-[14.5px] leading-relaxed text-muted">{g}</span>
+                    </li>
+                  ))}
+                </ol>
+                <p className="mt-9 max-w-[52ch] border-l-2 border-blood pl-4 text-[14.5px] leading-relaxed text-bone">
+                  {t.audit.noPitch}
+                </p>
+
+                {/* La objeción que más gente se lleva sin decirla en voz alta.
+                    Callarla no la elimina: hace que el visitante se invente
+                    una cifra —siempre la peor— y se vaya sin agendar. */}
+                <p className="mt-5 max-w-[58ch] text-[13.5px] leading-relaxed text-faint">{t.audit.priceNote}</p>
+              </div>
             </div>
 
-            {/* qué te llevas: la lista es la oferta */}
-            <div className="reveal mt-14 border-t border-white/[0.1] pt-9">
-              <p className="mb-7 flash-sub text-[10.5px] tracking-[0.2em] text-faint">{t.audit.getTitle}</p>
-              <ol className="grid gap-x-10 gap-y-5 sm:grid-cols-2">
-                {t.audit.get.map((g, i) => (
-                  <li key={g} className="flex gap-4">
-                    <span className="mt-[3px] shrink-0 flash-sub text-[11px] tracking-[0.14em] text-bone">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <span className="max-w-[44ch] text-[14.5px] leading-relaxed text-muted">{g}</span>
-                  </li>
-                ))}
-              </ol>
-              <p className="mt-9 max-w-[52ch] border-l-2 border-blood pl-4 text-[14.5px] leading-relaxed text-bone">
-                {t.audit.noPitch}
-              </p>
-
-              {/* La objeción que más gente se lleva sin decirla en voz alta.
-                  Callarla no la elimina: hace que el visitante se invente
-                  una cifra —siempre la peor— y se vaya sin agendar. */}
-              <p className="mt-5 max-w-[58ch] text-[13.5px] leading-relaxed text-faint">{t.audit.priceNote}</p>
-            </div>
-
-            <div className="mt-14">
+            <div className="xl:pt-2">
               <BookCall url={site.call} lang={lang} labels={{ loading: t.book.loading, fallback: t.book.fallback }} />
             </div>
           </div>
         </section>
 
         {/* ───────── FOOTER ───────── */}
-        <footer className="border-t border-white/[0.06] px-6 pb-28 pt-14 lg:pb-14">
-          <div className="mx-auto grid max-w-6xl gap-10 sm:grid-cols-2 lg:grid-cols-4">
+        <footer className="border-t border-white/[0.06] pb-28 pt-14 lg:pb-14">
+          <div className="wrap grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
             <div className="lg:col-span-1">
               <Wordmark className="text-[18px]" live={false} />
               <p className="mt-3 max-w-xs text-[14px] leading-relaxed text-muted">{t.footer.tagline}</p>
@@ -681,20 +717,22 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
               </a>
             </div>
           </div>
-          <div className="mx-auto mt-12 max-w-6xl border-t border-white/[0.06] pt-8">
-            <p className="mb-4 flash-sub text-[10.5px] tracking-[0.16em] text-faint">{t.footer.legal}</p>
-            <ul className="flex flex-wrap gap-x-7 gap-y-3">
-              {legalNav[lang].map((n) => (
-                <li key={n.slug}>
-                  <Link href={`/${lang}/legal/${n.slug}`} className="text-[13.5px] text-muted transition hover:text-bone">
-                    {n.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <p className="mt-8 text-[12px] leading-relaxed text-faint">
-              © {new Date().getFullYear()} {t.footer.built} · {t.footer.rights}
-            </p>
+          <div className="wrap mt-12">
+            <div className="border-t border-white/[0.06] pt-8">
+              <p className="mb-4 flash-sub text-[10.5px] tracking-[0.16em] text-faint">{t.footer.legal}</p>
+              <ul className="flex flex-wrap gap-x-7 gap-y-3">
+                {legalNav[lang].map((n) => (
+                  <li key={n.slug}>
+                    <Link href={`/${lang}/legal/${n.slug}`} className="text-[13.5px] text-muted transition hover:text-bone">
+                      {n.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-8 text-[12px] leading-relaxed text-faint">
+                © {new Date().getFullYear()} {t.footer.built} · {t.footer.rights}
+              </p>
+            </div>
           </div>
         </footer>
       </div>

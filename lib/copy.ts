@@ -81,6 +81,8 @@ export const copy = {
       eyebrow: "El diagnóstico",
       title: "Puede que no tengas un problema de consultas.",
       titleEm: "Puede que tengas un problema de conversión.",
+      /* la palabra de titleEm que va en rojo */
+      mark: "conversión",
       items: [
         { n: "01", t: "Respuestas lentas", d: "Las consultas llegan mientras estás tatuando, diseñando o durmiendo. Cuando respondes, el cliente posiblemente ya está hablando con otros tres artistas. La primera respuesta bien calificada normalmente gana la consulta." },
         { n: "02", t: "Conversaciones que solo hablan de precio", d: "«¿Cuánto cuesta?» no te dice casi nada. Sin conocer el estilo, la zona, el tamaño, las referencias, la ciudad, el presupuesto y la fecha, no estás teniendo una conversación de reserva. Solamente estás respondiendo precios." },
@@ -195,6 +197,8 @@ export const copy = {
       tag: "Lo que sí garantizamos",
       title: "No te prometemos reservas. Te garantizamos el proceso.",
       sub: "Nadie honesto puede garantizarte ingresos: dependen de tu ciudad, tus precios y tu disponibilidad. Lo que sí está bajo nuestro control, lo firmamos.",
+      /* el sello de la hoja: decorativo, repite lo que ya dice el texto */
+      stamp: "Firmado",
       items: [
         "Sistema lanzado dentro del plazo acordado, contando desde que entregas accesos y materiales.",
         "Dashboard y medición instalados antes de gastar el primer dólar en publicidad.",
@@ -458,6 +462,7 @@ export const copy = {
       eyebrow: "The diagnosis",
       title: "You may not have a lead problem.",
       titleEm: "You may have a conversion problem.",
+      mark: "conversion",
       items: [
         { n: "01", t: "Slow replies", d: "Tattoo inquiries arrive while you are tattooing, designing or sleeping. By the time you reply, the client may already be speaking with three other artists. The first qualified response often wins the consultation." },
         { n: "02", t: "Price-only conversations", d: "“How much?” tells you almost nothing. Without knowing the style, placement, size, references, city, budget and preferred date, you are not having a booking conversation. You are simply answering prices." },
@@ -569,6 +574,7 @@ export const copy = {
       tag: "What we do guarantee",
       title: "We don't promise you bookings. We guarantee the process.",
       sub: "Nobody honest can guarantee you revenue — it depends on your city, your pricing and your availability. What is under our control, we put in writing.",
+      stamp: "In writing",
       items: [
         "System launched within the agreed timeframe, counted from when you hand over access and materials.",
         "Dashboard and tracking installed before the first dollar of ad spend.",

@@ -886,81 +886,6 @@ body {
 .rail-nav a em { font-style: normal; opacity: 0; transition: opacity 0.4s var(--ease); white-space: nowrap; }
 .rail-nav a.on em, .rail-nav a:hover em { opacity: 1; }
 
-/* ══════════════════════════════════════════════════════════
-   EL RECORRIDO — el embudo dibujado
-
-   Una columna con la línea roja bajando por el lateral y uniendo
-   los cinco pasos. La miniinterfaz de cada paso alterna de lado en
-   escritorio para que la vista haga zigzag en vez de caer recto.
-   ══════════════════════════════════════════════════════════ */
-.funnel { position: relative; }
-.funnel-step {
-  position: relative;
-  display: grid;
-  gap: 22px;
-  padding: 0 0 56px 52px;
-  grid-template-columns: minmax(0, 1fr);
-}
-.funnel-step:last-child { padding-bottom: 0; }
-
-/* la línea que baja */
-.funnel-line {
-  position: absolute;
-  left: 15px;
-  top: 34px;
-  bottom: -6px;
-  width: 1px;
-  background: linear-gradient(180deg, var(--color-blood), rgba(225, 6, 0, 0.15));
-  transform-origin: top;
-  transform: scaleY(0);
-  transition: transform 1.1s var(--ease) 0.15s;
-}
-.funnel-step.in .funnel-line { transform: scaleY(1); }
-.funnel-step:last-child .funnel-line { display: none; }
-
-/* el número, dentro de un cuadro */
-.funnel-num {
-  position: absolute;
-  left: 0;
-  top: 0;
-  display: grid;
-  place-items: center;
-  width: 31px;
-  height: 31px;
-  border: 1px solid rgba(225, 6, 0, 0.6);
-  background: var(--color-void);
-  font-weight: 700;
-  font-size: 10.5px;
-  letter-spacing: 0.06em;
-  color: var(--color-blood);
-}
-
-@media (min-width: 1024px) {
-  .funnel-step {
-    grid-template-columns: minmax(0, 1fr) 330px;
-    align-items: start;
-    gap: 56px;
-    padding-bottom: 72px;
-  }
-  /* zigzag: los pares invierten el orden */
-  .funnel-step:nth-child(even) .funnel-body { order: 2; }
-  .funnel-step:nth-child(even) .funnel-ui { order: 1; justify-self: start; }
-  .funnel-ui { justify-self: end; }
-}
-
-/* la interfaz entra un poco después que el texto */
-.funnel-ui > * {
-  opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 0.8s var(--ease) 0.2s, transform 0.9s var(--ease) 0.2s;
-}
-.funnel-step.in .funnel-ui > * { opacity: 1; transform: none; }
-
-@media (prefers-reduced-motion: reduce) {
-  .funnel-line { transform: none; }
-  .funnel-ui > * { opacity: 1; transform: none; }
-}
-
 /* ── cursor con etiqueta ─────────────────────────────────── */
 .cursor-dot::after {
   content: attr(data-label);
@@ -1329,4 +1254,386 @@ body {
 @keyframes kineticRight { from { transform: translateX(-38%); } to { transform: translateX(0); } }
 @keyframes drift    { from { transform: scale(1.18) translateY(7%); }  to { transform: scale(1.18) translateY(-7%); } }
 @keyframes driftRev { from { transform: scale(1.18) translateY(-7%); } to { transform: scale(1.18) translateY(7%); } }
+
+/* ═══ PORTADA, CAPA 3: A LO ANCHO Y A TRES FONDOS (2026-11) ═══════
+   Lo que faltaba tras la capa 2: después del hero todo se sentía
+   encerrado en una columna estrecha, y el diagnóstico, la calculadora
+   y el recorrido seguían pareciendo una plantilla.
+   · .wrap: el contenido llega casi al borde (máx. 1680 px).
+   · Hueso y negro se alternan: diagnóstico, qué se instala, 90 días,
+     garantía y FAQ van en hueso; el rojo, en la banda y la ruptura.
+   · Diagnóstico, calculadora y recorrido rehechos como carteles.
+   ═══════════════════════════════════════════════════════════════ */
+.wrap {
+  width: 100%;
+  max-width: 1680px;
+  margin-inline: auto;
+  padding-inline: clamp(24px, 4.4vw, 72px);
+}
+
+/* — 02 diagnóstico: renglones de una hoja ——————————————————— */
+.diag-hollow {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--color-void);
+}
+.diag-row {
+  position: relative;
+  display: grid;
+  gap: 8px 32px;
+  padding: 28px 0 32px;
+  border-top: 2px solid var(--color-void);
+  /* .reveal ya trae su transición: aquí se suman las del hover */
+  transition: opacity 1s var(--ease), transform 1s var(--ease), background-color 0.45s var(--ease),
+    color 0.45s var(--ease), padding 0.45s var(--ease);
+}
+.diag-row:last-child { border-bottom: 2px solid var(--color-void); }
+/* la raya roja que se dibuja sobre el borde cuando el renglón entra */
+.diag-row::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -2px;
+  height: 2px;
+  background: var(--color-blood);
+  transform-origin: left;
+}
+.diag-n {
+  font-family: var(--f-anton), sans-serif;
+  font-size: clamp(3.2rem, 7vw, 7rem);
+  line-height: 0.85;
+  color: var(--color-blood);
+}
+.diag-t { font-size: clamp(1.7rem, 3vw, 3rem); }
+.diag-d { max-width: 54ch; font-size: 15.5px; line-height: 1.6; color: rgba(7, 7, 8, 0.75); }
+@media (min-width: 1024px) {
+  .diag-row {
+    grid-template-columns: clamp(7rem, 11vw, 11rem) minmax(0, 1fr) minmax(0, 1.05fr);
+    align-items: baseline;
+    padding: 40px 0 44px;
+  }
+}
+/* con el ratón encima, el renglón se invierte a negro */
+@media (hover: hover) and (pointer: fine) {
+  .diag-row:hover {
+    background: var(--color-void);
+    color: var(--color-bone);
+    padding-inline: clamp(16px, 2vw, 32px);
+  }
+  .diag-row:hover .diag-d { color: var(--color-muted); }
+}
+.diag-close {
+  margin-top: clamp(48px, 7vw, 104px);
+  padding: clamp(28px, 4vw, 60px);
+  background: var(--color-void);
+  color: var(--color-bone);
+  font-size: clamp(1.6rem, 3.4vw, 3.4rem);
+}
+
+/* — 03 calculadora: la cifra a escala de cartel ——————————————— */
+.calc-big {
+  margin-top: 6px;
+  font-family: var(--f-anton), sans-serif;
+  /* 22vw: «$160.000» (el máximo de los deslizadores) aún cabe a 390 px */
+  font-size: clamp(4.4rem, 22vw, 22rem);
+  line-height: 0.95;
+  letter-spacing: -0.015em;
+  color: var(--color-blood);
+  white-space: nowrap;
+}
+/* cada cambio de cifra da un golpe corto (solo transform) */
+.calc-tick { display: inline-block; transform-origin: left bottom; animation: tick 0.45s var(--ease); }
+@keyframes tick {
+  from { transform: translateY(-0.035em) scale(1.012); }
+  to   { transform: none; }
+}
+/* deslizador grueso: la pista se pinta de rojo hasta el pulgar (--p) y la
+   zona táctil mide 44 px aunque la pista se vea de 6 */
+.range-flash {
+  --p: 50%;
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 44px;
+  background: linear-gradient(90deg, var(--color-blood) 0 var(--p), rgba(237, 230, 220, 0.18) var(--p) 100%) center / 100% 6px
+    no-repeat;
+  cursor: pointer;
+  outline: none;
+}
+.range-flash:focus-visible { outline: 2px solid var(--color-bone); outline-offset: 4px; }
+.range-flash::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 30px;
+  height: 30px;
+  background: var(--color-blood);
+  border: 3px solid var(--color-bone);
+  box-shadow: 0 0 0 4px #070708, 0 0 26px 6px rgba(225, 6, 0, 0.45);
+}
+.range-flash::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 0;
+  background: var(--color-blood);
+  border: 3px solid var(--color-bone);
+  box-shadow: 0 0 0 4px #070708, 0 0 26px 6px rgba(225, 6, 0, 0.45);
+}
+.range-flash::-moz-range-track { background: transparent; }
+
+/* — 04 el recorrido: la cadena ——————————————————————————————
+   Móvil: en vertical, nodo a la izquierda y línea que baja.
+   Tablet: lo mismo, con la miniinterfaz a la derecha.
+   Escritorio (≥ 1280): cinco columnas de izquierda a derecha, filas
+   alineadas con subgrid y la flecha de seguimiento debajo. */
+.flow-track { display: grid; }
+.flow-step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  column-gap: 20px;
+  padding-bottom: 52px;
+}
+.flow-step:last-child { padding-bottom: 0; }
+.flow-head { position: relative; grid-column: 1; grid-row: 1 / span 3; }
+.flow-node {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  font-family: var(--f-anton), sans-serif;
+  font-size: 1.55rem;
+  line-height: 1;
+  color: #fff;
+  background: var(--color-blood);
+  border: 2px solid var(--color-blood);
+}
+.flow-bar {
+  position: absolute;
+  left: 26px;
+  top: 56px;
+  bottom: -52px;
+  width: 4px;
+  background: var(--color-blood);
+  transform-origin: top;
+}
+.flow-step:last-child .flow-bar { display: none; }
+/* la punta de flecha que entra en cada nodo, menos en el primero */
+.flow-step + .flow-step .flow-node::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -11px;
+  transform: translateX(-50%);
+  border: 8px solid transparent;
+  border-bottom: 0;
+  border-top: 11px solid var(--color-blood);
+}
+.flow-title { grid-column: 2; padding-top: 10px; font-size: clamp(1.6rem, 2.3vw, 2.3rem); }
+/* la meta del recorrido */
+.flow-step:last-child .flow-title { color: var(--color-blood); }
+.flow-desc { grid-column: 2; margin-top: 10px; max-width: 42ch; font-size: 14.5px; line-height: 1.6; color: var(--color-muted); }
+.flow-ui { grid-column: 2; margin-top: 22px; }
+
+@media (min-width: 768px) and (max-width: 1279px) {
+  .flow-step { grid-template-columns: 56px minmax(0, 1fr) 340px; column-gap: 28px; }
+  .flow-desc { align-self: start; }
+  .flow-ui { grid-column: 3; grid-row: 1 / span 3; margin-top: 0; }
+}
+
+@media (min-width: 1280px) {
+  .flow-track { grid-template-columns: repeat(5, minmax(0, 1fr)); grid-template-rows: repeat(4, auto); }
+  .flow-step {
+    grid-row: span 4;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: subgrid;
+    column-gap: 0;
+    padding-bottom: 0;
+  }
+  .flow-head { grid-column: 1; grid-row: 1; display: flex; align-items: center; margin-bottom: 30px; }
+  .flow-node { flex: none; width: 64px; height: 64px; font-size: 1.8rem; }
+  .flow-bar {
+    position: relative;
+    left: auto;
+    top: auto;
+    bottom: auto;
+    flex: 1;
+    width: auto;
+    height: 4px;
+    transform-origin: left;
+  }
+  .flow-step + .flow-step .flow-node::before {
+    left: -11px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 8px solid transparent;
+    border-right: 0;
+    border-left: 11px solid var(--color-blood);
+  }
+  .flow-title,
+  .flow-desc,
+  .flow-ui { grid-column: 1; padding-right: 28px; }
+  .flow-title { grid-row: 2; padding-top: 0; }
+  .flow-desc { grid-row: 3; margin-top: 12px; }
+  .flow-ui { grid-row: 4; margin-top: 28px; }
+  .flow-step:last-child > * { padding-right: 0; }
+}
+
+/* lo que no cierra vuelve al DM */
+.flow-loop {
+  position: relative;
+  margin-top: 44px;
+  max-width: 62ch;
+  padding: 20px 24px 20px 64px;
+  border: 2px dashed rgba(225, 6, 0, 0.8);
+  font-size: 15.5px;
+  line-height: 1.55;
+  color: var(--color-bone);
+}
+.flow-loop__icon {
+  position: absolute;
+  left: 20px;
+  top: 14px;
+  font-size: 26px;
+  line-height: 1;
+  color: var(--color-blood);
+}
+@media (min-width: 1280px) {
+  /* una U abierta arriba: sale de debajo del depósito (columna 5) y
+     vuelve con la punta hacia arriba al mensaje (columna 2). Los bordes
+     caen justo bajo el centro de cada nodo de 64 px. */
+  .flow-loop {
+    max-width: none;
+    margin: 40px calc(20% - 33px) 0 calc(20% + 31px);
+    padding: 34px 40px 26px;
+    border-top: 0;
+    text-align: center;
+  }
+  .flow-loop::before {
+    content: "";
+    position: absolute;
+    left: -9px;
+    top: -12px;
+    border: 8px solid transparent;
+    border-top: 0;
+    border-bottom: 12px solid var(--color-blood);
+  }
+  .flow-loop__icon { position: static; display: inline-block; margin-right: 10px; vertical-align: -3px; }
+}
+
+/* — 06 90 días: una regla a escala ————————————————————————— */
+.days-ruler { display: none; }
+.days-grid { display: grid; gap: 40px 32px; }
+.days-col { border-top: 3px solid var(--color-void); padding-top: 22px; }
+.days-d { font-size: clamp(1.8rem, 2.2vw, 2.6rem); line-height: 1; color: var(--color-blood); }
+@media (min-width: 768px) {
+  .days-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 1280px) {
+  /* 90 marcas pequeñas y una grande cada 15 días */
+  .days-ruler {
+    display: block;
+    position: relative;
+    height: 28px;
+    border-top: 3px solid var(--color-void);
+    border-right: 2px solid var(--color-void);
+    background:
+      repeating-linear-gradient(90deg, var(--color-void) 0 2px, transparent 2px calc(100% / 6)) top left / 100% 26px no-repeat,
+      repeating-linear-gradient(90deg, rgba(7, 7, 8, 0.45) 0 1px, transparent 1px calc(100% / 90)) top left / 100% 11px no-repeat;
+  }
+  /* la tinta roja que avanza por la regla */
+  .days-ruler::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: -2px;
+    top: -3px;
+    height: 3px;
+    background: var(--color-blood);
+    transform-origin: left;
+  }
+  /* cada fase mide lo que dura: 15, 15, 30 y 30 días */
+  .days-grid { grid-template-columns: 15fr 15fr 30fr 30fr; gap: 0; }
+  .days-col { border-top: 0; border-left: 1px solid rgba(7, 7, 8, 0.25); padding: 24px 20px 0 16px; }
+}
+
+/* — 08 el sello de la garantía ——————————————————————————— */
+.seal {
+  display: inline-block;
+  font-family: var(--f-anton), sans-serif;
+  font-size: clamp(2.4rem, 5.4vw, 5.2rem);
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--color-blood);
+  border: 0.07em solid var(--color-blood);
+  padding: 0.08em 0.24em 0.02em;
+  transform: rotate(-7deg);
+  transform-origin: left center;
+}
+
+/* — capa 3, lo atado al scroll ———————————————————————————— */
+@supports (animation-timeline: view()) {
+  .diag-row::before {
+    animation: barX linear both;
+    animation-timeline: view();
+    animation-range: entry 40% cover 45%;
+  }
+  .days-ruler::after {
+    animation: barX linear both;
+    animation-timeline: view();
+    animation-range: entry 100% cover 60%;
+  }
+  .seal {
+    animation: sealSlam linear both;
+    animation-timeline: view();
+    /* cae mientras entra por abajo y ya está asentado al verse entero:
+       así nunca tapa el párrafo de arriba mientras se lee */
+    animation-range: entry 10% entry 100%;
+  }
+
+  /* la cadena se va llenando: nodo, tramo, nodo, tramo… */
+  @media (min-width: 1280px) {
+    .flow-track { view-timeline-name: --flow; }
+    .flow-bar,
+    .flow-node {
+      animation-timeline: --flow;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+    }
+    .flow-bar { animation-name: barX; }
+    .flow-node { animation-name: nodeOn; }
+    .flow-step:nth-child(1) .flow-node { animation-range: cover 6% cover 9%; }
+    .flow-step:nth-child(1) .flow-bar { animation-range: cover 9% cover 16%; }
+    .flow-step:nth-child(2) .flow-node { animation-range: cover 16% cover 18%; }
+    .flow-step:nth-child(2) .flow-bar { animation-range: cover 18% cover 25%; }
+    .flow-step:nth-child(3) .flow-node { animation-range: cover 25% cover 27%; }
+    .flow-step:nth-child(3) .flow-bar { animation-range: cover 27% cover 34%; }
+    .flow-step:nth-child(4) .flow-node { animation-range: cover 34% cover 36%; }
+    .flow-step:nth-child(4) .flow-bar { animation-range: cover 36% cover 43%; }
+    .flow-step:nth-child(5) .flow-node { animation-range: cover 43% cover 46%; }
+  }
+  @media (max-width: 1279px) {
+    .flow-bar {
+      animation: barY linear both;
+      animation-timeline: view();
+      animation-range: cover 15% cover 50%;
+    }
+    .flow-node {
+      animation: nodeOn linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 100%;
+    }
+  }
+}
+@keyframes barX { from { transform: scaleX(0); } to { transform: none; } }
+@keyframes barY { from { transform: scaleY(0); } to { transform: none; } }
+@keyframes nodeOn {
+  from { background-color: var(--color-void); color: var(--color-bone); border-color: rgba(237, 230, 220, 0.35); }
+  to   { background-color: var(--color-blood); color: #fff; border-color: var(--color-blood); }
+}
+@keyframes sealSlam {
+  from { opacity: 0; transform: rotate(-7deg) scale(1.7); }
+  to   { opacity: 1; transform: rotate(-7deg) scale(1); }
+}
 @keyframes runScroll { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-32%, 0, 0); } }

@@ -38,9 +38,9 @@
 | `blood` | #e10600 | CTA, ruptura, cifras grandes de pérdida, rayas | Blanco sobre rojo 4,97:1 (botones OK). Rojo sobre void 4,05:1 y rojo sobre bone 4,0:1: **solo texto grande (≥ 24 px o ≥ 18,7 px en negrita) o marcas**, nunca etiquetas pequeñas. |
 | `signal` | #2fe3a0 | Solo micro-acentos (puntos, éxito en UI de ejemplo). Nunca cifras grandes ni frases. | — |
 
-**Ritmo de fondos:**
-- Negro: la mayoría de las secciones.
-- Hueso: «Qué se instala», la hoja de flash.
+**Ritmo de fondos:** negro, hueso y rojo se alternan; nunca más de dos negros seguidos sin un corte.
+- Negro: hero, cementerio, casos, calculadora, recorrido, equipo, webs y agenda.
+- Hueso (con bordes de papel rasgado, `.sheet`): diagnóstico, qué se instala, 90 días, garantía y FAQ.
 - Rojo a sangre: la banda tras la calculadora y la ruptura.
 
 No hay manchas de tinta, números fantasma ni degradados decorativos en la portada.
@@ -50,7 +50,8 @@ No hay manchas de tinta, números fantasma ni degradados decorativos en la porta
 | Rol | Familia | Tamaño | Interlineado |
 |---|---|---|---|
 | H1 del hero | Anton, mayúsculas (`.flash-type` + `.hero-flash__h1`) | `clamp(3.3rem, 10.4vw, 10.5rem)` | 1.1 (con menos, las tildes chocan) |
-| H2 de sección | Anton | `clamp(2.2rem, 5.2vw, 4.4rem)`; en columnas estrechas `clamp(2rem, 3.6vw, 3.2rem)` | 1.1 |
+| H2 de sección | Anton | `clamp(2.4rem, 6.4vw, 6.6rem)` (cartel, casi como el hero) | 1.1 |
+| Cifras cartel | Anton | Pérdida de la calculadora `clamp(4.4rem, 22vw, 22rem)`; números del diagnóstico `clamp(3.2rem, 7vw, 7rem)` | 0.85–0.95 |
 | Texto | Montserrat | 15–16 px (lead 16–18 px) | 1.6 |
 | Etiquetas | Montserrat 700, mayúsculas, tracking 0.2em | 10.5–11 px, en hueso o muted (no en rojo) | — |
 
@@ -58,8 +59,10 @@ Carga con `next/font` (`display: swap`).
 
 ## 4. Layout
 
-- Contenedor `max-w-6xl` (hero `max-w-7xl`) con `px-6`.
-- Secciones a `py-16`, y `sm:py-28` desde ese ancho.
+- Contenedor `.wrap`: ancho completo hasta 1680 px, con margen lateral `clamp(24px, 4.4vw, 72px)`. Nada de
+  columnas estrechas centradas (`max-w-6xl`) en la portada; el texto corrido sí se limita en `ch`.
+- Cabecera de sección (`SecHead`): titular grande a la izquierda y la bajada abajo a la derecha.
+- Secciones a `py-20`, y `sm:py-32` desde ese ancho.
 - Revisar 390, 768, 1024 y 1440 px.
 - Móvil primero; en escritorio nada apilado como en móvil.
 
@@ -78,8 +81,13 @@ Carga con `next/font` (`display: swap`).
 | `.proof-chip` | Prueba en el hero: avatares reales y cifra real |
 | `.sec-tag` | «01 / NOMBRE»: número en hueso, raya roja |
 | `.sheet-cell` + `.sheet-num` | Hoja de flash; número rojo grande |
+| `.diag-row` | Renglón del diagnóstico en hueso: número rojo gigante, nombre y texto. Con hover se invierte a negro. |
+| `Calculator` | Cartel: la pérdida mensual a todo el ancho y deslizadores gruesos (`.range-flash`, zona táctil de 44 px) |
+| `Funnel` (`.flow-*`) | Cadena de 5 nodos: horizontal desde 1280 px (subgrid) y vertical por debajo; flecha de seguimiento en U |
+| `.days-*` | 90 días como regla a escala: cada fase mide lo que dura (15/15/30/30) |
+| `.seal` | Sello rojo rotado (FIRMADO / IN WRITING) en la garantía; decorativo, `aria-hidden` |
 | `StickyCta` | Solo móvil, fondo sólido |
-| `BookCall` | Calendly a 640 px máx. (más ancho, Calendly mete márgenes blancos) |
+| `BookCall` | Calendly a 640 px máx. (más ancho, Calendly mete márgenes blancos). En escritorio, a la derecha de la oferta. |
 
 ## 7. Motion
 
@@ -123,6 +131,19 @@ Carga con `next/font` (`display: swap`).
 - Los contenedores que recortan algo animado con `view()` usan **`overflow: clip`, nunca `hidden`**. Con
   `hidden`, el contenedor se vuelve el scroller de la animación y esta se congela.
 
+### 7.2 Capa «a lo ancho» (2026-11-12)
+
+**Atado al scroll**
+- Recorrido: los nodos se encienden y la línea roja avanza de uno a otro (`view-timeline` `--flow` en
+  escritorio, `view()` por paso en móvil).
+- Diagnóstico: una raya roja se dibuja sobre cada renglón.
+- 90 días: la tinta roja recorre la regla.
+- Garantía: el sello cae mientras entra por abajo y queda asentado antes de verse entero.
+
+**Otros**
+- La cifra de la calculadora da un golpe corto en cada cambio (`.calc-tick`).
+- Sin soporte o con reduced-motion, todo se ve en su estado final: cadena encendida, rayas completas.
+
 ## 8. Imagen
 
 - Fotos reales en B/N (`grayscale` + contraste); el color lo pone el rojo de la marca.
@@ -147,3 +168,4 @@ Carga con `next/font` (`display: swap`).
 | 2026-11-12 | Idioma por país (`x-vercel-ip-country`) | Petición del dueño |
 | 2026-11-12 | Fuera de la portada: barra de resultados, franja de confianza, «Para quién» (pasa al FAQ) y la segunda banda | Duplicaban cifras y alargaban la página |
 | 2026-11-12 | Capa «cartel punk» (7.1) aprobada por el dueño en localhost | Pidió un estilo «más animado, más disruptivo» |
+| 2026-11-12 | Capa «a lo ancho» (7.2). Todo a ancho completo, fondos alternos negro/hueso/rojo, y diagnóstico, calculadora y recorrido rehechos. | Tras la capa 2: el diagnóstico y la calculadora se veían aburridos, el recorrido no se entendía y todo se sentía encerrado en una columna estrecha. |
