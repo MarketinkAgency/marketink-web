@@ -65,13 +65,16 @@ function Cta({ href, children, big = false }: { href: string; children: React.Re
 }
 
 /* Titulares de sección: más grandes que antes, Anton tiene que sonar a cartel. */
-const H2 = "flash-type text-[clamp(2.2rem,5.2vw,4.4rem)]";
+const H2 = "misprint flash-type text-[clamp(2.2rem,5.2vw,4.4rem)]";
 
 export default async function Home({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
   if (!isLang(lang)) notFound();
   const t = copy[lang];
   const other = lang === "es" ? "en" : "es";
+  /* la última palabra del titular va en rojo: CEMENTERIO / GRAVEYARD */
+  const h1Words = t.hero.h1.split(" ");
+  const h1Last = h1Words.pop();
 
   return (
     <>
@@ -121,8 +124,8 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
               {t.hero.kicker}
             </p>
 
-            <h1 className="stamp hero-flash__h1 flash-type max-w-[13ch]">
-              {t.hero.h1}
+            <h1 className="stamp misprint hero-flash__h1 flash-type max-w-[13ch]">
+              {h1Words.join(" ")} <span className="text-blood">{h1Last}</span>
               <Period />
             </h1>
 
@@ -166,6 +169,30 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             </div>
           </div>
         </header>
+
+        {/* ───────── EL CEMENTERIO — los DM de siempre, en lápidas ─────────
+             Las lápidas se levantan del suelo con el scroll y el sello cae
+             encima. Es ilustración: el mensaje lo cargan el titular y el texto. */}
+        <section aria-labelledby="grave-h" className="overflow-clip px-6 pb-16 pt-10 sm:pb-28 sm:pt-16">
+          <div className="mx-auto max-w-6xl">
+            <p className="reveal mb-8 flash-sub text-[11px] tracking-[0.22em] text-muted">{t.grave.tag}</p>
+            <div className="grave-field" aria-hidden>
+              {t.grave.stones.map((s) => (
+                <div key={s} className="grave-stone">
+                  <span className="grave-text flash-type">{s}</span>
+                </div>
+              ))}
+              <span className="grave-stamp">{t.grave.rip}</span>
+            </div>
+            <div className="mt-12 grid gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] lg:items-end lg:gap-16">
+              <h2 id="grave-h" className="misprint flash-type text-[clamp(2.4rem,6.4vw,5.6rem)]">
+                {t.grave.line} <span className="text-blood">{t.grave.lineEm}</span>
+                <Period />
+              </h2>
+              <p className="reveal max-w-[46ch] text-[15.5px] leading-relaxed text-muted lg:pb-3">{t.grave.sub}</p>
+            </div>
+          </div>
+        </section>
 
         {/* ───────── 01 · CASOS REALES — la prueba va primero ───────── */}
         <section id="results" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-28">
@@ -276,7 +303,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           </div>
           <div className="grid grid-cols-2 gap-px bg-white/[0.08] md:grid-cols-4">
             {["tat1", "tat2", "tat3", "tat4"].map((k, i) => (
-              <figure key={k} className="relative aspect-square overflow-hidden bg-void">
+              <figure key={k} className="relative aspect-square overflow-clip bg-void">
                 <Image
                   src={`/img/${k}.webp`}
                   alt={t.work.alts[i]}
@@ -344,6 +371,18 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
 
         {/* ───────── BANDA — justo después de la cifra que pierde ───────── */}
         <Banda line={t.bandas[0].line} cta={t.bandas[0].cta} href="#book" lang={lang} spotsLabels={t.book} />
+
+        {/* ───────── BANDA CINÉTICA — el recorrido, a escala de cartel ─────────
+             Se mueve con el scroll, no sola: nada se anima si nadie hace scroll. */}
+        <div className="kinetic" aria-hidden>
+          {[false, true].map((hollow) => (
+            <div key={String(hollow)} className={`kinetic-run ${hollow ? "hollow" : ""}`}>
+              {[...t.funnel.steps, ...t.funnel.steps, ...t.funnel.steps].map((s, i) => (
+                <span key={i}>{s.k}</span>
+              ))}
+            </div>
+          ))}
+        </div>
 
         {/* ───────── 04 · EL RECORRIDO ───────── */}
         <section id="system" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-28">

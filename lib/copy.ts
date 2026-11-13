@@ -45,6 +45,17 @@ export const copy = {
       proof: { n: "5 → 25+", t: "reservas al mes en 60 días · Made to Heal" },
     },
 
+    /* La escena del cementerio: los DM de siempre, grabados en lápidas de
+       flash. Son frases del gremio, no testimonios ni cifras. */
+    grave: {
+      tag: "El cementerio",
+      stones: ["¿Cuánto cuesta?", "Te aviso", "¿Haces descuento?", "Lo pienso", "¿Tienes agenda?", "Visto"],
+      rip: "R.I.P.",
+      line: "Cada una pudo ser",
+      lineEm: "un depósito",
+      sub: "Consultas que llegaron, preguntaron y se enfriaron porque nadie les dio seguimiento. Aquí puede estar enterrada hasta la mitad de las reservas que hoy se te escapan.",
+    },
+
     metrics: {
       label: "Campaña de 60 días · cifras reales redondeadas",
       items: [
@@ -411,6 +422,15 @@ export const copy = {
       cta1: "Get the free 15-min audit",
       cta2: "See real results",
       proof: { n: "5 → 25+", t: "bookings a month in 60 days · Made to Heal" },
+    },
+
+    grave: {
+      tag: "The graveyard",
+      stones: ["How much?", "I'll let you know", "Any discount?", "Let me think", "Any dates open?", "Seen"],
+      rip: "R.I.P.",
+      line: "Every one could have been",
+      lineEm: "a deposit",
+      sub: "Inquiries that came in, asked, and went cold because nobody followed up. Up to half of the bookings slipping away from you could be buried right here.",
     },
 
     metrics: {

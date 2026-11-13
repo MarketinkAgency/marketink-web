@@ -92,6 +92,37 @@ Carga con `next/font` (`display: swap`).
 
 `prefers-reduced-motion`: todo quieto y visible.
 
+### 7.1 Capa «cartel punk» (2026-11-13)
+
+**Impresión desalineada (`.misprint`)**
+- Sombra roja desplazada 0.045em, como serigrafía fuera de registro.
+- Va en el H1 y en todos los H2 de la portada; la palabra roja no lleva sombra.
+- En el hero, la sombra entra muy desplazada y "se ajusta al registro" (`register`).
+
+**Hero**
+- La última palabra del H1 va en rojo (CEMENTERIO / GRAVEYARD).
+- La foto hace un acercamiento lento, una sola vez (`kenburns`, solo `transform`).
+
+**El cementerio**
+- Lápidas con los DM de siempre (`lib/copy.ts → grave`) que se levantan con el scroll, y un sello «R.I.P.»
+  que cae encima.
+- Es ilustración: lleva `aria-hidden`, y el mensaje lo cargan el H2 y el párrafo.
+
+**Animaciones atadas al scroll**
+- **Banda cinética:** los pasos del recorrido en Anton gigante, una fila maciza y otra hueca, en sentidos
+  opuestos.
+- **Tira de trabajo:** parallax.
+- **Ruptura:** la palabra de fondo se mueve.
+
+**Hoja hueso:** bordes de papel rasgado (`clip-path`).
+
+**Reglas técnicas**
+- Todo lo que se mueve con el scroll usa `animation-timeline: view()` dentro de `@supports`. Sin soporte o
+  con reduced-motion, queda quieto y visible.
+- Nada se mueve solo durante más de 5 s.
+- Los contenedores que recortan algo animado con `view()` usan **`overflow: clip`, nunca `hidden`**. Con
+  `hidden`, el contenedor se vuelve el scroller de la animación y esta se congela.
+
 ## 8. Imagen
 
 - Fotos reales en B/N (`grayscale` + contraste); el color lo pone el rojo de la marca.

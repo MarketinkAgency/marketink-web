@@ -835,7 +835,7 @@ body {
   position: relative;
   background: var(--color-blood);
   color: #fff;
-  overflow: hidden;
+  overflow: clip;
 }
 .rupture::before {
   content: "";
@@ -988,9 +988,9 @@ body {
   inset: 0;
   display: flex;
   align-items: center;
-  overflow: hidden;
+  overflow: clip;
   pointer-events: none;
-  opacity: 0.085;
+  opacity: 0.13;
 }
 .rupture-run {
   display: flex;
@@ -1150,3 +1150,183 @@ body {
   .stamp, .lift { animation: none; }
   .work-strip img { transition: none; }
 }
+
+/* ═══ PORTADA, CAPA 2: CARTEL PUNK DE ESTUDIO (2026-11) ═══════════
+   Más movimiento y más carácter sin tocar el LCP:
+   · Impresión desalineada: la sombra roja desplazada de la serigrafía.
+   · El cementerio de DM: lápidas que se levantan con el scroll.
+   · Bandas cinéticas y parallax atados al scroll (CSS nativo,
+     animation-timeline). Sin soporte o con reduced-motion, todo queda
+     quieto y visible: nada depende de la animación para leerse.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* — impresión desalineada ———————————————————————————— */
+.misprint { text-shadow: 0.045em 0.045em 0 rgba(225, 6, 0, 0.85); }
+.sheet .misprint { text-shadow: 0.045em 0.045em 0 rgba(225, 6, 0, 0.7); }
+.misprint .text-blood { text-shadow: none; }
+.rupture .flash-type { text-shadow: 0.04em 0.04em 0 #070708; }
+/* el hero entra fuera de registro y se ajusta, como una prensa */
+@keyframes register {
+  from { text-shadow: 0.16em 0.1em 0 rgba(225, 6, 0, 0.9); }
+  to   { text-shadow: 0.045em 0.045em 0 rgba(225, 6, 0, 0.85); }
+}
+.hero-flash__h1.misprint { animation: stampIn 0.9s var(--ease) both, register 1.2s var(--ease) 0.2s both; }
+
+/* la foto del hero se acerca despacio una sola vez (solo transform) */
+@keyframes kenburns {
+  from { transform: scale(1.14) translate3d(-1.5%, 1%, 0); }
+  to   { transform: none; }
+}
+.hero-flash__img { animation: kenburns 16s cubic-bezier(0.2, 0.6, 0.2, 1) both; }
+
+/* — el cementerio de DM ——————————————————————————————— */
+.grave-field {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: clamp(10px, 2.2vw, 28px);
+  height: clamp(230px, 32vw, 380px);
+  /* clip y no hidden: hidden crea un contenedor de scroll propio y las
+     animaciones con view() se quedan congeladas mirándolo a él */
+  overflow: clip;
+  border-bottom: 2px solid var(--color-bone);
+}
+.grave-stone {
+  --r: 0deg;
+  --h: 80%;
+  position: relative;
+  flex: 0 1 190px;
+  min-width: 0;
+  height: var(--h);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: clamp(20px, 3vw, 34px) clamp(6px, 1vw, 14px) 0;
+  border: 2px solid var(--color-bone);
+  border-bottom: 0;
+  border-radius: 999px 999px 0 0 / 150px 150px 0 0;
+  background: linear-gradient(180deg, #17171b, #0b0b0d 70%);
+  transform: rotate(var(--r));
+  transform-origin: bottom center;
+  text-align: center;
+}
+.grave-stone:nth-child(1) { --h: 78%; --r: -3deg; }
+.grave-stone:nth-child(2) { --h: 94%; --r: 2deg; }
+.grave-stone:nth-child(3) { --h: 70%; --r: -1.5deg; }
+.grave-stone:nth-child(4) { --h: 88%; --r: 3deg; }
+.grave-stone:nth-child(5) { --h: 74%; --r: -2deg; }
+.grave-stone:nth-child(6) { --h: 62%; --r: 1.5deg; }
+.grave-stone::after {
+  content: "";
+  width: 40%;
+  height: 2px;
+  background: rgba(237, 230, 220, 0.35);
+}
+.grave-text {
+  font-size: clamp(0.85rem, 1.7vw, 1.45rem);
+  line-height: 1.12;
+  color: var(--color-bone);
+  overflow-wrap: anywhere;
+}
+@media (max-width: 639px) {
+  .grave-stone:nth-child(n + 5) { display: none; }
+}
+/* el sello que cae encima de todo */
+.grave-stamp {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  z-index: 2;
+  font-family: var(--f-anton), sans-serif;
+  font-size: clamp(3.6rem, 12vw, 9.5rem);
+  line-height: 1;
+  color: var(--color-blood);
+  border: 0.06em solid var(--color-blood);
+  padding: 0.04em 0.2em 0;
+  background: rgba(7, 7, 8, 0.55);
+  transform: translate(-50%, -50%) rotate(-9deg);
+  opacity: 0.94;
+  pointer-events: none;
+}
+
+/* — bandas cinéticas ———————————————————————————————— */
+.kinetic {
+  overflow: clip;
+  padding: clamp(18px, 3vw, 34px) 0;
+  border-block: 1px solid rgba(237, 230, 220, 0.12);
+}
+.kinetic-run {
+  display: flex;
+  gap: 0.45em;
+  width: max-content;
+  white-space: nowrap;
+  font-family: var(--f-anton), sans-serif;
+  text-transform: uppercase;
+  font-size: clamp(3rem, 9vw, 8.5rem);
+  line-height: 1.05;
+  color: var(--color-bone);
+}
+.kinetic-run + .kinetic-run { margin-top: 0.1em; }
+.kinetic-run span { display: inline-flex; align-items: center; gap: 0.45em; }
+.kinetic-run span::after {
+  content: "";
+  width: 0.2em;
+  height: 0.2em;
+  border-radius: 50%;
+  background: var(--color-blood);
+}
+.kinetic-run.hollow { color: transparent; -webkit-text-stroke: 2px var(--color-bone); margin-left: -30%; }
+
+/* — la hoja con bordes de papel rasgado ——————————————————— */
+.sheet {
+  clip-path: polygon(
+    0 16px, 4% 5px, 9% 14px, 14% 2px, 20% 13px, 26% 4px, 31% 15px, 37% 0, 43% 11px, 49% 3px,
+    55% 15px, 61% 5px, 67% 12px, 73% 1px, 79% 14px, 85% 4px, 91% 13px, 96% 3px, 100% 11px,
+    100% calc(100% - 13px), 95% calc(100% - 3px), 89% calc(100% - 14px), 83% calc(100% - 2px),
+    77% calc(100% - 11px), 71% 100%, 65% calc(100% - 13px), 58% calc(100% - 4px), 52% calc(100% - 15px),
+    46% calc(100% - 2px), 40% calc(100% - 12px), 34% calc(100% - 5px), 28% calc(100% - 14px),
+    22% calc(100% - 1px), 16% calc(100% - 11px), 10% calc(100% - 4px), 5% calc(100% - 13px), 0 calc(100% - 6px)
+  );
+}
+
+/* — todo lo atado al scroll ——————————————————————————— */
+@supports (animation-timeline: view()) {
+  .grave-stone {
+    animation: graveRise linear both;
+    animation-timeline: view();
+    animation-range: entry 20% cover 42%;
+  }
+  .grave-stone:nth-child(2) { animation-range: entry 30% cover 46%; }
+  .grave-stone:nth-child(3) { animation-range: entry 24% cover 44%; }
+  .grave-stone:nth-child(4) { animation-range: entry 36% cover 50%; }
+  .grave-stone:nth-child(5) { animation-range: entry 28% cover 47%; }
+  .grave-stone:nth-child(6) { animation-range: entry 40% cover 52%; }
+  .grave-stamp {
+    animation: stampSlam linear both;
+    animation-timeline: view();
+    animation-range: cover 40% cover 50%;
+  }
+
+  .kinetic-run { animation: kineticLeft linear both; animation-timeline: view(); }
+  .kinetic-run.hollow { animation-name: kineticRight; }
+
+  .work-strip figure img { animation: drift linear both; animation-timeline: view(); }
+  .work-strip figure:nth-child(even) img { animation-name: driftRev; }
+
+  .rupture-run { animation: runScroll linear both; animation-timeline: view(); }
+}
+@keyframes graveRise {
+  from { transform: translateY(105%) rotate(var(--r)); }
+  to   { transform: rotate(var(--r)); }
+}
+@keyframes stampSlam {
+  from { opacity: 0; transform: translate(-50%, -50%) rotate(-9deg) scale(2.4); }
+  to   { opacity: 0.94; transform: translate(-50%, -50%) rotate(-9deg) scale(1); }
+}
+@keyframes kineticLeft  { from { transform: translateX(0); }    to { transform: translateX(-38%); } }
+@keyframes kineticRight { from { transform: translateX(-38%); } to { transform: translateX(0); } }
+@keyframes drift    { from { transform: scale(1.18) translateY(7%); }  to { transform: scale(1.18) translateY(-7%); } }
+@keyframes driftRev { from { transform: scale(1.18) translateY(-7%); } to { transform: scale(1.18) translateY(7%); } }
+@keyframes runScroll { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-32%, 0, 0); } }
