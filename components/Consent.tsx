@@ -58,7 +58,8 @@ export default function Consent({ lang, t }: { lang: Lang; t: {
       aria-label={t.title}
       className="consent fixed bottom-4 left-4 right-4 z-[70] max-w-[420px] border border-white/15 bg-[rgba(10,10,12,0.97)] p-6 sm:bottom-6 sm:left-6 sm:right-auto"
     >
-      <p className="flash-sub mb-3 text-[10.5px] tracking-[0.2em] text-blood">{t.title}</p>
+      {/* en hueso: el rojo sobre este panel da 3,94:1 y a 10,5 px no pasa AA */}
+      <p className="flash-sub mb-3 text-[10.5px] tracking-[0.2em] text-bone">{t.title}</p>
       <p className="text-[13.5px] leading-relaxed text-muted">{t.body}</p>
 
       <div className="mt-5 flex flex-wrap gap-2.5">
