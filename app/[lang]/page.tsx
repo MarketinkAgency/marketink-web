@@ -3,7 +3,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { copy, isLang, site } from "@/lib/copy";
 import Ink from "@/components/Ink";
-import DmCard from "@/components/DmCard";
 import Calculator from "@/components/Calculator";
 import StickyCta from "@/components/StickyCta";
 import Split from "@/components/Split";
@@ -13,12 +12,15 @@ import Spots from "@/components/Spots";
 import { legalNav, entity } from "@/lib/legal";
 import Nav from "@/components/Nav";
 import Glow from "@/components/Glow";
-import RailNav from "@/components/RailNav";
 import Consent from "@/components/Consent";
 import Funnel from "@/components/Funnel";
 import Banda from "@/components/Banda";
 import Jsonld from "@/components/Jsonld";
 import Analytics from "@/components/Analytics";
+
+/* Portada «hoja de flash» (2026-11): la foto real manda, Anton a escala de
+   cartel en las frases que importan y tres fondos que marcan el ritmo
+   (negro, hueso y rojo). Sin manchas de tinta, números fantasma ni riel. */
 
 /** marketINK• — el punto es la gota de tinta y el punto final de la frase. */
 function Wordmark({ className = "", live = true }: { className?: string; live?: boolean }) {
@@ -43,10 +45,6 @@ function Period() {
   );
 }
 
-function Eyebrow({ children }: { children: React.ReactNode }) {
-  return <p className="reveal mb-6 flash-sub text-[11.5px] tracking-[0.22em] text-blood">{children}</p>;
-}
-
 /** 01 / EL DIAGNÓSTICO — la etiqueta que marca el ritmo editorial. */
 function Tag({ n, children }: { n: string; children: React.ReactNode }) {
   return (
@@ -58,55 +56,30 @@ function Tag({ n, children }: { n: string; children: React.ReactNode }) {
   );
 }
 
-/** El número gigante que sangra por detrás del contenido. */
-function Ghost({ n }: { n: string }) {
-  return (
-    <span className="sec-n" aria-hidden>
-      {n}
-    </span>
-  );
-}
-
 function Cta({ href, children, big = false }: { href: string; children: React.ReactNode; big?: boolean }) {
   return (
-    <a
-      href={href}
-      className={`btn ${big ? "btn-lg" : ""}`}
-    >
+    <a href={href} className={`btn ${big ? "btn-lg" : ""}`}>
       {children}
     </a>
   );
 }
+
+/* Titulares de sección: más grandes que antes, Anton tiene que sonar a cartel. */
+const H2 = "flash-type text-[clamp(2.2rem,5.2vw,4.4rem)]";
 
 export default async function Home({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
   if (!isLang(lang)) notFound();
   const t = copy[lang];
   const other = lang === "es" ? "en" : "es";
-  const video = site.video[lang];
 
   return (
     <>
       <Jsonld t={t} lang={lang} />
-      <Ink />
+      <Ink quiet />
       <Glow />
       <Analytics />
       <Consent lang={lang} t={t.consent} />
-      <RailNav
-        items={[
-          { id: "problem", label: t.problem.eyebrow },
-          { id: "cost", label: t.calc.eyebrow },
-          { id: "system", label: t.funnel.tag },
-          { id: "assets", label: t.assets.tag },
-          { id: "cases", label: t.cases.eyebrow },
-          { id: "fit", label: t.fit.eyebrow },
-          { id: "process", label: t.process.eyebrow },
-          { id: "team", label: t.team.eyebrow },
-          { id: "guarantee", label: t.guarantee.tag },
-          { id: "faq", label: t.faq.eyebrow },
-          { id: "book", label: t.audit.tag },
-        ]}
-      />
       <StickyCta href="#book" label={t.sticky} lang={lang} spotsLabels={t.book} />
 
       <div className="relative z-10">
@@ -126,299 +99,95 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           ]}
         />
 
-        {/* ───────── HERO ───────── */}
-        <header className="relative overflow-hidden">
-          <div className="bleed-b absolute inset-0 -z-10" aria-hidden>
-            <Image src="/img/hero.webp" alt="" fill priority sizes="100vw" className="object-cover opacity-[0.4]" />
-            <div className="absolute inset-0 bg-gradient-to-r from-void via-void/72 to-void/25" />
-            <div className="absolute inset-0 bg-gradient-to-t from-void via-transparent to-void/60" />
+        {/* ───────── HERO — foto real a sangre, una frase de cartel ─────────
+             El texto no nace invisible (.stamp y .lift solo usan transform):
+             antes el LCP esperaba 2 s a que terminara la animación. */}
+        <header className="hero-flash flex min-h-svh flex-col justify-end overflow-hidden">
+          <div className="absolute inset-0 -z-10" aria-hidden>
+            <Image
+              src="/img/hero.webp"
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              className="hero-flash__img object-cover object-[30%_35%] lg:object-[center_40%]"
+            />
+            <div className="hero-flash__shade absolute inset-0" />
           </div>
 
-          <div className="mx-auto grid min-h-svh max-w-6xl items-center gap-12 px-6 pb-16 pt-28 lg:grid-cols-[1.05fr_auto] lg:gap-16">
-            <div className="text-center lg:text-left">
-              <span className="rise mb-8 inline-flex max-w-[36ch] items-center gap-2.5 border border-white/15 px-4 py-2 text-left text-[11px] uppercase leading-snug tracking-[0.14em] text-muted">
-                <i className="dot-live size-1.5 shrink-0 rounded-full bg-blood shadow-[0_0_10px_2px_rgba(225,6,0,0.8)]" />
-                {t.hero.eyebrow}
-              </span>
+          <div className="mx-auto w-full max-w-7xl px-6 pb-12 pt-32 sm:pb-16 lg:pb-20">
+            <p className="lift mb-6 flex items-center gap-3 flash-sub text-[11px] tracking-[0.22em] text-bone">
+              <i className="dot-live size-1.5 shrink-0 rounded-full bg-blood shadow-[0_0_10px_2px_rgba(225,6,0,0.8)]" aria-hidden />
+              {t.hero.kicker}
+            </p>
 
-              <h1 className="mx-auto max-w-[19ch] flash-type text-[clamp(2.05rem,3.9vw,3.25rem)] lg:mx-0">
-                <Split as="span" text={t.hero.h1a} className="text-faint" stagger={34} />
-                <Split as="span" text={t.hero.h1b} delay={300} stagger={34} tail={<Period />} />
-              </h1>
+            <h1 className="stamp hero-flash__h1 flash-type max-w-[13ch]">
+              {t.hero.h1}
+              <Period />
+            </h1>
 
-              <p className="rise mx-auto mt-7 max-w-[52ch] text-[clamp(0.97rem,1.6vw,1.13rem)] leading-relaxed text-muted lg:mx-0">
-                {t.hero.sub}
-              </p>
-
-              <p className="rise mx-auto mt-5 max-w-[48ch] border-l-2 border-signal/60 pl-4 text-left text-[14.5px] leading-relaxed text-bone lg:mx-0">
-                {t.hero.support}
-              </p>
-
-              <div className="mt-8 flex flex-wrap items-center justify-center gap-3.5 lg:justify-start">
-                <span data-cursor="BOOK"><Cta href="#book" big>{t.hero.cta1}</Cta></span>
-                <a href="#system" className="btn btn-ghost btn-lg">
-                  {t.hero.cta2}
-                </a>
+            <div className="mt-8 grid gap-8 lg:mt-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end lg:gap-16">
+              <div>
+                <p className="lift max-w-[50ch] text-[clamp(1rem,1.5vw,1.15rem)] leading-relaxed text-bone/85">
+                  {t.hero.sub}
+                </p>
+                <div className="lift mt-7 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-7">
+                  <a href="#book" className="btn btn-lg justify-center">
+                    {t.hero.cta1}
+                  </a>
+                  <a
+                    href="#results"
+                    className="self-center text-[14px] font-semibold text-bone underline decoration-blood decoration-2 underline-offset-[7px] transition hover:text-white sm:self-auto"
+                  >
+                    {t.hero.cta2} →
+                  </a>
+                </div>
               </div>
-              <p className="mx-auto mt-6 max-w-[46ch] text-[12.5px] leading-relaxed text-faint lg:mx-0">{t.hero.note}</p>
-            </div>
 
-            <div className="rise flex justify-center lg:justify-end" style={{ animationDelay: "0.25s" }}>
-              <DmCard lang={lang} label={t.hero.dmStatus} />
+              {/* la prueba en la primera pantalla: caras reales, cifra real */}
+              <a href="#results" className="proof-chip lift self-start lg:self-end">
+                <span className="flex -space-x-2.5" aria-hidden>
+                  {t.cases.items.map((c) => (
+                    <Image
+                      key={c.k}
+                      src={c.avatar}
+                      alt=""
+                      width={36}
+                      height={36}
+                      className="size-9 rounded-full border-2 border-void object-cover"
+                    />
+                  ))}
+                </span>
+                <span>
+                  <span className="block flash-type text-[1.65rem] leading-none text-bone">{t.hero.proof.n}</span>
+                  <span className="mt-1.5 block text-[12px] leading-snug text-muted">{t.hero.proof.t}</span>
+                </span>
+              </a>
             </div>
           </div>
         </header>
 
-        {/* ───────── BARRA DE RESULTADOS ───────── */}
-        <section id="results" className="scroll-mt-24 border-y border-white/[0.08] px-6 py-14">
-          <div className="mx-auto max-w-6xl">
-            <p className="reveal mb-9 flash-sub text-[10.5px] tracking-[0.22em] text-faint">{t.metrics.label}</p>
-            <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-6">
-              {t.metrics.items.map((m) => (
-                <div key={m.t} className="reveal">
-                  <p className="flash-type text-[clamp(1.8rem,3.4vw,2.7rem)] tabular-nums text-signal"><Count value={m.n} /></p>
-                  <p className="mt-2.5 text-[13px] leading-snug text-muted">{m.t}</p>
-                </div>
-              ))}
-            </div>
-            <p className="reveal mt-10 max-w-[70ch] text-[11.5px] leading-relaxed text-faint">{t.metrics.disclaimer}</p>
-          </div>
-        </section>
-
-        {/* ───────── FRANJA DE CREDIBILIDAD ───────── */}
-        <section className="border-b border-white/[0.08] px-6 py-9">
-          <div className="mx-auto flex max-w-6xl flex-col gap-7 lg:flex-row lg:items-center lg:justify-between">
-            {/* Envuelve en móvil: sin esto los tres estudios se salían por
-                la derecha y arrastraban toda la página 102px, lo que hacía
-                que la barra fija de arriba tampoco cupiera. */}
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
-              <p className="flash-sub shrink-0 text-[10px] tracking-[0.22em] text-faint">{t.trust.label}</p>
-              <div className="flex flex-wrap items-center gap-3">
-                {t.cases.items.map((c) => (
-                  <a
-                    key={c.k}
-                    href={c.url}
-                    target="_blank"
-                    rel="noopener"
-                    className="group flex items-center gap-2.5 border border-white/12 py-1 pl-1 pr-3.5 transition hover:border-blood/60"
-                    aria-label={`${c.studio} — ${c.handle}`}
-                  >
-                    <Image
-                      src={c.avatar}
-                      alt=""
-                      width={30}
-                      height={30}
-                      className="size-[30px] rounded-full object-cover grayscale transition duration-500 group-hover:grayscale-0"
-                    />
-                    <span className="text-[12.5px] text-muted transition group-hover:text-bone">{c.handle}</span>
-                  </a>
-                ))}
-              </div>
-            </div>
-
-            <ul className="flex flex-wrap gap-x-7 gap-y-2.5">
-              {t.trust.points.map((p) => (
-                <li key={p} className="flex items-center gap-2 text-[12.5px] text-muted">
-                  <span className="size-1 shrink-0 rounded-full bg-blood" />
-                  {p}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-
-        {/* ───────── VIDEO ─────────
-             Oculto a propósito hasta que exista el archivo. La sección
-             completa está intacta en el historial de git: cuando el
-             vídeo esté grabado, se descomenta y va justo aquí, después
-             de la franja de credibilidad. No se borró para no tener
-             que reconstruirla. */}
-
-        {/* ───────── PROBLEMA ───────── */}
-        <section id="problem" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-36">
-          <div className="relative mx-auto grid max-w-6xl gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
-            <div className="lg:sticky lg:top-32 lg:self-start">
-              <Ghost n="01" />
-              <Tag n="01">{t.problem.eyebrow}</Tag>
-              <h2 className="flash-type text-[clamp(2rem,4.4vw,3.4rem)]">
-                <Split as="span" text={t.problem.title} />
-                <Split as="span" text={t.problem.titleEm} delay={220} className="text-faint" />
-              </h2>
-              <p className="reveal mt-9 max-w-[40ch] text-[clamp(1.05rem,1.9vw,1.35rem)] font-semibold leading-snug tracking-[-0.02em]">
-                {t.problem.close} <span className="text-blood">{t.problem.closeEm}</span>
-              </p>
-            </div>
-
-            <ul className="rail">
-              {t.problem.items.map((it) => (
-                <li
-                  key={it.n}
-                  className="spot reveal relative rounded-[18px] border border-white/[0.09] p-7 lg:rounded-none lg:border-x-0 lg:border-t-0 lg:p-0 lg:py-9 lg:first:pt-0 lg:last:border-0 lg:last:pb-0"
-                >
-                  <span
-                    aria-hidden
-                    className="pointer-events-none absolute -top-2 right-3 select-none text-[80px] font-black leading-none tracking-tighter text-white/[0.05] lg:-top-1 lg:right-0"
-                  >
-                    {it.n}
-                  </span>
-                  <h3 className="relative text-[clamp(1.2rem,2.2vw,1.55rem)] font-bold tracking-[-0.03em]">{it.t}</h3>
-                  <p className="relative mt-3 max-w-[52ch] text-[15px] leading-relaxed text-muted">{it.d}</p>
-                </li>
-              ))}
-            </ul>
-            <p className="mt-5 text-[12px] text-faint lg:hidden">{t.problem.swipe}</p>
-          </div>
-        </section>
-
-        {/* ───────── CALCULADORA ───────── */}
-        <section id="cost" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-36">
+        {/* ───────── 01 · CASOS REALES — la prueba va primero ───────── */}
+        <section id="results" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-28">
           <div className="relative mx-auto max-w-6xl">
-            <Ghost n="02" />
-            <Tag n="02">{t.calc.eyebrow}</Tag>
-            <Split as="h2" text={t.calc.title} className="max-w-[20ch] flash-type text-[clamp(1.9rem,4.4vw,3.4rem)]" />
-            <p className="reveal mt-6 max-w-[46ch] text-[15.5px] text-muted">{t.calc.sub}</p>
-
-            <div className="reveal mt-14">
-              <Calculator t={t.calc} lang={lang} />
-            </div>
-
-            <div className="reveal mt-12">
-              <Cta href="#book" big>{t.calc.cta}</Cta>
-            </div>
-          </div>
-        </section>
-
-        {/* ───────── BANDA 1 — justo después de la cifra que pierde ───────── */}
-        <Banda
-          line={t.bandas[0].line}
-          cta={t.bandas[0].cta}
-          href="#book"
-          lang={lang}
-          spotsLabels={t.book}
-        />
-
-        {/* ───────── EL RECORRIDO ───────── */}
-        <section id="system" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-32">
-          <div className="relative mx-auto max-w-6xl">
-            <Ghost n="03" />
-            <Tag n="03">{t.funnel.tag}</Tag>
-            <Split as="h2" text={t.funnel.title} className="max-w-[20ch] flash-type text-[clamp(1.9rem,4.4vw,3.4rem)]" />
-            <p className="reveal mt-6 max-w-[52ch] text-[15.5px] leading-relaxed text-muted">{t.funnel.sub}</p>
-
-            <div className="mt-16">
-              <Funnel t={t.funnel} />
-            </div>
-
-            <p className="reveal mt-12 max-w-[54ch] border-l-2 border-blood pl-5 text-[15.5px] leading-relaxed text-bone">
-              {t.funnel.follow}
-            </p>
-          </div>
-        </section>
-
-        {/* ───────── QUÉ SE INSTALA — 5 ACTIVOS ───────── */}
-        <section id="assets" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-32">
-          <div className="relative mx-auto max-w-6xl">
-            <Ghost n="04" />
-            <Tag n="04">{t.assets.tag}</Tag>
-            <Split as="h2" text={t.assets.title} className="max-w-[20ch] flash-type text-[clamp(1.9rem,4.4vw,3.4rem)]" />
-            <p className="reveal mt-6 max-w-[58ch] text-[15.5px] leading-relaxed text-muted">{t.assets.sub}</p>
-
-            <div className="mt-14 border-t border-white/[0.1]">
-              {t.assets.items.map((a, i) => (
-                <div
-                  key={a.k}
-                  className="spot reveal grid gap-5 border-b border-white/[0.1] py-9 lg:grid-cols-[auto_minmax(0,1fr)_minmax(0,0.85fr)] lg:items-baseline lg:gap-10"
-                >
-                  <span className="flash-sub text-[11px] tracking-[0.2em] text-blood lg:pt-2">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-
-                  <div>
-                    <h3 className="flash-type text-[clamp(1.5rem,3vw,2.3rem)]">{a.k}</h3>
-                    <p className="mt-3 max-w-[44ch] text-[15px] leading-relaxed text-muted">{a.d}</p>
-                  </div>
-
-                  {/* las tareas, en pequeño: son el medio, no el producto */}
-                  <ul className="flex flex-wrap gap-x-4 gap-y-1.5 lg:justify-end">
-                    {a.t.map((x) => (
-                      <li key={x} className="text-[12px] leading-snug text-faint">
-                        {x}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ───────── PUENTE A LAS WEBS ─────────
-            No es una sección numerada a propósito: es una salida lateral.
-            El que llega a esta página buscando campañas muchas veces
-            todavía no tiene dónde mandar a la gente, y mandarlo a su
-            propio Instagram es justo el problema que venimos a resolver. */}
-        <section className="border-y border-white/[0.08] px-6 py-14 sm:py-20">
-          <div className="reveal mx-auto flex max-w-6xl flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
-            <div>
-              <p className="mb-4 flash-sub text-[10.5px] tracking-[0.2em] text-blood">{t.websTeaser.tag}</p>
-              <h2 className="max-w-[22ch] flash-type text-[clamp(1.5rem,3.4vw,2.5rem)]">{t.websTeaser.title}</h2>
-              <p className="mt-4 max-w-[54ch] text-[15px] leading-relaxed text-muted">{t.websTeaser.body}</p>
-            </div>
-            <div className="flex flex-none items-center gap-5">
-              <span className="flash-sub text-[11px] tracking-[0.16em] text-faint">{t.websTeaser.price}</span>
-              <Link href={`/${lang}/webs`} className="btn">
-                {t.websTeaser.cta}
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* ───────── RUPTURA ───────── */}
-        <section className="rupture px-6 py-24 text-center sm:py-36">
-          {/* la palabra de fondo, en marquesina lenta: tinta estampada
-              una y otra vez sobre el rojo */}
-          <div className="rupture-band" aria-hidden>
-            <div className="rupture-run">
-              {Array.from({ length: 8 }, (_, i) => (
-                <span key={i}>{t.rupture.word}</span>
-              ))}
-            </div>
-          </div>
-
-          <div className="relative mx-auto max-w-4xl">
-            <Split as="p" text={t.rupture.a} className="flash-type text-[clamp(1.7rem,4.6vw,3.4rem)] opacity-55" />
-            <Split as="p" text={t.rupture.b} className="mt-1.5 flash-type text-[clamp(2rem,5.6vw,4.2rem)]" delay={220} />
-            <Split as="p" text={t.rupture.c} className="mt-1.5 flash-type text-[clamp(1.7rem,4.6vw,3.4rem)] opacity-55" delay={460} />
-            <p className="reveal mx-auto mt-10 max-w-[52ch] text-[15px] leading-relaxed text-white/75">{t.rupture.d}</p>
-          </div>
-        </section>
-
-        {/* ───────── CASOS REALES ───────── */}
-        <section id="cases" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-32">
-          <div className="relative mx-auto max-w-6xl">
-            <Ghost n="05" />
-            <Tag n="05">{t.cases.eyebrow}</Tag>
-            <Split as="h2" text={t.cases.title} className="max-w-[20ch] flash-type text-[clamp(2rem,4.6vw,3.6rem)]" />
+            <Tag n="01">{t.cases.eyebrow}</Tag>
+            <Split as="h2" text={t.cases.title} className={`max-w-[18ch] ${H2}`} />
             <p className="reveal mt-6 max-w-[56ch] text-[15.5px] leading-relaxed text-muted">{t.cases.sub}</p>
           </div>
 
           {/* cada caso ocupa su propio bloque, no una tarjeta */}
-          <div className="mt-16 space-y-20 sm:mt-20 sm:space-y-28">
+          <div className="mt-14 space-y-20 sm:mt-20 sm:space-y-28">
             {t.cases.items.map((c, i) => (
               <article key={c.k} className="mx-auto max-w-6xl">
                 <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-16">
                   {/* izquierda: la historia */}
                   <div>
-                    <p className="reveal mb-6 flex items-center gap-3 flash-sub text-[10.5px] tracking-[0.22em] text-faint">
-                      <span className="text-blood">{String(i + 1).padStart(2, "0")}</span>
+                    <p className="reveal mb-6 flex items-center gap-3 flash-sub text-[10.5px] tracking-[0.22em] text-muted">
+                      <span className="text-bone">{String(i + 1).padStart(2, "0")}</span>
                       {c.studio} · {c.city}
                     </p>
 
-                    <Split
-                      as="h3"
-                      text={c.name}
-                      className="flash-type text-[clamp(3.2rem,9vw,6.5rem)] leading-[0.86]"
-                    />
+                    <Split as="h3" text={c.name} className="flash-type text-[clamp(3.2rem,9vw,6.5rem)] leading-[0.9]" />
 
                     {/* la cifra manda */}
                     <div className="reveal mt-9 border-y border-white/[0.09] py-8">
@@ -453,10 +222,10 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                     {/* cifras de campaña, solo si las hay */}
                     {c.figures.length > 0 && (
                       <>
-                        <div data-cursor="RESULTS" className="mt-10 grid gap-px bg-white/[0.08] sm:grid-cols-4">
+                        <div className="mt-10 grid gap-px bg-white/[0.08] sm:grid-cols-4">
                           {c.figures.map((f) => (
                             <div key={f.k} className="spot reveal bg-void px-5 py-6">
-                              <p className="flash-type text-[clamp(1.5rem,2.6vw,2.1rem)] tabular-nums text-signal">
+                              <p className="flash-type text-[clamp(1.5rem,2.6vw,2.1rem)] tabular-nums text-bone">
                                 <Count value={f.v} />
                               </p>
                               <p className="mt-2 text-[12px] leading-snug text-muted">{f.k}</p>
@@ -473,7 +242,6 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                     href={c.url}
                     target="_blank"
                     rel="noopener"
-                    data-cursor="VIEW"
                     className="reveal group relative block overflow-hidden border border-white/[0.1] transition hover:border-blood/50"
                   >
                     <Image
@@ -486,7 +254,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                     />
                     <span className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-3 bg-gradient-to-t from-void via-void/90 to-transparent px-5 pb-4 pt-12 text-[13px]">
                       <span className="font-semibold text-bone">{c.handle}</span>
-                      <span className="text-blood transition group-hover:translate-x-0.5">{t.trust.seeAll} →</span>
+                      <span className="text-bone transition group-hover:translate-x-0.5">{t.trust.seeAll} →</span>
                     </span>
                   </a>
                 </div>
@@ -497,66 +265,170 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           <p className="reveal mx-auto mt-14 max-w-6xl text-[11.5px] leading-relaxed text-faint">{t.cases.note}</p>
         </section>
 
-        {/* ───────── BANDA 2 — justo después de la prueba ───────── */}
-        <Banda
-          line={t.bandas[1].line}
-          cta={t.bandas[1].cta}
-          href="#book"
-          lang={lang}
-          spotsLabels={t.book}
-        />
+        {/* ───────── EL TRABAJO — la hoja de flash pegada a la pared ───────── */}
+        <section aria-labelledby="work-h" className="work-strip border-y border-white/[0.08]">
+          <div className="mx-auto max-w-7xl px-6 py-14 sm:py-20">
+            <p className="reveal mb-5 flash-sub text-[11px] tracking-[0.22em] text-muted">{t.work.eyebrow}</p>
+            <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+              <Split as="h2" text={t.work.title} className="flash-type text-[clamp(2.4rem,6.4vw,5.6rem)]" />
+              <p className="reveal max-w-[40ch] text-[14.5px] leading-relaxed text-muted lg:pb-3">{t.work.sub}</p>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-px bg-white/[0.08] md:grid-cols-4">
+            {["tat1", "tat2", "tat3", "tat4"].map((k, i) => (
+              <figure key={k} className="relative aspect-square overflow-hidden bg-void">
+                <Image
+                  src={`/img/${k}.webp`}
+                  alt={t.work.alts[i]}
+                  fill
+                  sizes="(max-width: 768px) 50vw, 25vw"
+                  className="object-cover"
+                />
+              </figure>
+            ))}
+          </div>
+        </section>
 
-        {/* ───────── PARA QUIÉN ───────── */}
-        <section id="fit" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-36">
+        {/* ───────── 02 · EL DIAGNÓSTICO ───────── */}
+        <section id="problem" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-28">
+          <div className="relative mx-auto grid max-w-6xl gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
+            <div className="lg:sticky lg:top-32 lg:self-start">
+              <Tag n="02">{t.problem.eyebrow}</Tag>
+              {/* columna estrecha y fija: aquí el titular no puede crecer como los demás o se mete bajo la barra */}
+              <h2 className="flash-type text-[clamp(2rem,3.6vw,3.2rem)]">
+                <Split as="span" text={t.problem.title} />
+                <Split as="span" text={t.problem.titleEm} delay={220} className="text-faint" />
+              </h2>
+              <p className="reveal mt-9 max-w-[40ch] text-[clamp(1.05rem,1.9vw,1.35rem)] font-semibold leading-snug tracking-[-0.02em]">
+                {t.problem.close} <span className="text-blood">{t.problem.closeEm}</span>
+              </p>
+            </div>
+
+            <ul className="rail">
+              {t.problem.items.map((it) => (
+                <li
+                  key={it.n}
+                  className="spot reveal relative rounded-[18px] border border-white/[0.09] p-7 lg:rounded-none lg:border-x-0 lg:border-t-0 lg:p-0 lg:py-9 lg:first:pt-0 lg:last:border-0 lg:last:pb-0"
+                >
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute -top-2 right-3 select-none text-[80px] font-black leading-none tracking-tighter text-white/[0.05] lg:-top-1 lg:right-0"
+                  >
+                    {it.n}
+                  </span>
+                  <h3 className="relative text-[clamp(1.2rem,2.2vw,1.55rem)] font-bold tracking-[-0.03em]">{it.t}</h3>
+                  <p className="relative mt-3 max-w-[52ch] text-[15px] leading-relaxed text-muted">{it.d}</p>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-5 text-[12px] text-faint lg:hidden">{t.problem.swipe}</p>
+          </div>
+        </section>
+
+        {/* ───────── 03 · CALCULADORA ───────── */}
+        <section id="cost" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-28">
           <div className="relative mx-auto max-w-6xl">
-            <Ghost n="06" />
-            <Tag n="06">{t.fit.eyebrow}</Tag>
-            <Split as="h2" text={t.fit.title} className="max-w-[20ch] flash-type text-[clamp(1.9rem,4.4vw,3.4rem)]" />
+            <Tag n="03">{t.calc.eyebrow}</Tag>
+            <Split as="h2" text={t.calc.title} className={`max-w-[18ch] ${H2}`} />
+            <p className="reveal mt-6 max-w-[46ch] text-[15.5px] text-muted">{t.calc.sub}</p>
 
-            <div className="mt-14 grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
-              <div className="flash-cell reveal border-l-2 border-l-blood p-9 sm:p-11">
-                <h3 className="flash-sub mb-8 text-[11px] tracking-[0.2em] text-blood">{t.fit.yesTitle}</h3>
-                <ul className="grid gap-4 sm:grid-cols-2">
-                  {t.fit.yes.map((x) => (
-                    <li key={x} className="flex gap-3.5 text-[15.5px] leading-snug">
-                      <span className="mt-2 size-1.5 shrink-0 rounded-full bg-blood shadow-[0_0_10px_2px_rgba(225,6,0,0.6)]" />
-                      {x}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="reveal border border-white/[0.06] p-9 sm:p-10">
-                <h3 className="flash-sub mb-8 text-[11px] tracking-[0.2em] text-faint">{t.fit.noTitle}</h3>
-                <ul className="space-y-4">
-                  {t.fit.no.map((x) => (
-                    <li key={x} className="flex gap-3.5 text-[14.5px] leading-snug text-faint">
-                      <span className="mt-2.5 h-px w-3 shrink-0 bg-faint" />
-                      {x}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+            <div className="reveal mt-14">
+              <Calculator t={t.calc} lang={lang} />
+            </div>
+
+            <div className="reveal mt-12">
+              <Cta href="#book" big>{t.calc.cta}</Cta>
             </div>
           </div>
         </section>
 
-        {/* ───────── 90 DÍAS ───────── */}
-        <section id="process" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-36">
+        {/* ───────── BANDA — justo después de la cifra que pierde ───────── */}
+        <Banda line={t.bandas[0].line} cta={t.bandas[0].cta} href="#book" lang={lang} spotsLabels={t.book} />
+
+        {/* ───────── 04 · EL RECORRIDO ───────── */}
+        <section id="system" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-28">
           <div className="relative mx-auto max-w-6xl">
-            <Ghost n="07" />
-            <Tag n="07">{t.process.eyebrow}</Tag>
-            <Split as="h2" text={t.process.title} className="max-w-[22ch] flash-type text-[clamp(1.9rem,4.4vw,3.4rem)]" />
+            <Tag n="04">{t.funnel.tag}</Tag>
+            <Split as="h2" text={t.funnel.title} className={`max-w-[18ch] ${H2}`} />
+            <p className="reveal mt-6 max-w-[52ch] text-[15.5px] leading-relaxed text-muted">{t.funnel.sub}</p>
+
+            <div className="mt-16">
+              <Funnel t={t.funnel} />
+            </div>
+
+            <p className="reveal mt-12 max-w-[54ch] border-l-2 border-blood pl-5 text-[15.5px] leading-relaxed text-bone">
+              {t.funnel.follow}
+            </p>
+          </div>
+        </section>
+
+        {/* ───────── 05 · QUÉ SE INSTALA — la hoja, en hueso ─────────
+             El único cambio de papel de la página: las cinco piezas como
+             diseños numerados de una hoja de flash clavada en la pared. */}
+        <section id="assets" className="sheet scroll-mt-24 px-6 py-20 sm:py-28">
+          <div className="mx-auto max-w-6xl">
+            <Tag n="05">{t.assets.tag}</Tag>
+            <Split as="h2" text={t.assets.title} className={`max-w-[18ch] ${H2}`} />
+            <p className="reveal mt-6 max-w-[58ch] text-[15.5px] leading-relaxed text-void/75">{t.assets.sub}</p>
+
+            <ol className="mt-14 grid gap-5 md:grid-cols-6">
+              {t.assets.items.map((a, i) => (
+                <li key={a.k} className={`sheet-cell reveal ${i < 2 ? "md:col-span-3" : "md:col-span-2"}`}>
+                  <span className="sheet-num" aria-hidden>
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <h3 className="mt-3 flash-type text-[clamp(1.5rem,2.4vw,2rem)]">{a.k}</h3>
+                  <p className="mt-3 text-[15px] leading-relaxed text-void/80">{a.d}</p>
+                  {/* las tareas, en pequeño: son el medio, no el producto */}
+                  <ul className="mt-5 flex flex-wrap gap-x-3 gap-y-1.5 border-t border-void/15 pt-4">
+                    {a.t.map((x) => (
+                      <li key={x} className="text-[12.5px] leading-snug text-void/70">
+                        {x}
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+
+        {/* ───────── RUPTURA ───────── */}
+        <section className="rupture px-6 py-24 text-center sm:py-36">
+          {/* la palabra de fondo, estampada una y otra vez sobre el rojo */}
+          <div className="rupture-band" aria-hidden>
+            <div className="rupture-run">
+              {Array.from({ length: 8 }, (_, i) => (
+                <span key={i}>{t.rupture.word}</span>
+              ))}
+            </div>
+          </div>
+
+          <div className="relative mx-auto max-w-4xl">
+            <Split as="p" text={t.rupture.a} className="flash-type text-[clamp(1.7rem,4.6vw,3.4rem)] opacity-60" />
+            <Split as="p" text={t.rupture.b} className="mt-1.5 flash-type text-[clamp(2.2rem,6.4vw,5rem)]" delay={220} />
+            <Split as="p" text={t.rupture.c} className="mt-1.5 flash-type text-[clamp(1.7rem,4.6vw,3.4rem)] opacity-60" delay={460} />
+            {/* blanco puro: al 75 % sobre el rojo daba ≈3,2:1, por debajo de AA */}
+            <p className="reveal mx-auto mt-10 max-w-[52ch] text-[15.5px] leading-relaxed text-white">{t.rupture.d}</p>
+          </div>
+        </section>
+
+        {/* ───────── 06 · 90 DÍAS ───────── */}
+        <section id="process" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-28">
+          <div className="relative mx-auto max-w-6xl">
+            <Tag n="06">{t.process.eyebrow}</Tag>
+            <Split as="h2" text={t.process.title} className={`max-w-[20ch] ${H2}`} />
             <p className="reveal mt-6 max-w-[54ch] text-[15.5px] leading-relaxed text-muted">{t.process.sub}</p>
 
             <div className="mt-16 grid gap-px bg-white/[0.08] md:grid-cols-4">
               {t.process.phases.map((p) => (
                 <div key={p.d} className="spot reveal bg-void p-8">
-                  <p className="flash-sub text-[10.5px] tracking-[0.18em] text-blood">{p.d}</p>
+                  <p className="flash-sub text-[10.5px] tracking-[0.18em] text-muted">{p.d}</p>
                   <h3 className="mt-4 flash-type text-[clamp(1.3rem,2.2vw,1.7rem)]">{p.t}</h3>
                   <ul className="mt-6 space-y-3">
                     {p.items.map((x) => (
                       <li key={x} className="flex gap-3 text-[13.5px] leading-snug text-muted">
-                        <span className="mt-[7px] size-1 shrink-0 rounded-full bg-signal" />
+                        <span className="mt-[7px] size-1 shrink-0 rounded-full bg-blood" />
                         {x}
                       </li>
                     ))}
@@ -565,8 +437,8 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
               ))}
             </div>
 
-            <p className="reveal mt-12 max-w-[46ch] text-[clamp(1.1rem,2.1vw,1.5rem)] font-semibold leading-snug tracking-[-0.025em]">
-              {t.process.close} <span className="text-signal">{t.process.closeEm}</span>
+            <p className="reveal mt-12 max-w-[46ch] text-[clamp(1.1rem,2.1vw,1.5rem)] font-semibold leading-snug tracking-[-0.025em] text-muted">
+              {t.process.close} <span className="text-bone">{t.process.closeEm}</span>
             </p>
             <div className="reveal mt-9">
               <Cta href="#book">{t.nav.cta}</Cta>
@@ -574,14 +446,13 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           </div>
         </section>
 
-        {/* ───────── EQUIPO ───────── */}
-        <section id="team" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-32">
+        {/* ───────── 07 · EQUIPO ───────── */}
+        <section id="team" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-28">
           <div className="mx-auto max-w-6xl">
             <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:gap-16">
               <div>
-                <Ghost n="08" />
-                <Tag n="08">{t.team.eyebrow}</Tag>
-                <Split as="h2" text={t.team.title} className="max-w-[16ch] flash-type text-[clamp(1.9rem,4.4vw,3.4rem)]" />
+                <Tag n="07">{t.team.eyebrow}</Tag>
+                <Split as="h2" text={t.team.title} className={`max-w-[16ch] ${H2}`} />
               </div>
               <p className="reveal max-w-[52ch] self-end text-[15.5px] leading-relaxed text-muted">{t.team.sub}</p>
             </div>
@@ -600,7 +471,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                   <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-void via-void/92 to-transparent px-6 pb-6 pt-20">
                     <p className="flash-type text-[clamp(1.8rem,3.4vw,2.6rem)]">{p.name}</p>
                     <p className="mt-1.5 text-[14px] text-muted">{p.role}</p>
-                    <p className="mt-3 flash-sub text-[10.5px] tracking-[0.18em] text-blood">{p.cred}</p>
+                    <p className="mt-3 flash-sub text-[10.5px] tracking-[0.18em] text-bone">{p.cred}</p>
                   </figcaption>
                 </figure>
               ))}
@@ -608,14 +479,13 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           </div>
         </section>
 
-        {/* ───────── LO QUE SÍ GARANTIZAMOS ───────── */}
-        <section id="guarantee" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-32">
+        {/* ───────── 08 · LO QUE SÍ GARANTIZAMOS ───────── */}
+        <section id="guarantee" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-28">
           <div className="relative mx-auto max-w-6xl">
-            <Ghost n="09" />
             <div className="grid gap-10 lg:grid-cols-[1fr_1.05fr] lg:gap-16">
               <div>
-                <Tag n="09">{t.guarantee.tag}</Tag>
-                <Split as="h2" text={t.guarantee.title} className="max-w-[16ch] flash-type text-[clamp(1.9rem,4.4vw,3.4rem)]" />
+                <Tag n="08">{t.guarantee.tag}</Tag>
+                <Split as="h2" text={t.guarantee.title} className={`max-w-[16ch] ${H2}`} />
                 <p className="reveal mt-6 max-w-[46ch] text-[15.5px] leading-relaxed text-muted">{t.guarantee.sub}</p>
               </div>
 
@@ -631,18 +501,38 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           </div>
         </section>
 
-        {/* ───────── FAQ ───────── */}
-        <section id="faq" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-36">
+        {/* ───────── PUENTE A LAS WEBS ─────────
+            No es una sección numerada a propósito: es una salida lateral
+            para quien todavía no tiene dónde mandar a la gente. */}
+        <section className="border-y border-white/[0.08] px-6 py-14 sm:py-20">
+          <div className="reveal mx-auto flex max-w-6xl flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <p className="mb-4 flash-sub text-[10.5px] tracking-[0.2em] text-muted">{t.websTeaser.tag}</p>
+              <h2 className="max-w-[22ch] flash-type text-[clamp(1.6rem,3.6vw,2.7rem)]">{t.websTeaser.title}</h2>
+              <p className="mt-4 max-w-[54ch] text-[15px] leading-relaxed text-muted">{t.websTeaser.body}</p>
+            </div>
+            <div className="flex flex-none items-center gap-5">
+              <span className="flash-sub text-[11px] tracking-[0.16em] text-muted">{t.websTeaser.price}</span>
+              <Link href={`/${lang}/webs`} className="btn btn-ghost">
+                {t.websTeaser.cta}
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* ───────── 09 · FAQ ───────── */}
+        <section id="faq" className="sec scroll-mt-24 overflow-hidden px-6 py-16 sm:py-28">
           <div className="relative mx-auto max-w-3xl">
-            <Ghost n="10" />
-            <Tag n="10">{t.faq.eyebrow}</Tag>
-            <Split as="h2" text={t.faq.title} className="mb-12 max-w-[20ch] flash-type text-[clamp(1.9rem,4.2vw,3.2rem)]" />
+            <Tag n="09">{t.faq.eyebrow}</Tag>
+            <Split as="h2" text={t.faq.title} className={`mb-12 max-w-[18ch] ${H2}`} />
             <div className="divide-y divide-white/[0.07]">
               {t.faq.items.map((f, i) => (
                 <details key={f.q} className="reveal group" open={i === 0}>
                   <summary className="flex cursor-pointer list-none items-center justify-between gap-6 py-6 text-[16.5px] font-semibold tracking-[-0.024em] marker:hidden">
                     {f.q}
-                    <span className="shrink-0 text-xl text-blood transition-transform duration-500 group-open:rotate-45">+</span>
+                    <span className="shrink-0 text-xl text-blood transition-transform duration-500 group-open:rotate-45" aria-hidden>
+                      +
+                    </span>
                   </summary>
                   <p className="max-w-[64ch] pb-7 text-[15px] leading-relaxed text-muted">{f.a}</p>
                 </details>
@@ -654,19 +544,18 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           </div>
         </section>
 
-        {/* ───────── AGENDAR — CALENDARIO INCRUSTADO ───────── */}
-        <section id="book" className="scroll-mt-24 border-t border-white/[0.07] px-6 py-16 sm:py-32">
+        {/* ───────── 10 · AGENDAR — CALENDARIO INCRUSTADO ───────── */}
+        <section id="book" className="scroll-mt-24 border-t border-white/[0.07] px-6 py-16 sm:py-28">
           <div className="relative mx-auto max-w-5xl">
-            <Ghost n="11" />
-            <Tag n="11">{t.audit.tag}</Tag>
+            <Tag n="10">{t.audit.tag}</Tag>
 
             <div className="grid gap-10 lg:grid-cols-[1.05fr_auto] lg:items-end">
               <div>
                 {/* la oferta tiene nombre propio, no es «una llamada» */}
-                <p className="reveal mb-4 inline-block border border-blood/60 px-3.5 py-2 flash-sub text-[10.5px] tracking-[0.2em] text-blood">
+                <p className="reveal mb-4 inline-block border border-blood/60 px-3.5 py-2 flash-sub text-[10.5px] tracking-[0.2em] text-bone">
                   {t.audit.name}
                 </p>
-                <Split as="h2" text={t.audit.title} className="max-w-[18ch] flash-type text-[clamp(1.9rem,4.6vw,3.6rem)]" />
+                <Split as="h2" text={t.audit.title} className={`max-w-[18ch] ${H2}`} />
                 <p className="reveal mt-6 max-w-[52ch] text-[16px] leading-relaxed text-bone">{t.audit.promise}</p>
 
                 <p className="reveal mt-7 flex flex-wrap items-center gap-x-6 gap-y-2 text-[13px] text-muted">
@@ -692,27 +581,24 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
               <ol className="grid gap-x-10 gap-y-5 sm:grid-cols-2">
                 {t.audit.get.map((g, i) => (
                   <li key={g} className="flex gap-4">
-                    <span className="mt-[3px] shrink-0 flash-sub text-[11px] tracking-[0.14em] text-blood">
+                    <span className="mt-[3px] shrink-0 flash-sub text-[11px] tracking-[0.14em] text-bone">
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     <span className="max-w-[44ch] text-[14.5px] leading-relaxed text-muted">{g}</span>
                   </li>
                 ))}
               </ol>
-              <p className="mt-9 max-w-[52ch] border-l-2 border-signal/60 pl-4 text-[14.5px] leading-relaxed text-bone">
+              <p className="mt-9 max-w-[52ch] border-l-2 border-blood pl-4 text-[14.5px] leading-relaxed text-bone">
                 {t.audit.noPitch}
               </p>
 
               {/* La objeción que más gente se lleva sin decirla en voz alta.
                   Callarla no la elimina: hace que el visitante se invente
                   una cifra —siempre la peor— y se vaya sin agendar. */}
-              <p className="mt-5 max-w-[58ch] text-[13.5px] leading-relaxed text-faint">
-                {t.audit.priceNote}
-              </p>
+              <p className="mt-5 max-w-[58ch] text-[13.5px] leading-relaxed text-faint">{t.audit.priceNote}</p>
             </div>
 
             <div className="mt-14">
-
               <BookCall url={site.call} lang={lang} labels={{ loading: t.book.loading, fallback: t.book.fallback }} />
             </div>
           </div>

@@ -64,7 +64,7 @@ export default function Calculator({ t, lang }: { t: Copy["calc"]; lang: Lang })
       <div className="flash-cell flex flex-col justify-center p-10 sm:p-12">
         <p className="flash-sub mb-3 text-[10.5px] tracking-[0.2em] text-faint">{t.monthLabel}</p>
         <p
-          className="flash-type text-[clamp(2.6rem,7vw,4.6rem)] tabular-nums text-signal"
+          className="flash-type text-[clamp(2.6rem,7vw,4.6rem)] tabular-nums text-blood"
           aria-live="polite"
         >
           {fmt(month)}
@@ -75,8 +75,9 @@ export default function Calculator({ t, lang }: { t: Copy["calc"]; lang: Lang })
           <p className="flash-type text-[clamp(1.7rem,4vw,2.6rem)] tabular-nums text-bone">{fmt(year)}</p>
         </div>
 
-        <p className="mt-9 text-[15.5px] leading-relaxed">
-          {t.kicker} <span className="text-signal">{t.kickerEm}</span>
+        {/* el dinero que se pierde va en rojo; el verde queda para micro-acentos, como pide la marca */}
+        <p className="mt-9 text-[15.5px] leading-relaxed text-muted">
+          {t.kicker} <span className="font-semibold text-bone">{t.kickerEm}</span>
         </p>
       </div>
     </div>

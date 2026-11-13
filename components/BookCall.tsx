@@ -97,7 +97,9 @@ export default function BookCall({
           real al que engancharse, no uno que aparezca después. */}
       <div
         ref={mount}
-        className={`overflow-hidden rounded-[22px] ring-1 ring-white/[0.09] ${state === "ready" ? "block" : "hidden"}`}
+        /* 640 px máx.: más ancho, Calendly pinta su vista de escritorio con
+           márgenes blancos dentro del iframe que no se pueden colorear. */
+        className={`mx-auto max-w-[640px] overflow-hidden rounded-[22px] bg-[#0d0d0f] ring-1 ring-white/[0.09] ${state === "ready" ? "block" : "hidden"}`}
         style={{ minWidth: 280, height: 760 }}
         lang={lang}
       />

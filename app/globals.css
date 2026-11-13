@@ -813,7 +813,8 @@ body {
   letter-spacing: 0.24em;
   text-transform: uppercase;
 }
-.sec-tag b { color: var(--color-blood); font-weight: 700; }
+/* número en hueso: el rojo sobre negro da 4,05:1 y a 11 px no pasa AA; el rojo queda en la raya */
+.sec-tag b { color: var(--color-bone); font-weight: 700; }
 .sec-tag i { display: block; width: 34px; height: 1px; background: rgba(225, 6, 0, 0.55); }
 .sec-tag span { color: var(--color-muted); }
 
@@ -1054,3 +1055,98 @@ body {
 /* El aviso de caducado solo existe cuando de verdad caducó. */
 .expira-aviso { display: none; }
 [data-audit-expirado="1"] .expira-aviso { display: block; }
+
+/* ═══ PORTADA «HOJA DE FLASH» (2026-11) ═════════════════════════
+   La portada deja de parecer una agencia oscura más. Reglas:
+   · La foto real manda; el adorno se calla (sin manchas de tinta,
+     sin números fantasma, sin riel lateral).
+   · Anton a escala de cartel solo en las frases que importan.
+   · Tres fondos que marcan el ritmo: negro (casi todo), hueso
+     (la hoja con el sistema) y rojo (la ruptura).
+   · El texto del hero nunca nace invisible: se anima con transform,
+     no con opacidad, para que el LCP no espere a la animación.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* — hero a sangre ———————————————————————————————— */
+.hero-flash { position: relative; isolation: isolate; }
+.hero-flash__img { filter: grayscale(1) contrast(1.12) brightness(0.92); }
+.hero-flash__shade {
+  background:
+    linear-gradient(to top, #070708 0%, rgba(7, 7, 8, 0.92) 26%, rgba(7, 7, 8, 0.35) 58%, rgba(7, 7, 8, 0.2) 100%),
+    linear-gradient(to right, rgba(7, 7, 8, 0.55) 0%, transparent 60%);
+}
+.hero-flash__h1 {
+  font-size: clamp(3.3rem, 10.4vw, 10.5rem);
+  /* 1.1: con menos, la tilde de DEPÓSITOS se clavaba en la línea de arriba */
+  line-height: 1.1;
+  letter-spacing: -0.012em;
+}
+/* se estampa: entra un poco más grande y se asienta. Solo transform. */
+@keyframes stampIn {
+  from { transform: scale(1.045) translateY(0.04em); }
+  to   { transform: none; }
+}
+.stamp { animation: stampIn 0.9s var(--ease) both; transform-origin: left bottom; }
+/* el resto del hero sube sin desaparecer */
+@keyframes liftIn {
+  from { transform: translateY(18px); }
+  to   { transform: none; }
+}
+.lift { animation: liftIn 1s var(--ease) both; }
+
+/* prueba en la primera pantalla: dos caras reales y una cifra real */
+.proof-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 16px 10px 10px;
+  border: 1px solid rgba(237, 230, 220, 0.18);
+  background: rgba(7, 7, 8, 0.6);
+  transition: border-color 0.4s var(--ease);
+}
+.proof-chip:hover { border-color: rgba(225, 6, 0, 0.6); }
+.proof-chip:focus-visible { outline: 2px solid var(--color-bone); outline-offset: 3px; }
+
+/* — tira de trabajo real: la hoja de flash pegada a la pared ——— */
+.work-strip img { filter: grayscale(1) contrast(1.08); transition: filter 0.7s var(--ease), transform 0.9s var(--ease); }
+@media (hover: hover) and (pointer: fine) {
+  .work-strip figure:hover img { filter: grayscale(0.2) contrast(1.08); transform: scale(1.03); }
+}
+
+/* — la hoja: sección en hueso con texto negro ——————————————— */
+.sheet {
+  position: relative;
+  background: var(--color-bone);
+  color: var(--color-void);
+}
+.sheet .sec-tag b { color: var(--color-void); }
+.sheet .sec-tag span { color: rgba(7, 7, 8, 0.72); }
+.sheet .sec-tag i { background: rgba(7, 7, 8, 0.4); }
+.sheet-cell {
+  position: relative;
+  border: 1px solid rgba(7, 7, 8, 0.22);
+  padding: 30px 28px 28px;
+}
+/* esquinas de chincheta, como una lámina clavada */
+.sheet-cell::before,
+.sheet-cell::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--color-void);
+}
+.sheet-cell::before { top: -2px; left: -2px; border-right: 0; border-bottom: 0; }
+.sheet-cell::after { bottom: -2px; right: -2px; border-left: 0; border-top: 0; }
+/* el rojo sobre hueso solo pasa contraste en grande: va en los números, nunca en texto pequeño */
+.sheet-num {
+  font-family: var(--f-anton), sans-serif;
+  font-size: clamp(3rem, 5vw, 4.25rem);
+  line-height: 1;
+  color: var(--color-blood);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stamp, .lift { animation: none; }
+  .work-strip img { transition: none; }
+}

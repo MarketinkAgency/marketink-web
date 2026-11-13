@@ -60,7 +60,7 @@ export default async function Image({ params }: { params: Promise<{ lang: string
               maxWidth: 940,
             }}
           >
-            {t.hero.h1b}
+            {t.hero.h1}
           </div>
           <div style={{ display: "flex", marginTop: 26, color: "#9c968c", fontSize: 26, maxWidth: 820 }}>
             {t.footer.tagline}

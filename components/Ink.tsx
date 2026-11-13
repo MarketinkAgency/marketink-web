@@ -13,7 +13,9 @@ import Lenis from "lenis";
  *  - El cursor solo existe con ratón real y desaparece con teclado,
  *    en campos de texto y con `prefers-reduced-motion`.
  */
-export default function Ink() {
+export default function Ink({ quiet = false }: { quiet?: boolean } = {}) {
+  /* quiet: sin manchas de tinta ni cursor rojo. La portada "hoja de flash"
+     deja que hablen las fotos; el resto de páginas sigue igual. */
   const spine = useRef<HTMLDivElement>(null);
   const dot = useRef<HTMLDivElement>(null);
 
@@ -84,7 +86,9 @@ export default function Ink() {
     /* La sonda espera a que la página se asiente. Medir durante la
        hidratación y la carga de fuentes daba falsos negativos: un PC
        capaz quedaba marcado como lento por unos frames de arranque. */
-    if (!reduced) probeTimer = window.setTimeout(capabilityCheck, 1100);
+    if (!reduced && !quiet) probeTimer = window.setTimeout(capabilityCheck, 1100);
+    /* sin manchas no hay nada que medir: el scroll con inercia arranca igual */
+    if (!reduced && quiet) startLenis();
 
     // ── revelado ──────────────────────────────────────────────
     const io = new IntersectionObserver(
@@ -160,7 +164,7 @@ export default function Ink() {
       if (dot.current) dot.current.style.opacity = "0";
     };
 
-    if (finePointer && !reduced) {
+    if (finePointer && !reduced && !quiet) {
       document.body.classList.add("has-cursor");
       window.addEventListener("pointermove", onMove, { passive: true });
       window.addEventListener("keydown", onKey);
@@ -183,19 +187,21 @@ export default function Ink() {
       if (cRaf) cancelAnimationFrame(cRaf);
       lenis?.destroy();
     };
-  }, []);
+  }, [quiet]);
 
   return (
     <>
       <div ref={spine} className="spine w-full scale-x-0" aria-hidden />
-      <div ref={dot} className="cursor-dot opacity-0" aria-hidden />
-      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden>
-        <div className="ink-a absolute size-[64vw]" />
-        <div className="ink-b absolute size-[56vw]" />
-        <div className="ink-c absolute size-[48vw]" />
-      </div>
+      {!quiet && <div ref={dot} className="cursor-dot opacity-0" aria-hidden />}
+      {!quiet && (
+        <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden>
+          <div className="ink-a absolute size-[64vw]" />
+          <div className="ink-b absolute size-[56vw]" />
+          <div className="ink-c absolute size-[48vw]" />
+        </div>
+      )}
       <div className="grain" aria-hidden />
-      <div className="vignette" aria-hidden />
+      {!quiet && <div className="vignette" aria-hidden />}
     </>
   );
 }

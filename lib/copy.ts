@@ -32,16 +32,17 @@ export const copy = {
       cta: "Ver los paquetes",
     },
 
+    /* Hero «hoja de flash»: una frase a escala de cartel, una línea de
+       apoyo y una prueba real en la primera pantalla (caso KAM). */
     hero: {
-      eyebrow: "Reservas para tatuadores y estudios",
-      dmStatus: "Respondido en 2 minutos",
-      h1a: "Tu trabajo ya genera interés.",
-      h1b: "Nosotros lo convertimos en consultas agendadas y depósitos",
-      sub: "MarketINK combina campañas pagadas, calificación de consultas por Instagram, seguimientos rápidos y flujos de reserva para ayudar a tatuadores serios a construir una agenda más predecible.",
-      support: "Nuestros artistas pasan de recibir consultas inconsistentes a tener su agenda reservada hasta con 90 días de anticipación.",
-      cta1: "Solicita tu auditoría de 15 minutos",
-      cta2: "Conoce el sistema",
-      note: "Para tatuadores y estudios consolidados que quieren convertir más conversaciones en reservas reales.",
+      kicker: "Sistema de reservas para tatuadores y estudios",
+      /* Las palabras del gremio: consultas que se mueren en el DM. Humor negro
+         de hoja de flash; ataca al problema, nunca al arte del artista. */
+      h1: "Tus DM son un cementerio",
+      sub: "Traemos al cliente correcto con anuncios, lo filtramos por DM y le damos seguimiento hasta el depósito. Las consultas buenas dejan de quedarse enterradas.",
+      cta1: "Auditoría gratis de 15 min",
+      cta2: "Ver resultados reales",
+      proof: { n: "5 → 25+", t: "reservas al mes en 60 días · Made to Heal" },
     },
 
     metrics: {
@@ -80,7 +81,17 @@ export const copy = {
       closeEm: "El problema es la infraestructura que falta entre el interés y el depósito.",
     },
 
-    work: { eyebrow: "El trabajo", title: "Esto no es lo que falla.", sub: "Trabajo real de artistas con los que trabajamos. Publicado con su permiso." },
+    work: {
+      eyebrow: "El trabajo",
+      title: "Esto no es lo que falla.",
+      sub: "Trabajo real de artistas con los que trabajamos. Publicado con su permiso.",
+      alts: [
+        "Tatuaje realista en negro y gris de un dios griego con casco, en el antebrazo",
+        "Tatuaje de un pavo real entre flores, en la pierna",
+        "Retrato de Hanuman en realismo negro y gris, en el brazo",
+        "Tatuaje de un león, un sol y líneas finas, en el antebrazo",
+      ],
+    },
 
     system: {
       eyebrow: "El método",
@@ -329,6 +340,7 @@ export const copy = {
       title: "Lo que todo tatuador pregunta antes de empezar.",
       items: [
         { q: "¿Qué hace exactamente MarketINK para un tatuador?", a: "Construimos y gestionamos tus campañas pagadas enfocadas en generar consultas por Instagram, e instalamos el sistema que convierte esas consultas en citas: guiones de respuesta, calificación del proyecto, secuencias de seguimiento, flujo de agendamiento y conversación de depósito. La publicidad es la puerta. El sistema es lo que llena la agenda." },
+        { q: "¿Es para mí?", a: "Es para tatuadores consolidados y estudios con portafolio sólido, espacio en la agenda y disposición a invertir en publicidad, incluidos guest artists que llegan a una ciudad nueva. No es para quien no tiene portafolio vigente ni fechas libres, busca exposición gratis o espera resultados garantizados de un día para otro." },
         { q: "¿Cuánto cuesta?", a: "No publicamos una cifra porque no cobramos igual a un artista independiente que a un estudio con tres sillas y setenta mensajes al día. El presupuesto sale de tu volumen, tu ciudad y cuánto del trabajo llevamos nosotros. En la llamada te damos la cifra exacta, y si no encaja te lo decimos ahí mismo en vez de hacerte perder una semana." },
         { q: "¿Qué tan rápido puedo empezar a recibir consultas?", a: "Las primeras suelen aparecer en las primeras semanas después del lanzamiento. Lo que toma tiempo no es generar mensajes: es aprender cuáles de esos mensajes se convierten en depósitos en tu ciudad y con tu estilo." },
         { q: "¿Cuánto debería invertir en publicidad?", a: "Depende de tu ciudad y tu competencia. Con un presupuesto muy bajo el algoritmo no consigue datos suficientes para optimizar y el sistema nunca aprende. En la auditoría te damos un rango realista según tu ubicación, tu estilo y tu ticket promedio." },
@@ -393,15 +405,12 @@ export const copy = {
     },
 
     hero: {
-      eyebrow: "Booking systems for tattoo artists and studios",
-      dmStatus: "Answered in 2 minutes",
-      h1a: "Your tattoo work already creates demand.",
-      h1b: "We turn it into booked consultations and deposits",
-      sub: "MarketINK combines paid campaigns, Instagram inquiry qualification, fast follow-up and tattoo booking workflows to help serious artists build a more predictable calendar.",
-      support: "Our artists go from inconsistent inquiries to calendars booked up to 90 days in advance.",
-      cta1: "Request your 15-minute audit",
-      cta2: "See the system",
-      note: "For established tattoo artists and studios ready to turn more conversations into real bookings.",
+      kicker: "Booking system for tattoo artists and studios",
+      h1: "Your DMs are a graveyard",
+      sub: "We find the right clients with ads, qualify them in your DMs, and follow up until the deposit's paid. Good inquiries stop getting buried.",
+      cta1: "Get the free 15-min audit",
+      cta2: "See real results",
+      proof: { n: "5 → 25+", t: "bookings a month in 60 days · Made to Heal" },
     },
 
     metrics: {
@@ -440,7 +449,17 @@ export const copy = {
       closeEm: "The missing infrastructure between interest and deposit is the problem.",
     },
 
-    work: { eyebrow: "The work", title: "This isn't what's broken.", sub: "Real work from artists we work with. Shared with their permission." },
+    work: {
+      eyebrow: "The work",
+      title: "This isn't what's broken.",
+      sub: "Real work from artists we work with. Shared with their permission.",
+      alts: [
+        "Black and grey realism tattoo of a helmeted Greek god on a forearm",
+        "Tattoo of a peacock among flowers on a leg",
+        "Black and grey realism portrait of Hanuman on an arm",
+        "Tattoo of a lion, a sun and fine lines on a forearm",
+      ],
+    },
 
     system: {
       eyebrow: "The method",
@@ -686,6 +705,7 @@ export const copy = {
       title: "What every artist asks before starting.",
       items: [
         { q: "What exactly does MarketINK do for tattoo artists?", a: "We build and manage your paid campaigns focused on generating Instagram inquiries, and we install the system that turns those inquiries into appointments: response scripts, project qualification, follow-up sequences, booking flow and deposit conversation. Ads are the door. The system is what fills the calendar." },
+        { q: "Is this for me?", a: "It's for established tattoo artists and studios with a strong portfolio, room in the calendar and a budget for ads, including guest artists landing in a new city. It's not for artists without a current portfolio or open dates, anyone looking for free exposure, or anyone expecting guaranteed results overnight." },
         { q: "What does it cost?", a: "We don't publish a number because we don't charge an independent artist what we charge a three-chair studio fielding seventy messages a day. The budget comes from your volume, your city and how much of the work we carry. On the call you get the exact figure — and if it doesn't fit, we tell you right there instead of costing you a week." },
         { q: "How quickly can I start receiving inquiries?", a: "First inquiries usually appear within the first weeks after launch. What takes time isn't generating messages — it's learning which of those messages turn into deposits in your city, with your style." },
         { q: "How much should I invest in advertising?", a: "It depends on your city and your competition. On a very small budget the algorithm never gets enough data to optimize and the system never learns. On the audit we give you a realistic range based on your location, style and average ticket." },
