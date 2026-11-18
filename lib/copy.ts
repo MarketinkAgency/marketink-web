@@ -16,10 +16,10 @@ export const site = {
 export const copy = {
   es: {
     meta: {
-      title: "MarketINK · Sistema de reservas para tatuadores",
-      desc: "Convertimos consultas de Instagram en consultas agendadas y depósitos. Adquisición, calificación y seguimiento creados exclusivamente para tatuadores y estudios.",
+      title: "Marketing para tatuadores que llena agendas · MarketINK",
+      desc: "Agencia de marketing para tatuadores y estudios de tatuajes. Convertimos los mensajes de Instagram en citas agendadas con depósito: anuncios, calificación por DM y seguimiento.",
     },
-    nav: { system: "El sistema", results: "Resultados", process: "90 días", faq: "Preguntas", webs: "Webs", cta: "Auditoría gratis" },
+    nav: { system: "El sistema", results: "Resultados", process: "90 días", faq: "Preguntas", webs: "Webs", blog: "Blog", cta: "Auditoría gratis" },
 
     /* El puente a /webs. Va en la portada porque el que llega buscando
        «agencia para tatuadores» muchas veces lo que necesita primero es
@@ -35,7 +35,7 @@ export const copy = {
     /* Hero «hoja de flash»: una frase a escala de cartel, una línea de
        apoyo y una prueba real en la primera pantalla (caso KAM). */
     hero: {
-      kicker: "Sistema de reservas para tatuadores y estudios",
+      kicker: "Agencia de marketing para tatuadores y estudios",
       /* Las palabras del gremio: consultas que se mueren en el DM. Humor negro
          de hoja de flash; ataca al problema, nunca al arte del artista. */
       h1: "Tus DM son un cementerio",
@@ -406,10 +406,10 @@ export const copy = {
   // ══════════════════════════════════════════════════════════════
   en: {
     meta: {
-      title: "MarketINK · Tattoo booking systems",
-      desc: "We turn Instagram inquiries into booked consultations and deposits. Acquisition, qualification and follow-up built exclusively for tattoo artists and studios.",
+      title: "Tattoo Marketing Agency · More booked appointments · MarketINK",
+      desc: "Tattoo marketing agency for artists and studios. We turn Instagram DMs into booked appointments with a deposit paid: ads, DM qualification and follow-up built only for tattooers.",
     },
-    nav: { system: "The system", results: "Results", process: "90 days", faq: "FAQ", webs: "Websites", cta: "Free audit" },
+    nav: { system: "The system", results: "Results", process: "90 days", faq: "FAQ", webs: "Websites", blog: "Blog", cta: "Free audit" },
 
     websTeaser: {
       tag: "Also",
@@ -420,7 +420,7 @@ export const copy = {
     },
 
     hero: {
-      kicker: "Booking system for tattoo artists and studios",
+      kicker: "Tattoo marketing agency for artists and studios",
       h1: "Your DMs are a graveyard",
       sub: "We find the right clients with ads, qualify them in your DMs, and follow up until the deposit's paid. Good inquiries stop getting buried.",
       cta1: "Get the free 15-min audit",

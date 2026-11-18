@@ -57,6 +57,9 @@ export async function generateMetadata({
       siteName: "MarketINK",
       locale: lang === "es" ? "es_ES" : "en_US",
       type: "website",
+      /* Sin imagen, el enlace compartido sale como texto plano. Se reusa
+         la tarjeta de la portada hasta que esta página tenga la suya. */
+      images: [`${SITE_URL}/${lang}/opengraph-image`],
     },
     twitter: { card: "summary_large_image", title: t.meta.title, description: t.meta.desc },
     robots: { index: true, follow: true },

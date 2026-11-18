@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { LOCALES } from "@/lib/copy";
 import { LEGAL_SLUGS } from "@/lib/legal";
 import { SITE_URL } from "@/lib/site";
+import { POSTS } from "@/lib/blog";
 
 /**
  * Mapa del sitio con alternancia de idioma.
@@ -41,5 +42,28 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }))
   );
 
-  return [...home, ...productos, ...legal];
+  /* El blog: el índice y cada artículo, con la fecha real de su último
+     cambio. `lastModified` es lo que le dice a Google qué volver a leer
+     sin tener que rastrear todo cada vez. */
+  const ultima = POSTS.reduce((m, p) => ((p.updated ?? p.date) > m ? (p.updated ?? p.date) : m), "2026-01-01");
+  const blogIndex = LOCALES.map((l) => ({
+    url: `${SITE_URL}/${l}/blog`,
+    lastModified: new Date(ultima + "T12:00:00Z"),
+    changeFrequency: "weekly" as const,
+    priority: 0.8,
+    alternates: alt("/blog"),
+  }));
+  const posts = LOCALES.flatMap((l) =>
+    POSTS.map((p) => ({
+      url: `${SITE_URL}/${l}/blog/${p[l].slug}`,
+      lastModified: new Date((p.updated ?? p.date) + "T12:00:00Z"),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+      alternates: {
+        languages: Object.fromEntries(LOCALES.map((x) => [x, `${SITE_URL}/${x}/blog/${p[x].slug}`])),
+      },
+    }))
+  );
+
+  return [...home, ...productos, ...blogIndex, ...posts, ...legal];
 }

@@ -50,7 +50,11 @@ export async function generateMetadata({
       type: "website",
     },
     twitter: { card: "summary_large_image", title: t.meta.title, description: t.meta.desc },
-    robots: { index: true, follow: true },
+    /* Las URLs de previsualización de Vercel (*.vercel.app) sirven el
+       mismo HTML que producción. Si Google las indexa, compiten con el
+       dominio real como contenido duplicado. Solo producción se indexa;
+       cada página puede seguir declarando su propio `robots` encima. */
+    robots: process.env.VERCEL_ENV && process.env.VERCEL_ENV !== "production" ? { index: false, follow: false } : { index: true, follow: true },
   };
 }
 

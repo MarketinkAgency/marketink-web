@@ -17,6 +17,7 @@ import Funnel from "@/components/Funnel";
 import Banda from "@/components/Banda";
 import Jsonld from "@/components/Jsonld";
 import Analytics from "@/components/Analytics";
+import { blogUi, postsFor } from "@/lib/blog";
 
 /* Portada «hoja de flash» (2026-11): la foto real manda, Anton a escala de
    cartel en las frases que importan y tres fondos que marcan el ritmo
@@ -133,6 +134,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             { href: "#results", label: t.nav.results },
             { href: "#process", label: t.nav.process },
             { href: `/${lang}/webs`, label: t.nav.webs },
+            { href: `/${lang}/blog`, label: t.nav.blog },
             { href: "#book", label: t.book.eyebrow },
             { href: "#faq", label: t.nav.faq },
           ]}
@@ -584,6 +586,35 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                 {t.websTeaser.cta}
               </Link>
             </div>
+          </div>
+        </section>
+
+        {/* ───────── DEL BLOG ─────────
+            Tres artículos recientes. No es decoración: son los enlaces
+            internos que le dicen a Google que el blog cuelga de la portada,
+            y a quien no está listo para agendar le dan algo que llevarse. */}
+        <section className="border-t border-white/[0.06] py-16 sm:py-24">
+          <div className="wrap">
+            <div className="reveal flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+              <div>
+                <p className="mb-4 flash-sub text-[10.5px] tracking-[0.2em] text-muted">{blogUi[lang].homeTeaserTag}</p>
+                <h2 className="max-w-[22ch] flash-type text-[clamp(1.8rem,4vw,3.4rem)]">{blogUi[lang].homeTeaserTitle}</h2>
+              </div>
+              <Link href={`/${lang}/blog`} className="flash-sub text-[12px] tracking-[0.16em] text-muted transition hover:text-bone">
+                {blogUi[lang].homeTeaserCta} →
+              </Link>
+            </div>
+            <ul className="reveal mt-10 grid gap-px bg-white/[0.08] md:grid-cols-3">
+              {postsFor(lang).slice(0, 3).map(({ post, t: b }) => (
+                <li key={post.key} className="bg-void">
+                  <Link href={`/${lang}/blog/${b.slug}`} className="group block h-full px-7 py-8 transition hover:bg-panel">
+                    <h3 className="flash-type text-[clamp(20px,2vw,26px)] leading-[1.08] text-bone">{b.title}</h3>
+                    <p className="mt-3 text-[14px] leading-relaxed text-muted">{b.excerpt}</p>
+                    <span className="mt-5 block flash-type text-[18px] text-blood transition-transform duration-300 group-hover:translate-x-1" aria-hidden>→</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
         </section>
 
