@@ -29,8 +29,10 @@ const csp = [
   "script-src 'self' 'unsafe-inline' https://assets.calendly.com https://www.googletagmanager.com https://connect.facebook.net",
   "style-src 'self' 'unsafe-inline' https://assets.calendly.com https://fonts.googleapis.com",
   "font-src 'self' data: https://fonts.gstatic.com",
-  "img-src 'self' data: blob: https://assets.calendly.com https://*.calendly.com https://www.facebook.com https://www.google-analytics.com",
-  "connect-src 'self' https://calendly.com https://*.calendly.com https://vitals.vercel-insights.com https://www.google-analytics.com https://*.analytics.google.com https://connect.facebook.net",
+  "img-src 'self' data: blob: https://assets.calendly.com https://*.calendly.com https://www.facebook.com https://*.google-analytics.com https://www.googletagmanager.com",
+  // GA4 manda los datos a www.google-analytics.com o a un subdominio regional
+  // (region1.google-analytics.com para visitantes en la UE): por eso el comodín.
+  "connect-src 'self' https://calendly.com https://*.calendly.com https://vitals.vercel-insights.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://connect.facebook.net",
   "frame-src https://calendly.com https://*.calendly.com https://www.facebook.com",
   // Nadie puede meter este sitio dentro de un iframe.
   "frame-ancestors 'none'",
