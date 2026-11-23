@@ -134,6 +134,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             { href: "#results", label: t.nav.results },
             { href: "#process", label: t.nav.process },
             { href: `/${lang}/webs`, label: t.nav.webs },
+            { href: `/${lang}/inky`, label: t.nav.inky },
             { href: `/${lang}/blog`, label: t.nav.blog },
             { href: "#book", label: t.book.eyebrow },
             { href: "#faq", label: t.nav.faq },
@@ -716,6 +717,12 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             <div className="lg:col-span-1">
               <Wordmark className="text-[18px]" live={false} />
               <p className="mt-3 max-w-xs text-[14px] leading-relaxed text-muted">{t.footer.tagline}</p>
+              <Link
+                href={`/${lang}/inky`}
+                className="mt-4 inline-block text-[14px] font-semibold text-bone underline decoration-blood decoration-2 underline-offset-[6px] transition hover:text-white"
+              >
+                {t.footer.inky} →
+              </Link>
             </div>
 
             <div>

@@ -54,6 +54,7 @@ export default function BlogShell({ lang, children }: { lang: Lang; children: Re
             { href: `${home}#system`, label: c.nav.system },
             { href: `${home}#results`, label: c.nav.results },
             { href: `/${lang}/webs`, label: c.nav.webs },
+            { href: `/${lang}/inky`, label: c.nav.inky },
             { href: `/${lang}/blog`, label: blogUi[lang].title },
             { href: `${home}#faq`, label: c.nav.faq },
           ]}
@@ -66,6 +67,12 @@ export default function BlogShell({ lang, children }: { lang: Lang; children: Re
             <div>
               <Wordmark className="text-[18px]" />
               <p className="mt-3 max-w-xs text-[14px] leading-relaxed text-muted">{c.footer.tagline}</p>
+              <Link
+                href={`/${lang}/inky`}
+                className="mt-4 inline-block text-[14px] font-semibold text-bone underline decoration-blood decoration-2 underline-offset-[6px] transition hover:text-white"
+              >
+                {c.footer.inky} →
+              </Link>
             </div>
             <div>
               <p className="mb-3 flash-sub text-[10.5px] tracking-[0.16em] text-faint">{c.footer.write}</p>

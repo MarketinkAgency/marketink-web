@@ -19,7 +19,7 @@ export const copy = {
       title: "Marketing para tatuadores que llena agendas · MarketINK",
       desc: "Agencia de marketing para tatuadores y estudios de tatuajes. Convertimos los mensajes de Instagram en citas agendadas con depósito: anuncios, calificación por DM y seguimiento.",
     },
-    nav: { system: "El sistema", results: "Resultados", process: "90 días", faq: "Preguntas", webs: "Webs", blog: "Blog", cta: "Auditoría gratis" },
+    nav: { system: "El sistema", results: "Resultados", process: "90 días", faq: "Preguntas", webs: "Webs", inky: "INKY", blog: "Blog", cta: "Auditoría gratis" },
 
     /* El puente a /webs. Va en la portada porque el que llega buscando
        «agencia para tatuadores» muchas veces lo que necesita primero es
@@ -400,7 +400,7 @@ export const copy = {
     },
 
     sticky: "Auditoría gratis",
-    footer: { tagline: "Sistemas de reservas para tatuadores y estudios. Trabajamos con artistas en todo el mundo.", follow: "Síguenos", write: "Escríbenos", where: "Dónde estamos", rights: "Todos los derechos reservados.", legal: "Legal", built: "Roca Digital LLC" },
+    footer: { tagline: "Sistemas de reservas para tatuadores y estudios. Trabajamos con artistas en todo el mundo.", inky: "INKY: asistente de IA para tus DM", follow: "Síguenos", write: "Escríbenos", where: "Dónde estamos", rights: "Todos los derechos reservados.", legal: "Legal", built: "Roca Digital LLC" },
   },
 
   // ══════════════════════════════════════════════════════════════
@@ -409,7 +409,7 @@ export const copy = {
       title: "Tattoo Marketing Agency · More booked appointments · MarketINK",
       desc: "Tattoo marketing agency for artists and studios. We turn Instagram DMs into booked appointments with a deposit paid: ads, DM qualification and follow-up built only for tattooers.",
     },
-    nav: { system: "The system", results: "Results", process: "90 days", faq: "FAQ", webs: "Websites", blog: "Blog", cta: "Free audit" },
+    nav: { system: "The system", results: "Results", process: "90 days", faq: "FAQ", webs: "Websites", inky: "INKY", blog: "Blog", cta: "Free audit" },
 
     websTeaser: {
       tag: "Also",
@@ -767,7 +767,7 @@ export const copy = {
     },
 
     sticky: "Free audit",
-    footer: { tagline: "Booking systems for tattoo artists and studios. We work with artists worldwide.", follow: "Follow us", write: "Write to us", where: "Where we are", rights: "All rights reserved.", legal: "Legal", built: "Roca Digital LLC" },
+    footer: { tagline: "Booking systems for tattoo artists and studios. We work with artists worldwide.", inky: "INKY: AI assistant for your DMs", follow: "Follow us", write: "Write to us", where: "Where we are", rights: "All rights reserved.", legal: "Legal", built: "Roca Digital LLC" },
   },
 };
 
