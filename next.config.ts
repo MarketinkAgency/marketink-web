@@ -58,11 +58,32 @@ const securityHeaders = [
   { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
 ];
 
+/**
+ * ENLACES LEGALES VIEJOS
+ *
+ * Las políticas vivían en Shopify bajo /policies/*, y Meta y Google
+ * siguen teniendo esas URLs registradas (apps, formularios, anuncios).
+ * Sin esto daban error. 308 = permanente: los buscadores y las
+ * plataformas actualizan el enlace guardado.
+ *
+ * Las redirecciones de next.config se evalúan antes que proxy.ts, así
+ * que no pasan por la detección de idioma. El apex (sin www) ya redirige
+ * a www desde Vercel, así que esto cubre los dos.
+ */
+const legacyPolicies = [
+  { source: "/policies/privacy-policy", destination: "/en/legal/privacidad" },
+  { source: "/policies/terms-of-service", destination: "/en/legal/terminos" },
+  { source: "/policies/refund-policy", destination: "/en/legal/reembolsos" },
+];
+
 const nextConfig: NextConfig = {
   // No revelamos qué framework hay detrás.
   poweredByHeader: false,
   headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
+  },
+  redirects() {
+    return legacyPolicies.map((r) => ({ ...r, permanent: true }));
   },
 };
 
