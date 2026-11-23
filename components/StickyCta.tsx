@@ -18,17 +18,19 @@ export default function StickyCta({
   href: string;
   label: string;
   lang: Lang;
-  spotsLabels: { intake: string; remaining: string; remaining1: string };
+  /** Sin etiquetas no se muestran cupos (p. ej. en /inky, que no tiene cupos). */
+  spotsLabels?: { intake: string; remaining: string; remaining1: string };
 }) {
   const [spots, setSpots] = useState<{ free: number; month: string } | null>(null);
 
   useEffect(() => {
+    if (!spotsLabels) return;
     const now = new Date();
     setSpots({
       free: freeSpots(),
       month: now.toLocaleDateString(lang === "es" ? "es-ES" : "en-US", { month: "long" }),
     });
-  }, [lang]);
+  }, [lang, spotsLabels]);
 
   const bar = useRef<HTMLDivElement>(null);
 
@@ -50,7 +52,7 @@ export default function StickyCta({
   }, []);
 
   const line =
-    spots && spots.free > 0
+    spotsLabels && spots && spots.free > 0
       ? `${spots.free} ${spots.free === 1 ? spotsLabels.remaining1 : spotsLabels.remaining} · ${spotsLabels.intake.replace("{mes}", spots.month).replace("{month}", spots.month)}`
       : null;
 

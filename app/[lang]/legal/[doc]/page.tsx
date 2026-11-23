@@ -3,31 +3,7 @@ import { notFound } from "next/navigation";
 import { isLang, LOCALES, copy } from "@/lib/copy";
 import { legal, legalNav, LEGAL_SLUGS, type LegalSlug, type Para } from "@/lib/legal";
 import type { Metadata } from "next";
-
-/** `[etiqueta](https://…)` → enlace. El resto del texto, tal cual. */
-function Rich({ text }: { text: string }) {
-  const parts: React.ReactNode[] = [];
-  const re = /\[([^\]]+)\]\((https:\/\/[^)\s]+)\)/g;
-  let last = 0;
-  for (const m of text.matchAll(re)) {
-    const i = m.index ?? 0;
-    if (i > last) parts.push(text.slice(last, i));
-    parts.push(
-      <a
-        key={i}
-        href={m[2]}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="break-words text-bone underline decoration-blood/60 underline-offset-4 transition hover:decoration-blood"
-      >
-        {m[1]}
-      </a>
-    );
-    last = i + m[0].length;
-  }
-  if (last < text.length) parts.push(text.slice(last));
-  return <>{parts}</>;
-}
+import Rich from "@/components/Rich";
 
 const paraText = (x: Para) => (typeof x === "string" ? x : x.text);
 const paraLang = (x: Para) => (typeof x === "string" ? undefined : x.lang);

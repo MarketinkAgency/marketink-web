@@ -1,0 +1,36 @@
+/* ══════════════════════════════════════════════════════════════════
+   /inky — solo lo que esta página necesita y globals.css no tiene.
+   Va aparte para no tocar el sistema compartido.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* Titular del hero: a escala de cartel, pero comparte pantalla con el chat. */
+.inky-h1 {
+  font-size: clamp(2.9rem, 6.6vw, 7.4rem);
+  line-height: 1.1;
+  letter-spacing: -0.012em;
+}
+.inky-h1.misprint { animation: stampIn 0.9s var(--ease) both, register 1.2s var(--ease) 0.2s both; }
+
+/* La mascota junto a la etiqueta del hero. */
+.inky-mascot {
+  filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.6));
+}
+
+/* Al cambiar de sombrero, el contenido entra (solo transform: no se oculta). */
+@keyframes hatIn {
+  from { transform: translateY(10px); }
+  to   { transform: none; }
+}
+.hat-in { animation: hatIn 0.5s var(--ease) both; }
+
+/* Precio a escala de cartel dentro de la celda de la hoja. */
+.inky-price {
+  font-family: var(--f-anton), sans-serif;
+  font-size: clamp(3rem, 6vw, 5.4rem);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .inky-h1.misprint, .hat-in { animation: none; }
+}
