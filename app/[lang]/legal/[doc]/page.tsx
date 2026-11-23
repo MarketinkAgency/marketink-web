@@ -1,8 +1,44 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { isLang, LOCALES, copy } from "@/lib/copy";
-import { legal, legalNav, LEGAL_SLUGS, type LegalSlug } from "@/lib/legal";
+import { legal, legalNav, LEGAL_SLUGS, type LegalSlug, type Para } from "@/lib/legal";
 import type { Metadata } from "next";
+
+/** `[etiqueta](https://…)` → enlace. El resto del texto, tal cual. */
+function Rich({ text }: { text: string }) {
+  const parts: React.ReactNode[] = [];
+  const re = /\[([^\]]+)\]\((https:\/\/[^)\s]+)\)/g;
+  let last = 0;
+  for (const m of text.matchAll(re)) {
+    const i = m.index ?? 0;
+    if (i > last) parts.push(text.slice(last, i));
+    parts.push(
+      <a
+        key={i}
+        href={m[2]}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="break-words text-bone underline decoration-blood/60 underline-offset-4 transition hover:decoration-blood"
+      >
+        {m[1]}
+      </a>
+    );
+    last = i + m[0].length;
+  }
+  if (last < text.length) parts.push(text.slice(last));
+  return <>{parts}</>;
+}
+
+const paraText = (x: Para) => (typeof x === "string" ? x : x.text);
+const paraLang = (x: Para) => (typeof x === "string" ? undefined : x.lang);
+
+function Paras({ items }: { items?: Para[] }) {
+  return items?.map((x) => (
+    <p key={paraText(x)} lang={paraLang(x)} className="mb-4 max-w-[68ch] text-[15px] leading-relaxed text-muted">
+      <Rich text={paraText(x)} />
+    </p>
+  ));
+}
 
 export function generateStaticParams() {
   return LOCALES.flatMap((lang) => LEGAL_SLUGS.map((doc) => ({ lang, doc })));
@@ -89,21 +125,20 @@ export default async function LegalPage({
             {d.sections.map((s) => (
               <section key={s.h}>
                 <h2 className="mb-4 text-[17px] font-bold tracking-[-0.02em] text-bone">{s.h}</h2>
+                <Paras items={s.lead} />
                 {s.ul ? (
                   <ul className="mb-4 space-y-2.5">
                     {s.ul.map((x) => (
                       <li key={x} className="flex max-w-[68ch] gap-3 text-[15px] leading-relaxed text-muted">
                         <span className="mt-[10px] size-1 shrink-0 rounded-full bg-blood" />
-                        {x}
+                        <span>
+                          <Rich text={x} />
+                        </span>
                       </li>
                     ))}
                   </ul>
                 ) : null}
-                {s.p?.map((x) => (
-                  <p key={x} className="mb-4 max-w-[68ch] text-[15px] leading-relaxed text-muted">
-                    {x}
-                  </p>
-                ))}
+                <Paras items={s.p} />
               </section>
             ))}
           </div>

@@ -13,7 +13,14 @@ import type { Lang } from "@/lib/copy";
  * clientes en la UE y el Reino Unido.
  */
 
-export type Section = { h: string; p?: string[]; ul?: string[] };
+/**
+ * Un párrafo es texto, o texto en otro idioma (p. ej. la cláusula de Google,
+ * que va literal en inglés también en /es). En cualquier texto,
+ * `[etiqueta](https://…)` se convierte en enlace.
+ */
+export type Para = string | { text: string; lang: Lang };
+/** `lead` va antes de la lista; `p`, después. */
+export type Section = { h: string; lead?: Para[]; p?: Para[]; ul?: string[] };
 export type Doc = {
   slug: string;
   title: string;
@@ -150,7 +157,7 @@ const ES: Record<LegalSlug, Doc> = {
   privacidad: {
     slug: "privacidad",
     title: "Política de privacidad",
-    updated: entity.updated.es,
+    updated: "23 de noviembre de 2026",
     intro: `Esta política explica qué datos trata ${entity.legal} (MarketINK Agency) y con qué finalidad. Aplica a visitantes de la web, clientes, prospectos y personas que interactúan con nuestros formularios, campañas o herramientas.`,
     sections: [
       {
@@ -210,6 +217,8 @@ const ES: Record<LegalSlug, Doc> = {
           "Google — analítica y etiquetado.",
           "Vercel — alojamiento del sitio web.",
           "OpenAI — procesamiento de texto en las funciones de INKY.",
+          "Anthropic (Claude) — procesamiento de texto para INKY.",
+          "Google Calendar — agenda de los negocios que lo conectan.",
         ],
         p: ["Cada proveedor trata los datos conforme a sus propias políticas."],
       },
@@ -243,6 +252,25 @@ const ES: Record<LegalSlug, Doc> = {
             entity.email +
             " con el asunto «Data Deletion Request», indicando tu usuario de Instagram y el correo asociado.",
           "Eliminaremos los datos de conexión almacenados, los tokens de acceso, los registros de mensajes y la información de cuenta relacionada en un plazo de 7 días hábiles, salvo lo que debamos conservar por obligación legal o por seguridad.",
+        ],
+      },
+      {
+        h: "10 bis. INKY",
+        lead: [
+          "INKY es el asistente de IA de MarketINK. Atiende, a nombre de los negocios que lo conectan, los mensajes que esos negocios reciben por Instagram y WhatsApp. Para hacerlo procesa estos datos:",
+        ],
+        ul: [
+          "Los mensajes de Instagram y WhatsApp que reciben los negocios conectados.",
+          "El nombre y el usuario del perfil de quien escribe.",
+          "Si el negocio conecta Google Calendar, los eventos de su calendario, para ver qué horarios están ocupados y crear citas.",
+        ],
+        p: [
+          "INKY usa estos datos solo para responder, calificar y agendar a nombre del negocio.",
+          "Para pedir la eliminación de tus datos de INKY, entra en [https://inky.marketink.app/data-deletion](https://inky.marketink.app/data-deletion). También puedes escribirnos como se indica en la sección 10.",
+          {
+            lang: "en",
+            text: "INKY's use and transfer of information received from Google APIs will adhere to the [Google API Services User Data Policy](https://developers.google.com/terms/api-services-user-data-policy), including the Limited Use requirements.",
+          },
         ],
       },
       {
@@ -499,7 +527,7 @@ const EN: Record<LegalSlug, Doc> = {
   privacidad: {
     slug: "privacidad",
     title: "Privacy Policy",
-    updated: entity.updated.en,
+    updated: "November 23, 2026",
     intro: `This policy explains what data ${entity.legal} (MarketINK Agency) processes and why. It applies to website visitors, clients, prospects and anyone interacting with our forms, campaigns or tools.`,
     sections: [
       { h: "1. Controller", p: [`${entity.legal}, ${entity.address}. Contact: ${entity.email}.`] },
@@ -553,6 +581,8 @@ const EN: Record<LegalSlug, Doc> = {
           "Google — analytics and tagging.",
           "Vercel — website hosting.",
           "OpenAI — text processing for INKY features.",
+          "Anthropic (Claude) — text processing for INKY.",
+          "Google Calendar — scheduling for the businesses that connect it.",
         ],
         p: ["Each processor handles data under its own policies."],
       },
@@ -586,6 +616,22 @@ const EN: Record<LegalSlug, Doc> = {
             entity.email +
             ' with the subject "Data Deletion Request", including your Instagram username and the associated email address.',
           "We will remove stored connection data, access tokens, message logs and related account information from our systems within 7 business days, except for what we must retain by law or for security.",
+        ],
+      },
+      {
+        h: "10b. INKY",
+        lead: [
+          "INKY is MarketINK's AI assistant. On behalf of the businesses that connect it, it handles the messages those businesses receive on Instagram and WhatsApp. To do so, it processes this data:",
+        ],
+        ul: [
+          "Instagram and WhatsApp messages received by connected businesses.",
+          "The profile name and username of the person writing.",
+          "If the business connects Google Calendar, its calendar events, to see which times are busy and to create appointments.",
+        ],
+        p: [
+          "INKY uses this data only to reply, qualify and book appointments on the business's behalf.",
+          "To request deletion of your INKY data, go to [https://inky.marketink.app/data-deletion](https://inky.marketink.app/data-deletion). You can also write to us as described in section 10.",
+          "INKY's use and transfer of information received from Google APIs will adhere to the [Google API Services User Data Policy](https://developers.google.com/terms/api-services-user-data-policy), including the Limited Use requirements.",
         ],
       },
       { h: "11. Minors", p: ["The service is not directed at people under 18 and we do not knowingly collect their data."] },
