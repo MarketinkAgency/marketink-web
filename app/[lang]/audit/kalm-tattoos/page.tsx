@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { isLang, site } from "@/lib/copy";
+import { plan } from "@/lib/plan";
 import { entity } from "@/lib/legal";
 import AuditExpiry from "@/components/AuditExpiry";
 import CuposChip from "@/components/CuposChip";
@@ -63,6 +64,8 @@ export default async function KalmAudit({ params }: { params: Promise<{ lang: st
 
   const core = tiles.filter((t) => t.f === "real" || t.f === "script").length;
   const biggest = Math.max(...familias.map((f) => tiles.filter((t) => t.f === f.id).length));
+  /* El botón es para pagar y empezar. Si el enlace de pago se apaga en Vercel, cae a Instagram: nunca un botón muerto. */
+  const pagar = plan.url || site.instagram;
   const fechaExp = new Date(kalm.expira).toLocaleDateString("en-US", { month: "long", day: "numeric", timeZone: "America/Chicago" });
 
   return (
@@ -70,7 +73,7 @@ export default async function KalmAudit({ params }: { params: Promise<{ lang: st
       <AuditExpiry
         expira={kalm.expira}
         lang="en"
-        labels={{ tag: "Your free fixes expire in", done: "The free fixes expired", cta: "Book the call", units: { d: "d", h: "h", m: "m", s: "s" } }}
+        labels={{ tag: "This audit expires in", done: "This audit expired", cta: "Start the plan", units: { d: "d", h: "h", m: "m", s: "s" } }}
       />
 
       {/* ── 00 · cabecera ─────────────────────────────────────── */}
@@ -101,7 +104,7 @@ export default async function KalmAudit({ params }: { params: Promise<{ lang: st
 
         <ul className="mt-8 flex flex-wrap gap-2.5 text-[11.5px] font-bold uppercase tracking-[0.14em]">
           <li className="rounded-full px-4 py-2 text-bone ring-1 ring-white/[0.14]">Prepared by hand for you</li>
-          <li className="rounded-full px-4 py-2 text-blood ring-1 ring-blood/50">Valid until {fechaExp}</li>
+          <li className="rounded-full px-4 py-2 text-blood ring-1 ring-blood/50">Expires {fechaExp}</li>
           <CuposChip label="spots left this month" label1="spot left this month" />
         </ul>
 
@@ -384,6 +387,15 @@ export default async function KalmAudit({ params }: { params: Promise<{ lang: st
             <img src={T("a15")} alt="Your Xochitl script" className="w-[40%] max-w-[200px] rounded-[12px] ring-1 ring-white/[0.1]" loading="lazy" />
           </div>
         </div>
+
+        <div className="mt-16 flex flex-col items-start gap-5 rounded-[18px] p-8 ring-1 ring-blood/40 sm:flex-row sm:items-center sm:justify-between">
+          <p className="max-w-[38ch] text-[clamp(19px,2.2vw,24px)] font-semibold leading-snug text-bone">
+            This is the plan. It starts the day you say yes.
+          </p>
+          <a href={pagar} className="inline-flex flex-none items-center justify-center bg-blood px-8 py-4 text-[13px] font-extrabold uppercase tracking-[0.14em] text-white hover:bg-[#ff1f17]">
+            Start the plan →
+          </a>
+        </div>
       </section>
 
       {/* ── 07 · regalos ──────────────────────────────────────── */}
@@ -393,7 +405,7 @@ export default async function KalmAudit({ params }: { params: Promise<{ lang: st
         <p className="mt-5 max-w-[58ch] text-[16px] leading-relaxed text-muted">No charge, no catch. They expire on {fechaExp}.</p>
 
         <p className="expira-aviso mt-8 hidden rounded-[14px] bg-panel p-6 text-[15px] text-muted ring-1 ring-blood/40">
-          These expired on {fechaExp}. Book a call and we&apos;ll walk you through them live.
+          These expired on {fechaExp}. Start the plan and we&apos;ll set all of it up for you.
         </p>
 
         <div className="expira-oculto mt-12 space-y-14">
@@ -490,21 +502,22 @@ export default async function KalmAudit({ params }: { params: Promise<{ lang: st
             Your book shouldn&apos;t depend on who happens to DM you.
           </p>
           <p className="mx-auto mt-6 max-w-[52ch] text-[16px] leading-relaxed text-muted">
-            30 minutes. We go through this page with you, you tell us where you tattoo now, and you leave with a plan, whether you
-            work with us or not.
+            Everything on this page, done for you. Start today and week 1 begins this week: identity, bio, covers. You keep
+            tattooing; we send you each piece to approve.
           </p>
           <div className="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <a href={site.call} target="_blank" rel="noopener" className="inline-flex items-center justify-center bg-blood px-9 py-4 text-[13px] font-extrabold uppercase tracking-[0.14em] text-white hover:bg-[#ff1f17]">
-              Book the 30-min call
+            <a href={pagar} className="inline-flex items-center justify-center bg-blood px-10 py-4 text-[14px] font-extrabold uppercase tracking-[0.14em] text-white hover:bg-[#ff1f17]">
+              Start the plan →
             </a>
             <a href={site.instagram} target="_blank" rel="noopener" className="text-[13px] font-bold uppercase tracking-[0.14em] text-muted underline underline-offset-4 hover:text-bone">
-              Or DM us on Instagram
+              Questions first? DM us
             </a>
           </div>
           <ul className="mt-8 flex flex-wrap justify-center gap-2.5 text-[11.5px] font-bold uppercase tracking-[0.14em]">
-            <li className="rounded-full px-4 py-2 text-blood ring-1 ring-blood/50">Valid until {fechaExp}</li>
+            <li className="rounded-full px-4 py-2 text-blood ring-1 ring-blood/50">This audit expires {fechaExp}</li>
             <CuposChip label="spots left this month" label1="spot left this month" />
           </ul>
+          <p className="mt-6 text-[12px] text-faint">Secure checkout by Stripe.</p>
         </div>
       </section>
 
